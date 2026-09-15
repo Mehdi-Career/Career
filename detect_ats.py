@@ -1,203 +1,252 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-detect_ats.py
+detect_ats.py  -  version 2
 
-Remplit automatiquement url_carrieres, ats et ats_tenant dans entreprises-cibles.csv.
+Remplit url_carrieres, ats et ats_tenant dans entreprises-cibles.csv.
 
-A lancer une fois au setup, puis tous les 6 mois (les groupes changent d'ATS).
-Reprend ou il s'est arrete : relançable sans risque.
+CHANGEMENT MAJEUR vs v1 : plus aucun moteur de recherche.
+DuckDuckGo bloque les IP de datacenter, donc la v1 echouait a 100 %
+sur les runners GitHub. On interroge maintenant DIRECTEMENT les API
+des ATS en devinant l'identifiant a partir du nom de l'entreprise.
 
-  pip install requests beautifulsoup4
-  python detect_ats.py
+  pip install requests
+  python -u detect_ats.py
 """
 
-import csv, re, time, sys
-from urllib.parse import urlparse, urljoin
+import csv
+import re
+import sys
+import unicodedata
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
-from bs4 import BeautifulSoup
 
 CSV = 'entreprises-cibles.csv'
 UA = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
       '(KHTML, like Gecko) Chrome/124.0 Safari/537.36')
-HEADERS = {'User-Agent': UA, 'Accept-Language': 'fr-FR,fr;q=0.9'}
-TIMEOUT = 20
-PAUSE = 1.5          # politesse : on ne martele pas les serveurs
+HEADERS = {'User-Agent': UA, 'Accept': 'application/json,text/html'}
+TIMEOUT = 8
+PARALLELISME = 12
+
 
 # ------------------------------------------------------------------
-# Signatures ATS. L'ordre compte : du plus specifique au plus generique.
+# Generation des identifiants candidats
 # ------------------------------------------------------------------
-SIGNATURES = [
-    ('workday',        r'([a-z0-9\-]+)\.(?:wd\d+\.)?myworkdayjobs\.com'),
-    ('workday',        r'/wday/cxs/([a-z0-9\-]+)/'),
-    ('successfactors', r'([a-z0-9\-]+)\.(?:jobs\.)?successfactors\.(?:com|eu)'),
-    ('successfactors', r'career(?:s)?\d*\.successfactors\.[a-z]+'),
-    ('taleo',          r'([a-z0-9\-]+)\.taleo\.net'),
-    ('avature',        r'([a-z0-9\-]+)\.avature\.net'),
-    ('smartrecruiters', r'smartrecruiters\.com/([A-Za-z0-9\-]+)'),
-    ('icims',          r'([a-z0-9\-]+)\.icims\.com'),
-    ('cornerstone',    r'([a-z0-9\-]+)\.csod\.com'),
-    ('greenhouse',     r'(?:job-)?boards(?:\.eu)?\.greenhouse\.io/([a-z0-9\-]+)'),
-    ('greenhouse',     r'greenhouse\.io/embed/job_board\?for=([a-z0-9\-]+)'),
-    ('lever',          r'jobs\.lever\.co/([a-z0-9\-]+)'),
-    ('ashby',          r'jobs\.ashbyhq\.com/([a-z0-9\-]+)'),
-    ('talentsoft',     r'([a-z0-9\-]+)\.(?:talentsoft|talent-soft)\.com'),
-    ('teamtailor',     r'([a-z0-9\-]+)\.teamtailor\.com'),
-    ('workable',       r'([a-z0-9\-]+)\.workable\.com'),
-    ('recruitee',      r'([a-z0-9\-]+)\.recruitee\.com'),
-    ('flatchr',        r'([a-z0-9\-]+)\.flatchr\.io'),
-    ('beetween',       r'([a-z0-9\-]+)\.beetween\.com'),
-    ('softgarden',     r'([a-z0-9\-]+)\.softgarden\.io'),
-    ('wttj',           r'welcometothejungle\.com/fr/companies/([a-z0-9\-]+)'),
-]
 
-# Textes de liens qui menent vers un espace carrieres
-CAREER_HINTS = re.compile(
-    r'carri[eè]re|recrutement|nous\s*rejoindre|rejoignez|nos\s*offres|'
-    r'emploi|job|career|talent|opportunit', re.I)
+BRUIT = ('france', 'french', 'groupe', 'group', 'sa', 'sas', 'societe')
 
 
-def http_get(url):
+def sans_accents(s):
+    s = unicodedata.normalize('NFD', s or '')
+    return ''.join(c for c in s if unicodedata.category(c) != 'Mn')
+
+
+def slugs(nom):
+    """
+    'Groupe ADP'          -> ['groupeadp', 'groupe-adp', 'adp']
+    'Air France-KLM'      -> ['airfranceklm', 'air-france-klm', ...]
+    'Kuehne+Nagel France' -> ['kuehnenagelfrance', 'kuehnenagel', 'kuehne', ...]
+    """
+    n = sans_accents(nom).lower()
+    n = n.replace('&', ' and ').replace('+', ' ')
+    mots = [m for m in re.split(r"[^a-z0-9]+", n) if m]
+
+    out = []
+
+    def ajoute(v):
+        if v and len(v) >= 2 and v not in out:
+            out.append(v)
+
+    ajoute(''.join(mots))                 # groupeadp
+    ajoute('-'.join(mots))                # groupe-adp
+
+    utiles = [m for m in mots if m not in BRUIT]
+    if utiles != mots and utiles:
+        # Un mot de bruit a ete retire : 'Randstad France' -> 'randstad',
+        # 'Groupe ADP' -> 'adp'. La forme courte est fiable ici.
+        ajoute(''.join(utiles))
+        ajoute('-'.join(utiles))
+        if len(utiles) == 1:
+            ajoute(utiles[0])
+    elif len(utiles) >= 2:
+        # Tous les mots sont significatifs : 'Credit Agricole'.
+        # On NE tente PAS 'credit' seul, ce serait un faux positif assure.
+        ajoute(''.join(utiles[:2]))
+
+    return out[:5]
+
+
+# ------------------------------------------------------------------
+# Sondes par ATS
+# ------------------------------------------------------------------
+
+def _get(url, json_attendu=False):
     try:
-        r = requests.get(url, headers=HEADERS, timeout=TIMEOUT, allow_redirects=True)
-        if r.status_code < 400:
-            return r
+        r = requests.get(url, headers=HEADERS, timeout=TIMEOUT,
+                         allow_redirects=True)
     except requests.RequestException:
-        pass
+        return None
+    if r.status_code >= 400:
+        return None
+    if json_attendu:
+        try:
+            r.json()
+        except ValueError:
+            return None
+    return r
+
+
+def sonde_greenhouse(s):
+    r = _get(f'https://boards-api.greenhouse.io/v1/boards/{s}/jobs', True)
+    if r and isinstance(r.json().get('jobs'), list):
+        return 'greenhouse', s, f'https://job-boards.greenhouse.io/{s}'
     return None
 
 
-def detect_in(text):
-    """Cherche une signature ATS dans un bloc de texte (HTML ou URL)."""
-    for ats, pattern in SIGNATURES:
-        m = re.search(pattern, text, re.I)
-        if m:
-            tenant = m.group(1) if m.groups() else ''
-            return ats, tenant.lower()
-    return '', ''
+def sonde_lever(s):
+    r = _get(f'https://api.lever.co/v0/postings/{s}?mode=json', True)
+    if r and isinstance(r.json(), list):
+        return 'lever', s, f'https://jobs.lever.co/{s}'
+    return None
 
 
-def find_careers_url(nom):
+def sonde_smartrecruiters(s):
+    r = _get(f'https://api.smartrecruiters.com/v1/companies/{s}/postings?limit=1', True)
+    if r and 'content' in r.json():
+        return 'smartrecruiters', s, f'https://jobs.smartrecruiters.com/{s}'
+    return None
+
+
+def sonde_ashby(s):
+    r = _get(f'https://api.ashbyhq.com/posting-api/job-board/{s}', True)
+    if r and 'jobs' in r.json():
+        return 'ashby', s, f'https://jobs.ashbyhq.com/{s}'
+    return None
+
+
+def sonde_workday(s):
     """
-    Trouve la page carrieres. Deux passes :
-      1. DuckDuckGo HTML (pas de cle API necessaire)
-      2. Motifs d'URL classiques sur le domaine trouve
+    Workday : on tape la racine du tenant. S'il existe, Workday redirige
+    vers son site carrieres par defaut, et l'URL finale porte le nom du site.
     """
-    q = requests.utils.quote(f'{nom} site carrieres recrutement France')
-    r = http_get(f'https://html.duckduckgo.com/html/?q={q}')
-    if not r:
-        return ''
-
-    soup = BeautifulSoup(r.text, 'html.parser')
-    for a in soup.select('a.result__a')[:8]:
-        href = a.get('href', '')
-        m = re.search(r'uddg=([^&]+)', href)
-        if m:
-            href = requests.utils.unquote(m.group(1))
-        if not href.startswith('http'):
+    for wd in ('wd3', 'wd1', 'wd5', 'wd103', 'wd2'):
+        r = _get(f'https://{s}.{wd}.myworkdayjobs.com/')
+        if not r:
             continue
-        # Un lien qui pointe deja sur un ATS connu : jackpot
-        ats, _ = detect_in(href)
-        if ats:
-            return href
-        if CAREER_HINTS.search(href):
-            return href
-    return ''
+        m = re.search(
+            r'https?://([a-z0-9\-]+)\.' + wd +
+            r'\.myworkdayjobs\.com/(?:[a-z]{2}-[A-Z]{2}/)?([^/?#]+)',
+            r.url, re.I)
+        if m:
+            return 'workday', m.group(1).lower(), r.url
+    return None
 
 
-def probe_common_paths(base):
-    """Essaie les chemins carrieres classiques sur un domaine."""
-    host = urlparse(base).netloc
-    root = f'https://{host}'
-    for path in ('/carrieres', '/fr/carrieres', '/nous-rejoindre', '/recrutement',
-                 '/careers', '/fr/careers', '/jobs', '/emploi'):
-        r = http_get(urljoin(root, path))
-        if r:
-            return r
-    return http_get(root)
+def sonde_icims(s):
+    r = _get(f'https://careers-{s}.icims.com/jobs/search')
+    if r and 'icims' in r.url.lower():
+        return 'icims', s, r.url
+    return None
 
 
-def analyse(nom):
-    """Retourne (url_carrieres, ats, tenant)."""
-    url = find_careers_url(nom)
-    if not url:
-        return '', '', ''
+def sonde_teamtailor(s):
+    r = _get(f'https://{s}.teamtailor.com/jobs')
+    if r and 'teamtailor' in r.url.lower():
+        return 'teamtailor', s, r.url
+    return None
 
-    # L'URL elle-meme porte parfois la signature
-    ats, tenant = detect_in(url)
-    if ats:
-        return url, ats, tenant
 
-    r = http_get(url) or probe_common_paths(url)
-    if not r:
-        return url, '', ''
+def sonde_recruitee(s):
+    r = _get(f'https://{s}.recruitee.com/api/offers/', True)
+    if r and 'offers' in r.json():
+        return 'recruitee', s, f'https://{s}.recruitee.com'
+    return None
 
-    # L'URL finale apres redirections
-    ats, tenant = detect_in(r.url)
-    if ats:
-        return r.url, ats, tenant
 
-    # Puis le HTML : iframes, scripts, liens sortants
-    ats, tenant = detect_in(r.text)
-    if ats:
-        return r.url, ats, tenant
+def sonde_workable(s):
+    r = _get(f'https://apply.workable.com/api/v1/widget/accounts/{s}', True)
+    if r:
+        return 'workable', s, f'https://apply.workable.com/{s}'
+    return None
 
-    # Dernier essai : suivre le lien "carrieres" de la page
-    soup = BeautifulSoup(r.text, 'html.parser')
-    for a in soup.find_all('a', href=True):
-        if CAREER_HINTS.search(a.get_text() or '') or CAREER_HINTS.search(a['href']):
-            nxt = urljoin(r.url, a['href'])
-            r2 = http_get(nxt)
-            if r2:
-                ats, tenant = detect_in(r2.url) or ('', '')
-                if not ats:
-                    ats, tenant = detect_in(r2.text)
-                if ats:
-                    return r2.url, ats, tenant
-    return r.url, '', ''
+
+# Ordre : les plus courants chez les grands groupes francais d'abord
+SONDES = [
+    sonde_workday,
+    sonde_smartrecruiters,
+    sonde_greenhouse,
+    sonde_lever,
+    sonde_ashby,
+    sonde_icims,
+    sonde_teamtailor,
+    sonde_recruitee,
+    sonde_workable,
+]
+
+
+def analyser(nom):
+    """Renvoie (ats, tenant, url) ou (None, '', '')."""
+    for s in slugs(nom):
+        for sonde in SONDES:
+            try:
+                res = sonde(s)
+            except Exception:
+                continue
+            if res:
+                return res
+    return (None, '', '')
+
+
+# ------------------------------------------------------------------
+
+def sauver(rows):
+    with open(CSV, 'w', newline='', encoding='utf-8') as f:
+        w = csv.DictWriter(f, fieldnames=rows[0].keys())
+        w.writeheader()
+        w.writerows(rows)
 
 
 def main():
     with open(CSV, encoding='utf-8') as f:
         rows = list(csv.DictReader(f))
 
-    todo = [r for r in rows if not r['ats']]
-    print(f'{len(rows)} entreprises, {len(todo)} a traiter\n')
+    todo = [r for r in rows if not r.get('ats') or r['ats'] in ('', 'inconnu')]
+    print(f'{len(rows)} entreprises, {len(todo)} a sonder')
+    print(f'{PARALLELISME} en parallele\n', flush=True)
 
-    for i, row in enumerate(rows, 1):
-        if row['ats']:
-            continue
-        nom = row['nom']
-        try:
-            url, ats, tenant = analyse(nom)
-        except Exception as e:
-            print(f'  [{i:3d}] {nom:40s} ERREUR {e}')
-            continue
+    fait = 0
+    with ThreadPoolExecutor(max_workers=PARALLELISME) as pool:
+        futurs = {pool.submit(analyser, r['nom']): r for r in todo}
+        for fut in as_completed(futurs):
+            row = futurs[fut]
+            fait += 1
+            try:
+                ats, tenant, url = fut.result()
+            except Exception as e:
+                print(f'  [{fait:3d}/{len(todo)}] ERREUR {row["nom"]} : {e}',
+                      flush=True)
+                continue
 
-        row['url_carrieres'] = url
-        row['ats'] = ats or 'inconnu'
-        row['ats_tenant'] = tenant
-        flag = 'OK ' if ats else '?? '
-        print(f'  [{i:3d}] {flag} {nom:40s} {ats or "-":16s} {tenant}')
+            row['ats'] = ats or 'inconnu'
+            row['ats_tenant'] = tenant
+            row['url_carrieres'] = url
+            marque = 'OK ' if ats else '?? '
+            print(f'  [{fait:3d}/{len(todo)}] {marque} {row["nom"][:36]:38s} '
+                  f'{ats or "-":16s} {tenant}', flush=True)
 
-        # Sauvegarde a chaque ligne : relançable apres interruption
-        with open(CSV, 'w', newline='', encoding='utf-8') as f:
-            w = csv.DictWriter(f, fieldnames=rows[0].keys())
-            w.writeheader()
-            w.writerows(rows)
+            if fait % 10 == 0:
+                sauver(rows)
 
-        time.sleep(PAUSE)
+    sauver(rows)
 
-    from collections import Counter
-    print('\n--- Repartition des ATS ---')
+    print('\n--- Repartition ---', flush=True)
     for ats, n in Counter(r['ats'] for r in rows).most_common():
         print(f'  {n:4d}  {ats}')
-    inconnus = [r['nom'] for r in rows if r['ats'] == 'inconnu']
-    if inconnus:
-        print(f'\n{len(inconnus)} a traiter a la main :')
-        for n in inconnus[:30]:
-            print(f'  - {n}')
+    trouves = sum(1 for r in rows if r['ats'] != 'inconnu')
+    print(f'\n{trouves}/{len(rows)} entreprises exploitables')
+    return 0
 
 
 if __name__ == '__main__':
