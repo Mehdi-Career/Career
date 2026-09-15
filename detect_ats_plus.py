@@ -260,6 +260,36 @@ SF_HOTES = ('career5.successfactors.eu', 'career4.successfactors.eu',
             'jobs.sap.com')
 
 
+# Messages d'erreur servis avec un code HTTP 200. C'est ce qui a fait
+# valider 24 entreprises sur 24 : la page d'erreur contient elle-meme
+# les mots "jobreq", "careersection", etc.
+PAGES_ERREUR = re.compile(
+    r'an error occurred while processing your request|'
+    r'check the URL|company does not exist|invalid company|'
+    r'page (?:not found|introuvable)|erreur s.est produite|'
+    r'no longer available|acces refuse|session (?:expired|expiree)',
+    re.I)
+
+# Une vraie page d'offres SuccessFactors contient plusieurs liens vers des
+# fiches de poste portant un identifiant de requisition.
+OFFRES_SF = re.compile(
+    r'jobReqId=\d+|/job/\d+|jobreqid["\s:=]+\d+|'
+    r'requisition["\s:=]+\d+|/JobDetail/\d+',
+    re.I)
+
+
+def a_de_vraies_offres(corps, minimum=2):
+    """
+    Seule preuve qui ne ment pas : la page contient des offres REELLES,
+    avec des identifiants de requisition DISTINCTS.
+    Une page d'erreur n'en a aucun, meme si elle contient les bons mots-cles.
+    """
+    if PAGES_ERREUR.search(corps or ''):
+        return False
+    trouves = {m.group(0).lower() for m in OFFRES_SF.finditer(corps or '')}
+    return len(trouves) >= minimum
+
+
 def sonde_successfactors(nom, sl):
     for hote in SF_HOTES:
         for chemin in (f'/career?company={sl}',
@@ -268,9 +298,7 @@ def sonde_successfactors(nom, sl):
             r = _get(f'https://{hote}{chemin}')
             if not r:
                 continue
-            corps = r.text[:200000]
-            if re.search(r'jobreq|joblist|careersection|job-?title|offre',
-                         corps, re.I):
+            if a_de_vraies_offres(r.text[:400000]):
                 return 'successfactors', sl, r.url
         time.sleep(PAUSE)
     return None
@@ -289,8 +317,11 @@ def sonde_taleo(nom, sl):
                        '/careersection/1/moresearch.ftl',
                        '/careersection/10000/moresearch.ftl'):
             r = _get(f'https://{hote}{chemin}')
-            if r and 'careersection' in r.url.lower():
-                return 'taleo', sl, r.url
+            if not r or 'careersection' not in r.url.lower():
+                continue
+            if PAGES_ERREUR.search(r.text[:100000] or ''):
+                continue
+            return 'taleo', sl, r.url
     return None
 
 
@@ -334,11 +365,13 @@ def sonde_portail_maison(nom, sl):
         if not r:
             continue
 
+        corps = r.text[:400000]
+        if PAGES_ERREUR.search(corps):
+            continue
+
         ats, tenant = chercher_signature(r.url)
         if ats:
             return ats, (tenant or sl), r.url
-
-        corps = r.text[:400000]
         ats, tenant = chercher_signature(corps)
         if ats:
             return ats, (tenant or sl), r.url
@@ -466,8 +499,16 @@ def main():
     sauver(rows)
 
     print('\n--- Repartition finale ---', flush=True)
-    for ats, n in Counter(r['ats'] for r in rows).most_common():
+    compte = Counter(r['ats'] for r in rows)
+    for ats, n in compte.most_common():
         print(f'  {n:4d}  {ats}')
+    for ats, n in compte.most_common(1):
+        if ats not in ('inconnu', '') and n > 0.5 * len(rows):
+            print('\n' + '!'*60)
+            print(f'ALERTE : {ats} = {100*n//len(rows)} % des resultats.')
+            print('Faux positif. Ne pas utiliser ce CSV.')
+            print('!'*60)
+            return 1
     total = sum(1 for r in rows if r['ats'] not in ('', 'inconnu'))
     print(f'\n+{trouve} cette passe')
     print(f'{total}/{len(rows)} entreprises exploitables')
