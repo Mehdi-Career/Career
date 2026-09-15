@@ -1,0 +1,516 @@
+# ============================================================
+# CV-RESERVOIR - Mehdi Koriche
+# Memoire du systeme de candidature. Rechargee a chaque appel API.
+# Version 1.0 - 14/09/2026
+# ============================================================
+
+identite:
+  prenom: Mehdi
+  nom: Koriche
+  ville: Villiers-sur-Marne
+  code_postal: "94350"
+  region: Île-de-France
+  telephone_perso: "06 35 50 02 95"
+  telephone_candidature: TODO          # numero dedie a creer (en poste)
+  email_perso: koriche.mehdi@gmail.com
+  email_candidature: TODO              # adresse dediee a creer (en poste)
+  linkedin: linkedin.com/in/mehdi-koriche-14673015a
+  permis_vehicule: Permis B depuis 10 ans, vehicule personnel disponible
+
+# ------------------------------------------------------------
+# POSITIONNEMENT
+# ------------------------------------------------------------
+positionnement:
+  metier: Commercial B2B grands comptes
+  anciennete_affichee: 7 ans
+  anciennete_calcul: >
+    Compte a partir de septembre 2019 (Engie). L'alternance Engie 2019-2021 est
+    volontairement non signalee comme telle. Choix assume par Mehdi.
+  reserve: >
+    Ne pas postuler chez ENGIE ni ses filiales avec cette version :
+    leurs RH ont le dossier d'alternance.
+  experience_post_diplome: 5 ans (depuis octobre 2021)
+
+# ------------------------------------------------------------
+# INTITULES CIBLES - alimente le crawler
+# ------------------------------------------------------------
+intitules_cibles:
+  liste_mehdi:
+    - Account Executive
+    - Ingenieur d'affaires
+    - Responsable grands comptes
+    - Key Account Manager
+    - Ingenieur commercial grands comptes
+    - Business Developer Senior
+    - Commercial
+    - Account Manager
+
+  vocabulaire_corporate_fr:
+    - Charge d'affaires
+    - Charge d'affaires entreprises
+    - Responsable de comptes
+    - Responsable comptes cles
+    - Responsable developpement commercial
+    - Charge de developpement commercial
+    - Attache commercial
+    - Delegue commercial
+    - Ingenieur technico-commercial
+    - Responsable de clientele
+    - Directeur de clientele
+    - Charge de clientele entreprises
+
+  vocabulaire_anglo:
+    - Enterprise Account Executive
+    - Strategic Account Manager
+    - Global Account Manager
+    - Named Account Manager
+    - Account Director
+    - Client Partner
+    - Client Director
+    - Business Development Manager
+    - Sales Specialist
+    - Sales Executive
+    - Inside Sales Manager
+
+  sectoriels:
+    - Chef de secteur          # grande conso, plus terrain
+    - Chef de marche
+    - Conseiller clientele entreprises   # banque / assurance
+    - Charge d'affaires professionnels
+    - Business Manager         # ESN
+    - Responsable partenariats
+
+  a_surveiller:
+    - intitule: Sales Manager
+      raison: designe souvent un poste de management d'equipe chez un grand groupe
+    - intitule: Responsable commercial
+      raison: idem, verifier si un effectif a encadrer est exige
+
+# ------------------------------------------------------------
+# CONTRAINTES - alimente le filtre eliminatoire
+# ------------------------------------------------------------
+contraintes:
+  geographie: Paris + Île-de-France
+  contrat: CDI uniquement
+  anciennete_annonce_max_jours: 30
+  langues_annonce: francais ou anglais
+
+  redhibitoires:
+    - salaire affiche avec fixe OU package inferieur a 43 000 EUR
+    - deplacements hors IDF sur base hebdomadaire
+    - poste 100 % anglophone
+    - business avec clientele etrangere
+    - presentiel 5j/5 sans aucun teletravail
+    - astreintes, horaires decales ou travail le week-end
+    - poste en ESN consistant a placer des consultants chez le client
+      (Capgemini, Sopra Steria, Atos, Alten, Akkodis, Inetum et equivalents)
+
+  non_redhibitoires:      # explicitement acceptes par Mehdi
+    - temps de trajet (peu importe si le poste est bon)
+    - statut non-cadre
+    - clause de mobilite geographique
+    - management d'equipe obligatoire
+    - filiale plutot que maison mere
+    # ESN retirees des non-redhibitoires le 15/09/2026 : voir redhibitoires
+
+  teletravail:
+    minimum: 1 jour
+    ideal: 2 a 3 jours
+    zero_jour: redhibitoire
+
+  secteurs_exclus:
+    - ESN / prestation intellectuelle en placement de consultants
+  note_esn: >
+    Mehdi a exerce ce metier chez Comet et ne souhaite pas le refaire.
+    Attention : son experience Comet, cadree en ESN, en fait une cible
+    naturelle pour les ESN. Elles vont le solliciter. Le filtre doit tenir.
+  blacklist_employeurs: aucune          # employeur actuel = petite structure
+
+  annonces_anonymes: exclues
+  # Decision Mehdi : les grands groupes vises ne passent pas par des cabinets
+  # en annonce aveugle. Canal unique = liste d'entreprises + sites carrieres.
+
+remuneration:
+  actuel_fixe: 47000
+  actuel_variable: non chiffre
+  plancher_fixe_vise: 43000
+  note: >
+    Le plancher de 43 k est un minimum accepte, pas une cible.
+    Position actuelle a 47 k fixe : viser au-dessus en grand groupe.
+
+# ------------------------------------------------------------
+# EXPERIENCES - reservoir complet (plus large que le CV)
+# ------------------------------------------------------------
+experiences:
+
+  - id: reality_academy
+    employeur: Reality Academy
+    intitule_cv_defaut: Account Executive Grands Comptes
+    intitule_linkedin: Responsable Prevention - Account Executive Grands Comptes
+    lieu: Paris, Île-de-France
+    debut: 2025-01
+    fin: en cours
+    secteur: Formation professionnelle / EdTech / HSE
+    produit: >
+      Formation innovante en entreprise : roleplay IA, ateliers realite virtuelle.
+      Thematiques HSE, securite au travail, securite routiere, risques
+      psychosociaux, diversite et inclusion.
+    interlocuteurs: [DRH, Directeur Formation, Directeur Innovation]
+    comptes: [Danone, Keolis, SNCF]
+    panier_moyen: 30000-80000 EUR
+    cycle_vente: 6 a 12 mois
+    objectif_annuel: 415000 EUR      # calcule : 500000 / 1.20
+    realise: 500000 EUR
+    atteinte: 120 %
+    a_verifier: >
+      Panier annonce d'abord a 10-30 k puis corrige a 30-80 k.
+      Version haute retenue (coherente avec l'objectif de 415 k et des cycles
+      de 6-12 mois chez des DRH grands comptes). A confirmer dans le CRM.
+    bullets:
+      - Vente consultative aupres de DRH, Directeurs Formation et Directeurs Innovation de grands comptes.
+      - Cycles de vente longs et complexes, multi-interlocuteurs.
+      - Pilotage du processus de bout en bout : prospection strategique, demonstration, negociation, closing, upselling.
+      - Construction d'offres sur mesure et deploiement a l'echelle nationale.
+      - Developpement de comptes existants et acquisition de nouveaux logos.
+    angle_fort: >
+      Carnet d'adresses DRH et Direction Formation dans de tres grands groupes.
+      Ouvre tout le secteur HR tech et services RH : ADP, Cegid, Workday, SD Worx,
+      Randstad, Adecco, ManpowerGroup, Hays, Gi Group.
+
+  - id: nomination
+    employeur: Nomination
+    intitule_cv_defaut: Account Executive - SaaS B2B
+    intitule_linkedin: Sales Executive - SaaS B2B
+    lieu: Paris, Île-de-France
+    debut: 2023-01
+    fin: 2024-12
+    secteur: SaaS / Data et intelligence commerciale B2B
+    panier_moyen: 15000 EUR
+    cycle_vente: 3 semaines a 3 mois
+    objectif_annuel: 250000 EUR      # calcule : 280000 / 1.12
+    realise: 280000 EUR
+    atteinte: 112 %
+    volume_prospection: 150 cold calls par semaine
+    bullets:
+      - Prospection outbound intensive, 150 appels dans le dur par semaine sur secteurs cibles.
+      - Strategie d'identification et de priorisation des secteurs a fort potentiel.
+      - Gestion complete de la relation commerciale, de la prospection au closing.
+      - Co-construction avec l'equipe marketing d'une strategie de generation de leads.
+    angle_fort: >
+      Le chiffre de 150 cold calls/semaine est verifiable et rare sur un CV.
+      A ressortir des qu'une annonce insiste sur la prospection ou la chasse.
+
+  - id: comet
+    employeur: Comet
+    intitule_cv_defaut: Account Executive - ESN et cabinet de conseil
+    intitule_linkedin: Account Executive - SaaS B2B
+    lieu: Paris, Île-de-France
+    debut: 2021-10
+    fin: 2022-12
+    duree: 15 mois
+    secteur: ESN / cabinet de conseil / placement de consultants
+    cadrage_retenu: >
+      ESN et cabinet de conseil (choix de Mehdi). Le LinkedIn parle de sourcing
+      de freelances, ce qui correspond plutot a une marketplace. Les deux
+      cadrages tiennent, mais la version orale doit rester alignee sur le CV.
+    comptes: [BNP Paribas, Groupe ADP, Enedis, Leboncoin]
+    tjm_moyen: 650 EUR
+    cycle_vente: court
+    panier_moyen: TODO
+    objectif_annuel: 312000 EUR de marge brute   # calcule : 325000 / 1.04
+    realise: 325000 EUR de marge brute
+    atteinte: 104 %
+    bullets:
+      - Acquisition de nouveaux comptes et developpement commercial des comptes existants.
+      - Sourcing et qualification de consultants sur competences techniques et comportementales.
+      - Negociation, contractualisation et suivi long terme.
+      - Mise en place d'une strategie de suivi et de fidelisation client (Customer Success).
+    angle_fort: >
+      Profil directement transferable chez Randstad, Adecco, ManpowerGroup,
+      Hays, Page, Michael Page. Avoir vendu du placement de consultants a BNP
+      et ADP est exactement leur cible de recrutement.
+
+  - id: engie
+    employeur: ENGIE Solutions
+    intitule_cv_defaut: Sales Development Representative
+    intitule_linkedin: Sales Development Representative
+    lieu: Île-de-France
+    debut: 2019-09
+    fin: 2021-08
+    statut_reel: alternance (Cursus Master) - NON affiche
+    volume_prospection: 200 appels et 10 rendez-vous qualifies par semaine
+    bullets:
+      - Prospection telephonique pour les equipes commerciales.
+      - Qualification des leads entrants, mise a jour et attribution dans Salesforce.
+      - Creation de campagnes commerciales et marketing.
+      - Analyse des retombees commerciales et suivi des opportunites.
+    regle: >
+      L'intitule reste SDR quelle que soit l'annonce. Le LinkedIn l'affiche
+      ainsi ; le requalifier creerait un ecart detectable au croisement.
+
+# ------------------------------------------------------------
+# COMPETENCES
+# ------------------------------------------------------------
+competences:
+
+  socle_fixe:            # present sur TOUTES les versions, meme non demande
+    - Vente consultative B2B
+    - Negociation grands comptes
+    - Gestion de cycle de vente complexe
+    - Closing et contractualisation
+    - Gestion de comptes strategiques
+    - Developpement de portefeuille clients
+    - Fidelisation et ventes additionnelles
+    - Maitrise CRM (Salesforce, HubSpot)
+
+  differenciateurs:      # rares sur un CV commercial, a pousser des que pertinent
+    - Reponse aux appels d'offres
+    - Marches publics : BOAMP, PLACE, DCE
+    - Accords-cadres et contrats-cadres
+    - Referencement fournisseur grands comptes
+    - Interlocuteurs comite de direction, DRH, direction des achats
+    - Forecast et gestion de pipeline
+
+  transverse:
+    - Avant-vente
+    - Juridique
+    - Equipes techniques
+    - Marketing
+    - Produit
+    - Customer Success
+    - Account Management
+    - ADV
+
+  management:
+    experience: Encadrement d'alternant et de SDR
+    regle: >
+      A n'afficher que si l'annonce comporte une dimension management.
+      Ne jamais presenter comme du management d'equipe avec effectif.
+
+  visibilite:
+    - Salons professionnels (nombreux)
+    - Webinaires (quelques-uns)
+    - Evenements clients
+
+# ------------------------------------------------------------
+# METHODOLOGIES DE VENTE
+# ------------------------------------------------------------
+methodologies:
+  connues: [MEDDIC, MEDDPICC, BANT, SPIN, Challenger, Solution Selling]
+  regle_affichage: >
+    Afficher celle que l'annonce cite nommement. Les ATS matchent le sigle
+    litteralement. Ne pas empiler plus de deux methodo sur un meme CV :
+    une liste de six lit comme du remplissage.
+
+# ------------------------------------------------------------
+# OUTILS
+# ------------------------------------------------------------
+outils:
+
+  socle_fixe:            # toujours sur le CV, meme non demande
+    crm: [Salesforce, HubSpot, SAP]
+    prospection: [LinkedIn Sales Navigator, Cognism]
+    reporting: [Power BI, Tableau, Modjo]
+    productivite: [Microsoft 365, Notion, DocuSign]
+
+  reservoir:             # affichables des qu'une annonce les cite
+    crm: [Sellsy, Dynamics 365, Pipedrive, Zoho, monday CRM, Odoo]
+    enrichissement: [Lusha, ZoomInfo, Apollo, Kaspr, Dropcontact, Societe.com, Pappers, Pharow]
+    sequencage: [Lemlist, La Growth Machine, Outreach, Salesloft, Waalaxy, PhantomBuster]
+    conversation: [Gong, Chorus]
+    signature_propal: [Yousign, PandaDoc, Qwilr]
+    collaboration: [Teams, Zoom, Slack, Google Workspace, Miro, Trello, Jira, Asana]
+    automatisation: [Zapier, Make, n8n]
+    data: [Excel avance]
+
+  jamais:
+    description: >
+      Domaine metier technique non maitrise. Ne jamais ajouter au CV,
+      et traiter comme un MUR dans le scoring.
+    exemples: [CVC, electricite, reseaux d'eau, genie civil, normes sectorielles,
+               logiciels metier industriels, ERP metier specifique]
+
+# ------------------------------------------------------------
+# FORMATION ET LANGUES
+# ------------------------------------------------------------
+formation:
+  - diplome: Cursus Master Management Commercial
+    ecole: ISEFAC
+    annees: 2019-2021
+    intitule_rncp: TODO
+    niveau_rncp: TODO          # verifier si niveau 7 : filtre "Bac+5 reconnu"
+    contenu: Negociation grands comptes, strategie commerciale, pilotage d'equipe,
+             marketing strategique et digital, developpement international.
+  - diplome: Bachelor Management Commercial
+    ecole: ISEFAC
+    annees: 2018-2019
+  - diplome: BTS Negociation et Relation Client
+    ecole: Lycee Jean Lurcat
+    annees: 2016-2018
+
+certifications: aucune
+
+langues:
+  francais: langue maternelle
+  anglais:
+    affiche: professionnel
+    reel: >
+      Anglais professionnel, pas fluent. Echanges internes, reporting et
+      collaboration avec des equipes etrangeres : sans probleme.
+      Rendez-vous client, negociation ou poste 100 % anglophone : non.
+    score_officiel: aucun
+
+    # Critere a TROIS etats, pas binaire. Les annonces precisent rarement
+    # si l'anglais est client ou interne : rejeter sur l'ambiguite couterait
+    # trop d'offres correctes.
+    classification:
+      ok:
+        description: anglais interne uniquement, aucune penalite
+        signaux:
+          - 'anglais professionnel / anglais operationnel / anglais lu et ecrit'
+          - perimetre explicitement France ou Ile-de-France
+          - annonce redigee en francais decrivant des clients francais
+          - 'reporting en anglais'
+          - 'echanges avec les equipes internationales'
+          - siege etranger mais territoire commercial francais
+
+      mur:
+        description: anglais en clientele, eliminatoire
+        signaux:
+          - 'clientele internationale / comptes EMEA / international accounts'
+          - 'negociation en anglais / presentation client en anglais'
+          - titre contenant Global, International, EMEA, Worldwide
+          - 'anglais courant imperatif / bilingue anglais / fluent English required'
+          - perimetre commercial hors France
+          - annonce integralement en anglais ET territoire EMEA ou Global
+
+      a_verifier:
+        description: >
+          Ambigu. NE PAS rejeter. Scorer normalement et remonter l'offre
+          avec le drapeau visible : Mehdi tranche en trois secondes.
+        signaux:
+          - 'French and English speaking sans precision du perimetre'
+          - anglais mentionne sans contexte client ni interne
+          - annonce en anglais mais territoire France
+
+benevolat_associatif: aucun
+
+# ------------------------------------------------------------
+# REGLES D'ADAPTATION DU CV
+# ------------------------------------------------------------
+regles_adaptation:
+
+  format:
+    fichier_portail: .docx        # mieux parse par Workday, Taleo, SuccessFactors
+    fichier_direct: .pdf
+    pages: 2 (aucun impact ATS, la page 2 accueille les mots-cles de l'annonce)
+    structure: une colonne, sans photo, sans icone, sans tableau,
+               sans en-tete ni pied de page Word
+    police: Calibri, noir, aligne a gauche
+    metadonnees: auteur "Mehdi Koriche", jamais l'employeur actuel
+
+  variables_par_offre:
+    - titre en haut du CV
+    - accroche du profil
+    - ordre et formulation des bullets
+    - methodologie de vente affichee
+    - outils ajoutes depuis le reservoir
+    - vocabulaire repris litteralement de l'annonce
+
+  autorise:
+    - reformuler, reordonner, requalifier ce qui a ete reellement fait
+    - remonter une competence enterree
+    - reprendre le vocabulaire exact de l'annonce
+    - changer le vocabulaire de l'intitule a seniorite equivalente
+      (Account Executive / Ingenieur commercial / Ingenieur d'affaires /
+      Responsable de comptes = meme metier)
+
+  interdit:
+    - inventer une experience ou un outil jamais utilise
+    - modifier la seniorite d'un poste (Engie reste SDR)
+    - gonfler les durees (Comet = 15 mois, pas 2 ans)
+
+  boucle_apprentissage: >
+    Quand une annonce cite une competence ou un outil dont le niveau de Mehdi
+    n'est pas connu, poser la question avant d'ecrire. La reponse est ecrite
+    dans ce fichier de facon definitive. Au bout de 20-30 offres, les questions
+    se rarefient.
+
+# ------------------------------------------------------------
+# SCORING
+# ------------------------------------------------------------
+scoring:
+  principe: >
+    La note ne mesure pas "est-ce que Mehdi correspond" mais
+    "est-ce que Mehdi peut entrer, une fois le CV adapte".
+  notes_produites: [match_brut, match_atteignable]
+  drapeaux: [anglais_a_verifier, management_exige, seniorite_limite]
+  filtrage_sur: match_atteignable
+  seuil_declenchement: 55
+  seuil_notification_push: 80
+  grille:
+    couverture_directe: 35
+    couverture_atteignable: 30
+    compatibilite_seniorite: 20
+    fraicheur_annonce: 15
+  murs:
+    - nombre d'annees exige et verifiable
+    - diplome impose non detenu
+    - certification non detenue
+    - habilitation
+    - anglais en clientele
+    - domaine metier technique (voir outils.jamais)
+    - experience sectorielle reglementee (pharma GxP, conformite bancaire)
+  calibrage_attendu: >
+    Commercial grands comptes B2B est une famille tres publiee en IDF.
+    Prevoir 15 a 25 offres par jour au-dessus de 55. Remonter le seuil
+    apres les 50 premieres offres.
+
+# ------------------------------------------------------------
+# A COMPLETER
+# ------------------------------------------------------------
+todo:
+  bloquant_avant_lancement:
+    - creer l'adresse mail dediee
+    - creer le numero de telephone dedie
+    - aligner LinkedIn sur les dates Comet (10/2021 - 12/2022)
+  a_verifier:
+    - panier moyen reel Reality Academy (export CRM closed-won)
+    - panier moyen et cycle Comet
+    - intitule et niveau RNCP du Cursus Master ISEFAC
+  non_renseigne:
+    - variable percu les annees precedentes
+    - taux de transformation
+    - classement dans l'equipe
+    - nombre de deals closes par an
+    - raison du depart de Reality Academy
+
+# ------------------------------------------------------------
+# JOURNAL DE CALIBRATION
+# Chaque offre scoree manuellement et validee par Mehdi.
+# Sert de reference pour verifier qu'une modif du prompt ne casse rien.
+# ------------------------------------------------------------
+calibration:
+  - date: 2026-09-15
+    offre: SUEZ IWS - Ingenieur Commercial H/F - Villeparisis (77)
+    source: welcometothejungle.com
+    match_brut: 52
+    match_atteignable: 82
+    verdict_mehdi: valide
+    murs: aucun
+    apprentissages:
+      - >
+        "Connaissance du secteur serait un plus" et "idealement dans un
+        environnement industriel" ne sont PAS des murs. Un filtrage naif
+        aurait elimine cette offre a tort.
+      - >
+        Angle industriel cache dans le profil : ENGIE Solutions + Enedis +
+        Groupe ADP + SNCF + Keolis + Danone. A rejouer sur toute offre
+        industrie, energie, environnement, infrastructure ou transport.
+      - >
+        Reprendre la graphie exacte de l'annonce (BtoB et non B2B).
+        Les ATS matchent litteralement.
+      - >
+        Deplacements nombreux MAIS a l'interieur de l'IDF : pas redhibitoire.
+        Le critere ne vise que les deplacements hors IDF hebdomadaires.
+    couverture_mots_cles: 20/20

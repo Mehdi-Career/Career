@@ -1,0 +1,132 @@
+# Configuration du crawler.
+# Les valeurs viennent de reservoir-mehdi-koriche.yaml.
+# Modifier ici, pas dans le code.
+
+base_de_donnees: offres.db
+
+crawl:
+  pause_entre_requetes: 1.0      # secondes, politesse envers les ATS
+  timeout: 20
+  offres_max_par_entreprise: 200
+
+filtres:
+  anciennete_max_jours: 30
+
+  # Une offre doit matcher l'un de ces motifs dans son intitule.
+  # Insensible a la casse et aux accents.
+  intitules:
+    - account executive
+    - account manager
+    - account director
+    - client partner
+    - client director
+    - ingenieur commercial
+    - ingenieur d'affaires
+    - ingenieur technico-commercial
+    - charge d'affaires
+    - charge de clientele
+    - charge de developpement commercial
+    - responsable grands comptes
+    - responsable comptes cles
+    - responsable de comptes
+    - responsable de clientele
+    - responsable developpement commercial
+    - responsable partenariats
+    - responsable commercial
+    - directeur de clientele
+    - key account manager
+    - strategic account
+    - global account
+    - named account
+    - enterprise account
+    - business developer
+    - business development
+    - business manager
+    - sales executive
+    - sales specialist
+    - sales manager
+    - inside sales
+    - conseiller clientele entreprises
+    - attache commercial
+    - delegue commercial
+    - chef de secteur
+    - chef de marche
+    - commercial
+
+  # Rejet immediat si l'intitule contient l'un de ces termes
+  intitules_exclus:
+    - alternance
+    - alternant
+    - apprenti
+    - stage
+    - stagiaire
+    - intern
+    - vie
+    - v.i.e
+    - freelance
+    - independant
+    - auto-entrepreneur
+    - directeur commercial   # poste de direction, hors cible
+    - directrice commerciale
+    - vp sales
+    - head of sales
+    - sales director
+
+  # Zone geographique acceptee
+  lieux:
+    - paris
+    - ile-de-france
+    - ile de france
+    - idf
+    - hauts-de-seine
+    - seine-saint-denis
+    - val-de-marne
+    - seine-et-marne
+    - yvelines
+    - essonne
+    - val-d'oise
+    - "75"
+    - "77"
+    - "78"
+    - "91"
+    - "92"
+    - "93"
+    - "94"
+    - "95"
+    - la defense
+    - nanterre
+    - boulogne
+    - levallois
+    - issy-les-moulineaux
+    - montrouge
+    - saint-denis
+    - courbevoie
+    - puteaux
+    - massy
+    - velizy
+    - guyancourt
+    - cergy
+    - roissy
+    - rungis
+
+  # Types de contrat acceptes. Une offre sans mention explicite passe :
+  # beaucoup d'ATS ne renseignent pas le champ, et rejeter serait trop couteux.
+  contrats:
+    - cdi
+    - permanent
+    - full time
+    - temps plein
+    - indefinite
+
+  contrats_exclus:
+    - cdd
+    - interim
+    - temporary
+    - fixed term
+    - contract
+    - internship
+    - apprenticeship
+
+scoring:
+  seuil: 55            # en dessous, l'offre est archivee sans etre montree
+  seuil_push: 80       # objet du mail marque [PUSH]
