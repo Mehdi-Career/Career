@@ -16,6 +16,7 @@ des ATS en devinant l'identifiant a partir du nom de l'entreprise.
 
 import csv
 import re
+import socket
 import sys
 import unicodedata
 from collections import Counter
@@ -144,32 +145,133 @@ def sonde_ashby(s):
     return None
 
 
+# ==================================================================
+# ATS a "host devinable" : Workday, Taleo, Avature, iCIMS, Cornerstone
+#
+# Methode : on verifie D'ABORD que le nom de domaine existe (resolution
+# DNS, ~1 ms, aucune requete HTTP). 95 % des combinaisons sont eliminees
+# instantanement. On ne teste les points d'entree que sur les hotes reels.
+#
+# L'erreur de la v2 etait de taper la RACINE du domaine : Workday y
+# renvoie souvent un 404 alors que le tenant existe bel et bien.
+# ==================================================================
+
+_DNS_CACHE = {}
+
+
+def hote_existe(hote):
+    """Resolution DNS seule. Tres rapide, et definitive."""
+    if hote in _DNS_CACHE:
+        return _DNS_CACHE[hote]
+    try:
+        socket.setdefaulttimeout(3)
+        socket.gethostbyname(hote)
+        ok = True
+    except (socket.gaierror, socket.timeout, OSError):
+        ok = False
+    _DNS_CACHE[hote] = ok
+    return ok
+
+
+def _post(url, corps):
+    try:
+        h = dict(HEADERS)
+        h['Content-Type'] = 'application/json'
+        r = requests.post(url, headers=h, json=corps, timeout=TIMEOUT)
+        if r.status_code >= 400:
+            return None
+        return r.json()
+    except (requests.RequestException, ValueError):
+        return None
+
+
+# ATTENTION : *.myworkdayjobs.com utilise un DNS GENERIQUE.
+# N'importe quel nom resout, y compris 'zzqxwvbogus123'. Le filtre DNS
+# ne sert donc a rien ici, il faut interroger le point d'entree CXS.
+# On limite le nombre de combinaisons pour rester sous le radar d'Akamai.
+WD_POD = ('wd3', 'wd5', 'wd1')
+
+
+def sites_workday(t):
+    """
+    Noms de site carrieres, verifies sur des cas reels :
+      sanofi.wd3      -> SanofiCareers
+      eiffage.wd3     -> Eiffage_Careers
+      pernodricard.wd3-> pernod-ricard
+      nvidia.wd5      -> NVIDIAExternalCareerSite
+    Liste volontairement courte : 3 pods x 8 sites x 2 identifiants = 48
+    requetes maximum par entreprise, ce qui reste supportable.
+    """
+    T = t.capitalize()
+    return [
+        'External', 'Careers',
+        f'{T}Careers', f'{T}_Careers',
+        'ExternalCareerSite', f'{T}ExternalCareerSite',
+        t, f'{T}_External',
+    ]
+
+
 def sonde_workday(s):
-    """
-    Workday : on tape la racine du tenant. S'il existe, Workday redirige
-    vers son site carrieres par defaut, et l'URL finale porte le nom du site.
-    """
-    for wd in ('wd3', 'wd1', 'wd5', 'wd103', 'wd2'):
-        r = _get(f'https://{s}.{wd}.myworkdayjobs.com/')
-        if not r:
-            continue
-        m = re.search(
-            r'https?://([a-z0-9\-]+)\.' + wd +
-            r'\.myworkdayjobs\.com/(?:[a-z]{2}-[A-Z]{2}/)?([^/?#]+)',
-            r.url, re.I)
-        if m:
-            return 'workday', m.group(1).lower(), r.url
+    for pod in WD_POD:
+        base = f'https://{s}.{pod}.myworkdayjobs.com'
+        for site in sites_workday(s):
+            d = _post(f'{base}/wday/cxs/{s}/{site}/jobs',
+                      {'appliedFacets': {}, 'limit': 20,
+                       'offset': 0, 'searchText': ''})
+            if d and d.get('jobPostings'):
+                return 'workday', s, f'{base}/{site}'
+    return None
+
+
+def sonde_taleo(s):
+    hote = f'{s}.taleo.net'
+    if not hote_existe(hote):
+        return None
+    for chemin in ('/careersection/2/moresearch.ftl',
+                   '/careersection/ex/moresearch.ftl',
+                   '/careersection/1/moresearch.ftl',
+                   '/careersection/'):
+        r = _get(f'https://{hote}{chemin}')
+        if r and 'careersection' in r.url.lower():
+            return 'taleo', s, r.url
+    return None
+
+
+def sonde_avature(s):
+    hote = f'{s}.avature.net'
+    if not hote_existe(hote):
+        return None
+    for chemin in ('/careers', '/fr_FR/careers', '/jobs', '/'):
+        r = _get(f'https://{hote}{chemin}')
+        if r:
+            return 'avature', s, r.url
+    return None
+
+
+def sonde_cornerstone(s):
+    hote = f'{s}.csod.com'
+    if not hote_existe(hote):
+        return None
+    r = _get(f'https://{hote}/ux/ats/careersite/1/home?c={s}')
+    if r:
+        return 'cornerstone', s, r.url
     return None
 
 
 def sonde_icims(s):
-    r = _get(f'https://careers-{s}.icims.com/jobs/search')
-    if r and 'icims' in r.url.lower():
-        return 'icims', s, r.url
+    for hote in (f'careers-{s}.icims.com', f'{s}.icims.com',
+                 f'jobs-{s}.icims.com'):
+        if not hote_existe(hote):
+            continue
+        r = _get(f'https://{hote}/jobs/search?ss=1')
+        if r and 'icims' in r.url.lower():
+            return 'icims', s, r.url
     return None
 
 
 def sonde_teamtailor(s):
+    if not hote_existe(f'{s}.teamtailor.com'):
+        return None
     r = _get(f'https://{s}.teamtailor.com/jobs')
     if r and 'teamtailor' in r.url.lower():
         return 'teamtailor', s, r.url
@@ -179,6 +281,10 @@ def sonde_teamtailor(s):
 def sonde_recruitee(s):
     r = _get(f'https://{s}.recruitee.com/api/offers/', True)
     if not r:
+        return None
+    # Un sous-domaine inexistant redirige vers recruitee.com : verifier
+    # qu'on est bien reste sur le sous-domaine demande.
+    if f'{s}.recruitee.com' not in r.url.lower():
         return None
     if r.json().get('offers'):
         return 'recruitee', s, f'https://{s}.recruitee.com'
@@ -190,7 +296,9 @@ def sonde_workable(s):
     if not r:
         return None
     d = r.json()
-    if d.get('jobs') or d.get('name'):
+    # Un compte Workable peut exister sans aucune offre (cas Randstad).
+    # Exiger de vraies offres, sinon c'est un faux positif.
+    if d.get('jobs'):
         return 'workable', s, f'https://apply.workable.com/{s}'
     return None
 
@@ -202,7 +310,10 @@ SONDES = [
     sonde_greenhouse,
     sonde_lever,
     sonde_ashby,
+    sonde_taleo,
+    sonde_avature,
     sonde_icims,
+    sonde_cornerstone,
     sonde_teamtailor,
     sonde_recruitee,
     sonde_workable,
@@ -231,7 +342,29 @@ def sauver(rows):
         w.writerows(rows)
 
 
+def test_une(nom):
+    """python -u detect_ats.py --test Sanofi"""
+    print(f'Test sur : {nom}\n')
+    for sl in slugs(nom):
+        print(f'  identifiant "{sl}"')
+        for sonde in SONDES:
+            try:
+                res = sonde(sl)
+            except Exception as e:
+                print(f'    {sonde.__name__:24s} erreur {type(e).__name__}')
+                continue
+            etat = f'TROUVE  {res}' if res else '-'
+            print(f'    {sonde.__name__:24s} {etat}')
+            if res:
+                return 0
+    print('\nRien trouve.')
+    return 1
+
+
 def main():
+    if len(sys.argv) > 2 and sys.argv[1] == '--test':
+        return test_une(' '.join(sys.argv[2:]))
+
     with open(CSV, encoding='utf-8') as f:
         rows = list(csv.DictReader(f))
 
