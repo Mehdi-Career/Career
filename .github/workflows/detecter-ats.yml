@@ -1,0 +1,44 @@
+name: Detecter les ATS
+
+# A lancer depuis l'onglet Actions, bouton "Run workflow".
+# Aucune ligne de commande a taper.
+# Remplit url_carrieres, ats et ats_tenant dans entreprises-cibles.csv,
+# puis commit le fichier automatiquement.
+#
+# A relancer tous les 6 mois : les groupes changent d'ATS.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  detecter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - run: pip install requests beautifulsoup4
+
+      - name: Detection
+        run: python detect_ats.py
+
+      - name: Commit du CSV mis a jour
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet entreprises-cibles.csv; then
+            echo "Aucun changement."
+          else
+            git add entreprises-cibles.csv
+            git commit -m "Detection ATS $(date +%d/%m/%Y)"
+            git push
+          fi
