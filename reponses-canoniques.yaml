@@ -1,0 +1,149 @@
+# ============================================================
+# REPONSES CANONIQUES
+# Les 30 questions que posent tous les portails de candidature.
+# Le systeme pioche ici pour prerempir les formulaires.
+# Version 1.0 - 15/09/2026
+# ============================================================
+
+identite:
+  civilite: Monsieur
+  prenom: Mehdi
+  nom: Koriche
+  annee_naissance: 1997
+  nationalite: Francaise
+  autorisation_travail_france: Oui, sans restriction
+  rqth: Non
+  genre_champ_diversite: Homme
+
+coordonnees:
+  email: koriche.mehdi.career@gmail.com
+  telephone: "06 35 50 02 95"
+  adresse: 5 rue de la Fontaine
+  code_postal: "94350"
+  ville: Villiers-sur-Marne
+  pays: France
+  region: Île-de-France
+  linkedin: https://www.linkedin.com/in/mehdi-koriche-14673015a
+  permis: Permis B depuis 10 ans
+  vehicule: Vehicule personnel disponible
+
+remuneration:
+  pretentions_affichees: 45 000 - 55 000 EUR
+  pretentions_nature: fixe brut annuel
+  pretentions_texte: >
+    45 000 a 55 000 EUR de fixe brut annuel, selon le perimetre du poste
+    et la structure du variable.
+  salaire_actuel_si_exige: 47 000 EUR de fixe, plus variable
+  plancher_absolu_fixe: 43000
+  note_strategie: >
+    Le plancher affiche (45 k) est legerement sous le fixe actuel (47 k).
+    Risque assume par Mehdi : un recruteur negocie sur le bas de fourchette.
+    A relever si les premiers retours confirment ce biais.
+
+disponibilite:
+  situation_actuelle: En poste
+  preavis: 2 mois
+  preavis_negociable: a confirmer
+  disponibilite_affichee: Sous 2 mois
+  date_disponibilite_texte: >
+    Disponible sous deux mois, delai de preavis contractuel.
+
+mobilite:
+  zone: Île-de-France uniquement
+  deplacements_acceptes:
+    - Terrain quotidien en Île-de-France
+    - Quelques jours par mois en province
+    - Deplacements internationaux ponctuels
+  deplacements_refuses:
+    - Deplacements hors Île-de-France sur base hebdomadaire
+  note_international: >
+    Les deplacements internationaux ponctuels (seminaires, salons, sieges)
+    sont acceptes. Cela NE remet PAS en cause le critere anglais :
+    une clientele anglophone a negocier reste un mur.
+  teletravail_minimum: 1 jour
+  teletravail_souhaite: 2 a 3 jours
+  teletravail_zero: redhibitoire
+
+motivation:
+  phrase_resume: >
+    Sept ans de developpement commercial grands comptes, avec un objectif
+    annuel depasse trois annees consecutives, sur des cycles longs jusqu'au
+    comite de direction.
+
+  ce_que_je_cherche:
+    - Des comptes plus gros et des cycles plus structures
+    - La solidite et les moyens d'un grand groupe
+    - Un vrai parcours d'evolution interne
+    - Un secteur qui a du sens
+
+  motif_depart: >
+    Je souhaite evoluer vers des comptes plus strategiques dans une structure
+    de plus grande envergure, avec les moyens et le parcours d'evolution
+    qui vont avec.
+  motif_depart_statut: >
+    Reponse neutre generee a partir de "ce que je cherche". Mehdi n'a pas
+    souhaite formuler sa propre version. A remplacer quand il le voudra.
+
+administratif:
+  deja_candidate_dans_ce_groupe: Non
+  deja_candidate_exceptions:
+    - ENGIE et ses filiales (alternance 2019-2021, dossier existant chez eux)
+  proches_dans_entreprise: Non
+  conservation_donnees: J'accepte
+  references_professionnelles: Disponibles sur demande
+  source_candidature: Site carrieres de l'entreprise
+  casier_judiciaire: Neant
+  service_militaire: Non concerne
+  lien_familial_avec_salarie: Non
+
+questions_ouvertes_frequentes:
+
+  pourquoi_cette_entreprise: >
+    A generer par offre. S'appuyer sur le champ angle_de_candidature
+    produit par le scorer.
+
+  pourquoi_ce_poste: >
+    A generer par offre.
+
+  vos_points_forts: >
+    Cycles de vente longs et multi-interlocuteurs jusqu'au comite de
+    direction, constance sur l'atteinte des objectifs (120 %, 112 %, 104 %
+    sur trois postes consecutifs), et maitrise des marches publics et du
+    referencement fournisseur chez les grands comptes.
+
+  votre_plus_grande_reussite: >
+    A rediger par Mehdi. En attendant, s'appuyer sur les 120 % d'atteinte
+    chez Reality Academy sur des cycles de 6 a 12 mois aupres de DRH de
+    Danone, Keolis et SNCF.
+
+  vos_axes_de_progression: >
+    A rediger par Mehdi.
+
+  ou_vous_voyez_vous_dans_5_ans: >
+    A rediger par Mehdi.
+
+# ------------------------------------------------------------
+# REGLES DE REMPLISSAGE
+# ------------------------------------------------------------
+regles:
+  champ_inconnu: >
+    Si un champ du portail n'a pas de correspondance ici, ne pas inventer.
+    Le signaler dans le mail de notification pour que Mehdi reponde,
+    et enrichir ce fichier avec sa reponse.
+
+  champ_facultatif_sensible: >
+    Genre, origine, situation familiale, RQTH : repondre seulement si le
+    champ est obligatoire.
+
+  coherence: >
+    Toute reponse doit rester coherente avec le CV, le reservoir et le
+    profil LinkedIn. Les recruteurs croisent systematiquement les sources.
+
+# ------------------------------------------------------------
+# A COMPLETER
+# ------------------------------------------------------------
+todo:
+  - Version personnelle du motif de depart
+  - Plus grande reussite, axes de progression, projection a 5 ans
+  - Confirmer si le preavis de 2 mois est negociable
+  - Numero de telephone dedie (le numero personnel est utilise pour l'instant)
