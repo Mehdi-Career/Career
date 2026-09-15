@@ -1,0 +1,25 @@
+name: Tester la detection
+
+# Verifier la detection sur UNE entreprise avant de lancer les 355.
+# Actions -> Tester la detection -> Run workflow -> saisir le nom.
+
+on:
+  workflow_dispatch:
+    inputs:
+      entreprise:
+        description: "Nom de l'entreprise a tester"
+        required: true
+        default: 'Sanofi'
+
+jobs:
+  tester:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Test
+        run: python -u detect_ats.py --test "${{ inputs.entreprise }}"
