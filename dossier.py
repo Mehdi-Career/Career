@@ -188,7 +188,7 @@ def assembler(res, offre, dossier):
         'contact': [
             'Villiers-sur-Marne, 94350',
             'Téléphone : 06 35 50 02 95',
-            'Email : koriche.mehdi@gmail.com',
+            'Email : koriche.mehdi.career@gmail.com',
             'LinkedIn : linkedin.com/in/mehdi-koriche-14673015a',
             'Permis B - Véhicule personnel',
         ],
