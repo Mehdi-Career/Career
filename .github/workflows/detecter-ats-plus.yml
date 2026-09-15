@@ -1,0 +1,55 @@
+name: Detection elargie
+
+# Deuxieme passe sur les entreprises restees "inconnu".
+# Workday complet, SuccessFactors, Taleo elargi, et surtout les
+# portails maison (SNCF, RATP, La Poste, EDF, ADP...).
+#
+# Long : 2 a 4 h. Sauvegarde toutes les 5 entreprises, donc relançable
+# sans rien reperdre si le job est interrompu.
+
+on:
+  workflow_dispatch:
+    inputs:
+      priorite:
+        description: "Limiter a une priorite (1, 2, 3) ou vide pour tout"
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  detecter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350          # GitHub coupe a 360
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - run: pip install requests
+
+      - name: Detection elargie
+        run: |
+          if [ -n "${{ inputs.priorite }}" ]; then
+            python -u detect_ats_plus.py --priorite "${{ inputs.priorite }}"
+          else
+            python -u detect_ats_plus.py
+          fi
+
+      - name: Commit du CSV
+        if: always()              # commit meme si le job a ete interrompu
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet entreprises-cibles.csv; then
+            echo "Aucun changement."
+          else
+            git add entreprises-cibles.csv
+            git commit -m "Detection elargie $(date +%d/%m/%Y\ %H:%M)"
+            git pull --rebase --autostash || true
+            git push
+          fi
