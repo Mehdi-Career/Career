@@ -11,9 +11,9 @@ identite:
   code_postal: "94350"
   region: Île-de-France
   telephone_perso: "06 35 50 02 95"
-  telephone_candidature: TODO          # numero dedie a creer (en poste)
+  telephone_candidature: "06 35 50 02 95"   # numero perso, pas de ligne dediee
   email_perso: koriche.mehdi@gmail.com
-  email_candidature: TODO              # adresse dediee a creer (en poste)
+  email_candidature: koriche.mehdi.career@gmail.com
   linkedin: linkedin.com/in/mehdi-koriche-14673015a
   permis_vehicule: Permis B depuis 10 ans, vehicule personnel disponible
 
@@ -471,7 +471,6 @@ scoring:
 # ------------------------------------------------------------
 todo:
   bloquant_avant_lancement:
-    - creer l'adresse mail dediee
     - creer le numero de telephone dedie
     - aligner LinkedIn sur les dates Comet (10/2021 - 12/2022)
   a_verifier:
