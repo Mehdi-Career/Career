@@ -1,0 +1,31 @@
+# Base de donnees : elle vit dans le cache GitHub, jamais dans le repo public
+offres.db
+offres.db-journal
+*.sqlite
+*.sqlite3
+
+# Dossiers de candidature generes (CV adaptes, lettres)
+dossiers/
+
+# Secrets en local - ne JAMAIS commiter
+.env
+*.key
+credentials.json
+service-account*.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Systeme
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editeurs
+.vscode/
+.idea/
+*.swp
