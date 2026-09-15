@@ -100,28 +100,46 @@ def _get(url, json_attendu=False):
 
 def sonde_greenhouse(s):
     r = _get(f'https://boards-api.greenhouse.io/v1/boards/{s}/jobs', True)
-    if r and isinstance(r.json().get('jobs'), list):
+    if not r:
+        return None
+    jobs = r.json().get('jobs')
+    if isinstance(jobs, list) and jobs:
         return 'greenhouse', s, f'https://job-boards.greenhouse.io/{s}'
     return None
 
 
 def sonde_lever(s):
     r = _get(f'https://api.lever.co/v0/postings/{s}?mode=json', True)
-    if r and isinstance(r.json(), list):
+    if not r:
+        return None
+    d = r.json()
+    if isinstance(d, list) and d:
         return 'lever', s, f'https://jobs.lever.co/{s}'
     return None
 
 
 def sonde_smartrecruiters(s):
-    r = _get(f'https://api.smartrecruiters.com/v1/companies/{s}/postings?limit=1', True)
-    if r and 'content' in r.json():
+    """
+    ATTENTION : cette API renvoie 200 avec {"totalFound": 0, "content": []}
+    pour une societe INEXISTANTE. Tester la presence de 'content' ne suffit
+    pas, il faut exiger de vraies offres. C'est ce qui avait fait matcher
+    355 entreprises sur 355 en v2.
+    """
+    r = _get(f'https://api.smartrecruiters.com/v1/companies/{s}/postings?limit=5', True)
+    if not r:
+        return None
+    d = r.json()
+    if d.get('totalFound', 0) > 0 and d.get('content'):
         return 'smartrecruiters', s, f'https://jobs.smartrecruiters.com/{s}'
     return None
 
 
 def sonde_ashby(s):
     r = _get(f'https://api.ashbyhq.com/posting-api/job-board/{s}', True)
-    if r and 'jobs' in r.json():
+    if not r:
+        return None
+    d = r.json()
+    if isinstance(d.get('jobs'), list) and d['jobs']:
         return 'ashby', s, f'https://jobs.ashbyhq.com/{s}'
     return None
 
@@ -160,14 +178,19 @@ def sonde_teamtailor(s):
 
 def sonde_recruitee(s):
     r = _get(f'https://{s}.recruitee.com/api/offers/', True)
-    if r and 'offers' in r.json():
+    if not r:
+        return None
+    if r.json().get('offers'):
         return 'recruitee', s, f'https://{s}.recruitee.com'
     return None
 
 
 def sonde_workable(s):
     r = _get(f'https://apply.workable.com/api/v1/widget/accounts/{s}', True)
-    if r:
+    if not r:
+        return None
+    d = r.json()
+    if d.get('jobs') or d.get('name'):
         return 'workable', s, f'https://apply.workable.com/{s}'
     return None
 
@@ -242,10 +265,22 @@ def main():
     sauver(rows)
 
     print('\n--- Repartition ---', flush=True)
-    for ats, n in Counter(r['ats'] for r in rows).most_common():
+    compte = Counter(r['ats'] for r in rows)
+    for ats, n in compte.most_common():
         print(f'  {n:4d}  {ats}')
     trouves = sum(1 for r in rows if r['ats'] != 'inconnu')
     print(f'\n{trouves}/{len(rows)} entreprises exploitables')
+
+    # Garde-fou : un seul ATS ultra-dominant = faux positif quasi certain.
+    # Aucun ATS ne depasse 35 % du marche francais des grands groupes.
+    for ats, n in compte.most_common(1):
+        if ats != 'inconnu' and n > 0.6 * len(rows):
+            print(f'\n{"!"*60}')
+            print(f'ALERTE : {ats} represente {100*n//len(rows)} % des resultats.')
+            print('C\'est un FAUX POSITIF. Une API repond 200 pour des')
+            print('societes inexistantes. Ne pas utiliser ce CSV.')
+            print('!'*60)
+            return 1
     return 0
 
 
