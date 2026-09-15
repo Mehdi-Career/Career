@@ -1,0 +1,36 @@
+name: Nettoyer le CSV
+
+# Remet a zero les detections d'un ATS defaillant.
+# Actions -> Nettoyer le CSV -> Run workflow -> saisir l'ATS.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ats:
+        description: "ATS a remettre a zero (ex: successfactors)"
+        required: true
+        default: 'successfactors'
+
+permissions:
+  contents: write
+
+jobs:
+  nettoyer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -u nettoyer_csv.py ${{ inputs.ats }}
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet entreprises-cibles.csv; then
+            echo "Aucun changement."
+          else
+            git add entreprises-cibles.csv
+            git commit -m "Nettoyage ${{ inputs.ats }}"
+            git push
+          fi
