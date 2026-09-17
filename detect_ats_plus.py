@@ -58,7 +58,9 @@ SIGNATURES = [
     ('successfactors', r'performancemanager\d*\.successfactors\.(?:eu|com)[^"\']*?company=([A-Za-z0-9]+)'),
     ('successfactors', r'[?&]company=([A-Za-z0-9]{3,})'),
     ('successfactors', r'(?:([a-z0-9\-]+)\.)?jobs\.sap\.com'),
-    ('successfactors', r'(successfactors)\.(?:eu|com)'),
+    # NE JAMAIS capturer le nom de domaine comme tenant : c'est ce qui a
+    # produit des tenants litteralement nommes "successfactors".
+    ('successfactors', r'successfactors\.(?:eu|com)'),
     ('taleo',          r'([a-z0-9\-]+)\.taleo\.net'),
     ('taleo',          r'(taleo)\.net'),
     ('avature',        r'([a-z0-9\-]+)\.avature\.net'),
@@ -83,14 +85,36 @@ SIGNATURES = [
 ]
 
 
+# Un tenant ne doit jamais etre un sous-domaine generique ni le nom de
+# la plateforme elle-meme. C'est ce qui avait produit des tenants
+# "www", "app", "tt", "careers", "successfactors".
+TENANTS_INTERDITS = {
+    'www', 'app', 'tt', 'careers', 'career', 'jobs', 'job', 'emploi',
+    'emplois', 'carrieres', 'carriere', 'recrutement', 'talent', 'talents',
+    'work', 'hr', 'rh', 'successfactors', 'taleo', 'avature', 'workday',
+    'csod', 'icims', 'greenhouse', 'lever', 'ashby', 'embed', 'api',
+    'static', 'cdn', 'assets', 'media', 'fr', 'en', 'com', 'net', 'org',
+}
+
+
+def tenant_valide(t):
+    if not t or len(t) < 3:
+        return False
+    return t.lower() not in TENANTS_INTERDITS
+
+
 def chercher_signature(texte):
     for ats, motif in SIGNATURES:
         m = re.search(motif, texte or '', re.I)
-        if m:
-            # Un groupe optionnel non capture renvoie None : on prend
-            # le premier groupe reellement rempli, sinon chaine vide.
-            t = next((g for g in m.groups() if g), '') if m.groups() else ''
-            return ats, t.lower()
+        if not m:
+            continue
+        # Un groupe optionnel non capture renvoie None : on prend
+        # le premier groupe reellement rempli, sinon chaine vide.
+        t = next((g for g in m.groups() if g), '') if m.groups() else ''
+        t = (t or '').lower()
+        if t and not tenant_valide(t):
+            t = ''          # plateforme reconnue, tenant a retrouver ailleurs
+        return ats, t
     return None, ''
 
 
@@ -346,6 +370,32 @@ LIENS_CARRIERE = re.compile(
     re.I)
 
 
+EXTRACTEURS_TENANT = [
+    ('successfactors', r'[?&]company=([A-Za-z0-9_\-]{3,})'),
+    ('workday',        r'([a-z0-9\-]{3,})\.wd\d+\.myworkdayjobs\.com'),
+    ('taleo',          r'https?://([a-z0-9\-]{3,})\.taleo\.net'),
+    ('avature',        r'https?://([a-z0-9\-]{3,})\.avature\.net'),
+    ('cornerstone',    r'https?://([a-z0-9\-]{3,})\.csod\.com'),
+    ('icims',          r'https?://([a-z0-9\-]{3,})\.icims\.com'),
+    ('talentsoft',     r'https?://([a-z0-9\-]{3,})\.(?:talentsoft|talent-soft)\.com'),
+    ('teamtailor',     r'https?://([a-z0-9\-]{3,})\.teamtailor\.com'),
+    ('smartrecruiters', r'smartrecruiters\.com/([A-Za-z0-9\-]{3,})'),
+]
+
+
+def extraire_tenant(ats, *textes):
+    """Cherche le vrai tenant dans l'URL puis dans le HTML."""
+    for a, motif in EXTRACTEURS_TENANT:
+        if a != ats:
+            continue
+        for txt in textes:
+            for m in re.finditer(motif, txt or '', re.I):
+                t = m.group(1).lower()
+                if tenant_valide(t):
+                    return t
+    return ''
+
+
 def sonde_portail_maison(nom, sl):
     """
     Part du domaine officiel, teste les sous-domaines et chemins carrieres,
@@ -392,17 +442,22 @@ def sonde_portail_maison(nom, sl):
             vus.add(lien)
 
             ats, tenant = chercher_signature(lien)
-            if ats:
-                return ats, (tenant or sl), lien
+            if ats and tenant:
+                return ats, tenant, lien
 
             r2 = _get(lien)
             if not r2:
                 continue
+            corps2 = r2.text[:400000]
+            if PAGES_ERREUR.search(corps2):
+                continue
             ats, tenant = chercher_signature(r2.url)
             if not ats:
-                ats, tenant = chercher_signature(r2.text[:400000])
+                ats, tenant = chercher_signature(corps2)
             if ats:
-                return ats, (tenant or sl), r2.url
+                t = tenant or extraire_tenant(ats, r2.url, corps2)
+                if t:
+                    return ats, t, r2.url
 
         time.sleep(PAUSE)
     return None
