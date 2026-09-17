@@ -154,13 +154,80 @@ def apis(html):
     return sorted(out)[:40]
 
 
+LIENS_CARRIERE = re.compile(
+    r'carri[eè]re|recrutement|nous[\s-]*rejoindre|rejoign|offres?[\s-]*d.emploi|'
+    r'\bemplois?\b|\bjobs?\b|career|talent|postuler|candidat|work[\s-]*with',
+    re.I)
+
+
+def _score_page(html):
+    """
+    Une page carrieres contient des mots-cles de recrutement.
+    Sert a choisir la meilleure candidate plutot qu'a rejeter.
+    """
+    if not html:
+        return 0
+    h = html[:400000]
+    n = 0
+    for mot in ('offre', 'emploi', 'poste', 'recrut', 'candidat', 'career',
+                'job', 'postuler', 'cdi', 'stage', 'alternance'):
+        n += min(h.lower().count(mot), 30)
+    return n
+
+
 def trouver_page_carrieres(dom):
-    """Renvoie (reponse, url) de la page carrieres, ou (None, '')."""
+    """
+    Renvoie (reponse, url) de la page carrieres.
+    Trois strategies, de la plus directe a la plus humaine :
+      1. sous-domaines classiques (jobs., carrieres., emploi....)
+      2. chemins classiques sur le site principal
+      3. ON PART DE LA PAGE D'ACCUEIL et on suit le lien "Carrieres",
+         exactement comme le ferait un humain. C'est ce qui manquait.
+    """
+    meilleures = []
+
+    # 1 et 2 : URL devinees
     essais = [f'https://{s}.{dom}' for s in SOUS_DOMAINES]
-    essais += [f'https://www.{dom}{c}' for c in CHEMINS]
+    essais += [f'https://www.{dom}{c}' for c in CHEMINS if c]
     for url in essais:
         r = _get(url)
-        if r and len(r.text) > 2000:
+        if r and len(r.text) > 500:
+            sc = _score_page(r.text)
+            if sc >= 40:
+                return r, r.url        # franchement une page carrieres
+            meilleures.append((sc, r))
+
+    # 3 : depuis la page d'accueil, suivre le lien carrieres
+    for racine in (f'https://www.{dom}', f'https://{dom}'):
+        acc = _get(racine)
+        if not acc:
+            continue
+        vus = set()
+        for m in re.finditer(r'<a[^>]+href=["\']([^"\']{2,300})["\'][^>]*>(.{0,150}?)</a>',
+                             acc.text[:MAX_HTML], re.I | re.S):
+            href, texte = m.group(1), re.sub(r'<[^>]+>', ' ', m.group(2))
+            if not (LIENS_CARRIERE.search(texte) or LIENS_CARRIERE.search(href)):
+                continue
+            lien = urljoin(acc.url, href)
+            if lien in vus or len(vus) > 12:
+                continue
+            vus.add(lien)
+            r = _get(lien)
+            if not r or len(r.text) < 500:
+                continue
+            sc = _score_page(r.text)
+            if sc >= 40:
+                return r, r.url
+            meilleures.append((sc, r))
+        if meilleures:
+            break
+
+    # Rien de franc : on garde la moins mauvaise, le code source
+    # reste exploitable pour y lire une signature de plateforme.
+    if meilleures:
+        meilleures.sort(key=lambda x: x[0], reverse=True)
+        sc, r = meilleures[0]
+        if sc > 0:
             return r, r.url
     return None, ''
 
@@ -174,7 +241,7 @@ def trouver_offre(r_liste):
         if urlparse(lien).netloc != urlparse(r_liste.url).netloc:
             continue
         r = _get(lien)
-        if r and len(r.text) > 2000:
+        if r and len(r.text) > 500:
             return r, r.url
     return None, ''
 
@@ -190,8 +257,14 @@ def auditer(nom):
     try:
         r_liste, u_liste = trouver_page_carrieres(dom)
         if not r_liste:
-            res['erreur'] = 'page carrieres introuvable'
-            return res
+            # Repli : on garde au moins la page d'accueil, la signature
+            # de la plateforme y figure parfois.
+            r_liste = _get(f'https://www.{dom}') or _get(f'https://{dom}')
+            if not r_liste:
+                res['erreur'] = 'site injoignable'
+                return res
+            res['erreur'] = 'page carrieres non identifiee, accueil analyse'
+            u_liste = r_liste.url
         res['url_liste'] = u_liste
         html = r_liste.text[:MAX_HTML]
 
@@ -226,6 +299,8 @@ def main():
     cibles = rows
     if '--inconnues' in args:
         cibles = [r for r in rows if r.get('ats') in ('', 'inconnu')]
+    if '--n' in args:
+        cibles = cibles[:int(args[args.index('--n') + 1])]
 
     os.makedirs(DOSSIER, exist_ok=True)
     print(f'{len(cibles)} entreprises a auditer, {PARALLELISME} en parallele')
