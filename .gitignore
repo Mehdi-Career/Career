@@ -29,3 +29,6 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# Le rapport d'audit DOIT etre commite : c'est ce que Claude lit
+!audit/
