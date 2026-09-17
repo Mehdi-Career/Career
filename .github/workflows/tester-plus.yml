@@ -1,0 +1,30 @@
+name: Tester detection elargie
+
+# Verifier la detection sur UNE entreprise avant de lancer les 3 h.
+# Actions -> Tester detection elargie -> Run workflow -> saisir le nom.
+#
+# Cas utiles a tester :
+#   ENGIE   -> attendu : successfactors avec un vrai tenant (pas "successfactors")
+#   PayFit  -> attendu : teamtailor avec "payfit" (pas "www")
+#   SNCF    -> cas dur, portail maison
+
+on:
+  workflow_dispatch:
+    inputs:
+      entreprise:
+        description: "Entreprise a tester"
+        required: true
+        default: 'ENGIE'
+
+jobs:
+  tester:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Test
+        run: python -u detect_ats_plus.py --test "${{ inputs.entreprise }}"
