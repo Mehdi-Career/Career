@@ -385,6 +385,16 @@ def main():
     if '--n' in args:
         cibles = cibles[:int(args[args.index('--n') + 1])]
 
+    # Diagnostic automatique : 30 secondes, toujours execute.
+    # Evite de decouvrir apres 4 h que rien ne repondait.
+    print('=' * 64)
+    print('DIAGNOSTIC AUTOMATIQUE (30 s) - quelle methode d acces passe ?')
+    print('=' * 64, flush=True)
+    diagnostic(['PageGroup France', 'Hays France', 'SUEZ', 'Danone'])
+    print('\n' + '=' * 64)
+    print('Si tout est en erreur ci-dessus, COUPE et envoie ces lignes.')
+    print('=' * 64 + '\n', flush=True)
+
     os.makedirs(DOSSIER, exist_ok=True)
     print(f'{len(cibles)} entreprises a auditer, {PARALLELISME} en parallele')
     print('Le code source complet est conserve dans audit/html/\n', flush=True)
