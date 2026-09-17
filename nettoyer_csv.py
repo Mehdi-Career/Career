@@ -6,26 +6,42 @@ nettoyer_csv.py
 Remet a zero les detections d'un ATS donne, quand une sonde s'est revelee
 defaillante. Les autres lignes ne sont pas touchees.
 
-  python -u nettoyer_csv.py successfactors
-  python -u nettoyer_csv.py successfactors workable recruitee
-  python -u nettoyer_csv.py --tout        # tout remettre a zero
+  python -u nettoyer_csv.py successfactors        # par ATS
+  python -u nettoyer_csv.py --tenants-pourris      # tenants generiques
+  python -u nettoyer_csv.py --tout                 # tout remettre a zero
 """
 import csv, sys
 from collections import Counter
 
 CSV = 'entreprises-cibles.csv'
 
+# Un tenant qui vaut ca n'est pas un identifiant d'entreprise : c'est un
+# sous-domaine generique ou le nom de la plateforme. Ces lignes sont
+# inutilisables par le crawler et doivent etre retraitees.
+POURRIS = {
+    'www', 'app', 'tt', 'careers', 'career', 'jobs', 'job', 'emploi',
+    'emplois', 'carrieres', 'carriere', 'recrutement', 'talent', 'talents',
+    'work', 'hr', 'rh', 'successfactors', 'taleo', 'avature', 'workday',
+    'csod', 'icims', 'greenhouse', 'lever', 'ashby', 'embed', 'api',
+    'static', 'cdn', 'assets', 'media', 'fr', 'en', 'com', 'net', 'org',
+}
+
+
 def main():
     cibles = [a.lower() for a in sys.argv[1:]]
     if not cibles:
-        print('Precise au moins un ATS a nettoyer, ou --tout')
+        print('Precise un ATS, ou --tenants-pourris, ou --tout')
         return 1
 
     rows = list(csv.DictReader(open(CSV, encoding='utf-8')))
     avant = Counter(r['ats'] for r in rows)
     n = 0
     for r in rows:
-        if '--tout' in cibles or (r.get('ats') or '').lower() in cibles:
+        t = (r.get('ats_tenant') or '').strip().lower()
+        pourri = ('--tenants-pourris' in cibles
+                  and r.get('ats') not in ('', 'inconnu')
+                  and (not t or len(t) < 3 or t in POURRIS))
+        if pourri or '--tout' in cibles or (r.get('ats') or '').lower() in cibles:
             r['ats'] = ''
             r['ats_tenant'] = ''
             r['url_carrieres'] = ''
