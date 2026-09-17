@@ -247,10 +247,68 @@ def _html_generique(url, ats, selecteurs, max_offres=200):
     return out
 
 
+
 def successfactors(tenant, url_carrieres, max_offres=200):
-    return _html_generique(url_carrieres, 'successfactors',
-                           ['a.jobTitle', 'a[href*="/job/"]',
-                            '.jobTitle a', 'td.jobTitle a'], max_offres)
+    """
+    Point d'entree universel de la plateforme carrieres SuccessFactors (RMK).
+    Tout site carrieres SF expose cette API sur son PROPRE domaine :
+
+        POST https://jobs.engie.com/services/recruiting/v1/jobs
+
+    C'est la meme API que celle utilisee par leur barre de recherche.
+    Propre, paginee, et sans aucune protection anti-bot.
+    """
+    base = (url_carrieres or '').rstrip('/')
+    if not base.startswith('http'):
+        return []
+    # Ne garder que le schema + le domaine
+    base = '/'.join(base.split('/')[:3])
+
+    out, page = [], 0
+    while len(out) < max_offres and page < 20:
+        try:
+            h = dict(HEADERS)
+            h['Content-Type'] = 'application/json'
+            r = requests.post(f'{base}/services/recruiting/v1/jobs', headers=h,
+                              timeout=TIMEOUT,
+                              json={'locale': 'fr_FR', 'pageNumber': page,
+                                    'sortBy': '', 'keywords': '', 'location': '',
+                                    'facetFilters': {}, 'brand': '', 'skills': [],
+                                    'categoryId': 0, 'alertId': '',
+                                    'rcmCandidateId': ''})
+            if r.status_code >= 400:
+                break
+            d = r.json()
+        except (requests.RequestException, ValueError):
+            break
+
+        lot = d.get('jobs') or d.get('data') or []
+        if not lot:
+            break
+
+        for j in lot:
+            jid = str(j.get('jobId') or j.get('id') or '')
+            lieu = j.get('location') or j.get('city') or ''
+            if isinstance(lieu, dict):
+                lieu = lieu.get('name', '')
+            out.append(Offre(
+                titre=j.get('title') or j.get('jobTitle') or '',
+                url=j.get('jobUrl') or j.get('applyUrl') or f'{base}/job/{jid}',
+                lieu=str(lieu),
+                contrat=str(j.get('employmentType') or j.get('jobType') or ''),
+                date_publication=str(j.get('postedDate') or j.get('startDate') or ''),
+                description=_texte(j.get('jobDescription') or j.get('description') or ''),
+                ats='successfactors',
+                id_externe=jid,
+            ))
+
+        total = d.get('totalJobs')
+        if total is not None and len(out) >= int(total):
+            break
+        page += 1
+        time.sleep(0.4)
+
+    return out[:max_offres]
 
 
 def taleo(tenant, url_carrieres, max_offres=200):
@@ -298,4 +356,5 @@ CONNECTEURS = {
     'talentsoft': talentsoft,
 }
 
-FIABLES = {'workday', 'greenhouse', 'lever', 'smartrecruiters', 'ashby'}
+FIABLES = {'workday', 'greenhouse', 'lever', 'smartrecruiters', 'ashby',
+           'successfactors'}   # API RMK sur le domaine du site carrieres
