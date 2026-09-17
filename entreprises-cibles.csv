@@ -49,16 +49,16 @@ Derichebourg,Energie & Environnement,1,,inconnu,,non,0,oui
 Paprec,Energie & Environnement,1,,inconnu,,non,0,oui
 Seche Environnement,Energie & Environnement,1,https://jobs.groupe-seche.com/fr/jobs,icims,www,non,0,oui
 EDF,Energie & Environnement,1,,inconnu,,non,0,oui
-ENGIE,Energie & Environnement,1,https://jobs.engie.com/,successfactors,successfactors,non,0,oui
-ENGIE Solutions,Energie & Environnement,1,https://jobs.engie.com/search/?q=&locationsearch=&searchResultView=LIST/&locale=fr_FR,successfactors,successfactors,non,0,oui
+ENGIE,Energie & Environnement,1,,,,non,0,oui
+ENGIE Solutions,Energie & Environnement,1,,,,non,0,oui
 Dalkia,Energie & Environnement,1,,inconnu,,non,0,oui
 TotalEnergies,Energie & Environnement,1,https://jobs.totalenergies.com/en_US/careers,avature,totalenergies,non,0,oui
 Enedis,Energie & Environnement,1,https://www.enedis.fr:443/hub-carriere,talentsoft,enedis-recrute,non,0,oui
 GRDF,Energie & Environnement,1,,inconnu,,non,0,oui
 RTE,Energie & Environnement,1,,inconnu,,non,0,oui
 Air Liquide,Energie & Environnement,1,https://airliquide.csod.com/error.aspx,cornerstone,airliquide,non,0,oui
-Arkema,Energie & Environnement,1,https://jobs.arkema.com/?locale=fr_FR,successfactors,arkema,non,0,oui
-Solvay France,Energie & Environnement,1,https://careers.solvay.com/,successfactors,successfactors,non,0,oui
+Arkema,Energie & Environnement,1,,,,non,0,oui
+Solvay France,Energie & Environnement,1,,,,non,0,oui
 Orano,Energie & Environnement,1,https://jobs.orano.group/en_US/jobs,avature,orano,non,0,oui
 Framatome,Energie & Environnement,1,https://www.framatome.com/fr/,talentsoft,framatome-career,non,0,oui
 CEA,Energie & Environnement,1,,inconnu,,non,0,oui
@@ -67,7 +67,7 @@ Nexans,Energie & Environnement,1,https://nexans.csod.com/error.aspx,cornerstone,
 Schneider Electric,Energie & Environnement,1,https://schneider-electric.csod.com/error.aspx,cornerstone,schneider-electric,non,0,oui
 Legrand,Energie & Environnement,1,,inconnu,,non,0,oui
 Rexel,Energie & Environnement,1,,inconnu,,non,0,oui
-Sonepar,Energie & Environnement,1,https://career.sonepar.com/,successfactors,sonepar,non,0,oui
+Sonepar,Energie & Environnement,1,,,,non,0,oui
 Vinci Energies,Energie & Environnement,1,,inconnu,,non,0,oui
 SNCF,Transport & Logistique,1,,inconnu,,non,0,oui
 RATP,Transport & Logistique,1,,inconnu,,non,0,oui
@@ -78,16 +78,16 @@ DHL France,Transport & Logistique,1,,inconnu,,non,0,oui
 FedEx France,Transport & Logistique,1,,inconnu,,non,0,oui
 UPS France,Transport & Logistique,1,,inconnu,,non,0,oui
 DB Schenker France,Transport & Logistique,1,,inconnu,,non,0,oui
-Kuehne+Nagel France,Transport & Logistique,1,https://careers.kuehne-nagel.com/,successfactors,successfactors,non,0,oui
-DSV France,Transport & Logistique,1,https://jobs.dsv.com/,successfactors,dsvas,non,0,oui
+Kuehne+Nagel France,Transport & Logistique,1,,,,non,0,oui
+DSV France,Transport & Logistique,1,,,,non,0,oui
 Bollore Logistics,Transport & Logistique,1,,inconnu,,non,0,oui
-XPO Logistics France,Transport & Logistique,1,https://jobs.xpo.com/,successfactors,xpoenterprp,non,0,oui
+XPO Logistics France,Transport & Logistique,1,,,,non,0,oui
 STEF,Transport & Logistique,1,,inconnu,,non,0,oui
-Dachser France,Transport & Logistique,1,https://careers.dachser.com/dachser_europe/?locale=fr_FR,successfactors,successfactors,non,0,oui
+Dachser France,Transport & Logistique,1,,,,non,0,oui
 Air France-KLM,Transport & Logistique,1,,inconnu,,non,0,oui
 Groupe ADP,Transport & Logistique,1,,inconnu,,non,0,oui
 Getlink,Transport & Logistique,1,https://getlink.recruitee.com,recruitee,getlink,non,0,oui
-CMA CGM,Transport & Logistique,1,https://jobs.cmacgm-group.com/,successfactors,successfactors,non,0,oui
+CMA CGM,Transport & Logistique,1,,,,non,0,oui
 BNP Paribas,Banque,2,https://bwelcome.hr.bnpparibas/,avature,bnpparibas,non,0,oui
 Societe Generale,Banque,2,https://socgen.taleo.net/careersection/2/moresearch.ftl,taleo,socgen,non,0,oui
 Credit Agricole,Banque,2,,inconnu,,non,0,oui
@@ -109,7 +109,7 @@ Oddo BHF,Banque,2,,inconnu,,non,0,oui
 Edmond de Rothschild France,Banque,2,,inconnu,,non,0,oui
 AXA France,Assurance & Protection sociale,2,https://match.axa.fr/,avature,axafrance,non,0,oui
 Allianz France,Assurance & Protection sociale,2,,inconnu,,non,0,oui
-Generali France,Assurance & Protection sociale,2,https://carrieres.generali.fr/,successfactors,successfactors,non,0,oui
+Generali France,Assurance & Protection sociale,2,,,,non,0,oui
 CNP Assurances,Assurance & Protection sociale,2,https://www.cnp.fr/le-groupe-cnp-assurances/candidats,talentsoft,cnp-recrute,non,0,oui
 Groupama,Assurance & Protection sociale,2,,inconnu,,non,0,oui
 MAIF,Assurance & Protection sociale,2,,inconnu,,non,0,oui
@@ -132,25 +132,25 @@ Harmonie Mutuelle,Assurance & Protection sociale,2,,inconnu,,non,0,oui
 Mutuelle Generale,Assurance & Protection sociale,2,https://www.lamutuellegenerale.fr/,workday,lmg,non,0,oui
 Orange,Telecom & IT,2,https://orange.csod.com/error.aspx,cornerstone,orange,non,0,oui
 Orange Business,Telecom & IT,2,,inconnu,,non,0,oui
-Bouygues Telecom,Telecom & IT,2,https://careers.bouyguestelecom.fr/,successfactors,successfactors,non,0,oui
+Bouygues Telecom,Telecom & IT,2,,,,non,0,oui
 SFR,Telecom & IT,2,,inconnu,,non,0,oui
 Altice France,Telecom & IT,2,,inconnu,,non,0,oui
 Iliad,Telecom & IT,2,https://iliad.teamtailor.com/jobs,teamtailor,iliad,non,0,oui
 Free Pro,Telecom & IT,2,,inconnu,,non,0,oui
-Worldline,Telecom & IT,2,https://jobs.worldline.com/,successfactors,worldline,non,0,oui
-Ingenico,Telecom & IT,2,https://jobs.ingenico.com/,successfactors,ingenicobu,non,0,oui
+Worldline,Telecom & IT,2,,,,non,0,oui
+Ingenico,Telecom & IT,2,,,,non,0,oui
 Edenred,Telecom & IT,2,https://edenred.csod.com/error.aspx,cornerstone,edenred,non,0,oui
 Sage France,Telecom & IT,2,https://sage.csod.com/error.aspx,cornerstone,sage,non,0,oui
 Cegedim,Telecom & IT,2,,inconnu,,non,0,oui
 Dassault Systemes,Telecom & IT,2,,inconnu,,non,0,oui
 Murex,Telecom & IT,2,https://murex.wd3.myworkdayjobs.com/MurexCareerPage1,workday,murex,non,0,oui
 Amadeus France,Telecom & IT,2,https://amadeus.com/en/careers/overview,workday,amadeus,non,0,oui
-OVHcloud,Telecom & IT,2,https://careers.ovhcloud.com/en-ie/,successfactors,ovh,non,0,oui
+OVHcloud,Telecom & IT,2,,,,non,0,oui
 Scaleway,Telecom & IT,2,https://jobs.lever.co/scaleway,lever,scaleway,non,0,oui
 Microsoft France,Telecom & IT,2,,inconnu,,non,0,oui
 IBM France,Telecom & IT,2,https://www.ibm.com/careers/blog/once-an-ibmer-always-an-ibmer,avature,ibmglobal,non,0,oui
 Oracle France,Telecom & IT,2,https://oracle.avature.net/,avature,oracle,non,0,oui
-SAP France,Telecom & IT,2,https://jobs.sap.com/,successfactors,sapfrance,non,0,oui
+SAP France,Telecom & IT,2,,,,non,0,oui
 Salesforce France,Telecom & IT,2,https://salesforce.wd12.myworkdayjobs.com/External_Career_Site,workday,salesforce,non,0,oui
 Dell Technologies France,Telecom & IT,2,,inconnu,,non,0,oui
 HP France,Telecom & IT,2,https://hp.wd5.myworkdayjobs.com/ExternalCareerSite,workday,hp,non,0,oui
@@ -181,7 +181,7 @@ Lyreco France,Services aux entreprises,2,https://lyreco.wd3.myworkdayjobs.com/Ly
 RAJA,Services aux entreprises,2,,inconnu,,non,0,oui
 Bruneau,Services aux entreprises,2,,inconnu,,non,0,oui
 Vinci,Immobilier & Construction,2,https://jobs.ashbyhq.com/vinci,ashby,vinci,non,0,oui
-Bouygues Construction,Immobilier & Construction,2,https://careers.bouygues-construction.com/?locale=fr_FR,successfactors,bouyguescop,non,0,oui
+Bouygues Construction,Immobilier & Construction,2,,,,non,0,oui
 Bouygues Immobilier,Immobilier & Construction,2,,inconnu,,non,0,oui
 Eiffage,Immobilier & Construction,2,https://eiffage.wd3.myworkdayjobs.com/Eiffage_Careers,workday,eiffage,non,0,oui
 Colas,Immobilier & Construction,2,,inconnu,,non,0,oui
@@ -220,12 +220,12 @@ Plastic Omnium,Industrie,3,,inconnu,,non,0,oui
 Alstom,Industrie,3,,inconnu,,non,0,oui
 Wabtec France,Industrie,3,https://jobs.smartrecruiters.com/wabtec,smartrecruiters,wabtec,non,0,oui
 Imerys,Industrie,3,https://imerys.wd3.myworkdayjobs.com/imerys-careers,workday,imerys,non,0,oui
-Eramet,Industrie,3,https://jobs.eramet.com/,successfactors,successfactors,non,0,oui
-Vallourec,Industrie,3,https://www.vallourec.com/talent-room/join-us/,successfactors,vallourec,non,0,oui
+Eramet,Industrie,3,,,,non,0,oui
+Vallourec,Industrie,3,,,,non,0,oui
 Tarkett,Industrie,3,https://tarkett.wd3.myworkdayjobs.com/Tarkett_Careers,workday,tarkett,non,0,oui
 Somfy,Industrie,3,,inconnu,,non,0,oui
 SEB,Industrie,3,https://groupeseb.taleo.net/careersection/2/moresearch.ftl,taleo,groupeseb,non,0,oui
-Bic,Industrie,3,https://careers.bic.com/,successfactors,societebic,non,0,oui
+Bic,Industrie,3,,,,non,0,oui
 Essilorluxottica,Industrie,3,https://jobs.smartrecruiters.com/essilorluxottica,smartrecruiters,essilorluxottica,non,0,oui
 STMicroelectronics,Industrie,3,,inconnu,,non,0,oui
 Soitec,Industrie,3,https://www.soitec.com/home/people,icims,careers-soitec,non,0,oui
@@ -234,7 +234,7 @@ Servier,Sante & Pharma,3,https://servier.csod.com/error.aspx,cornerstone,servier
 Ipsen,Sante & Pharma,3,https://ipsen.csod.com/error.aspx,cornerstone,ipsen,non,0,oui
 Pierre Fabre,Sante & Pharma,3,https://pierre-fabre.csod.com/error.aspx,cornerstone,pierre-fabre,non,0,oui
 Biogaran,Sante & Pharma,3,https://jobs.smartrecruiters.com/biogaran,smartrecruiters,biogaran,non,0,oui
-Boehringer Ingelheim France,Sante & Pharma,3,https://jobs.boehringer-ingelheim.com/,successfactors,successfactors,non,0,oui
+Boehringer Ingelheim France,Sante & Pharma,3,,,,non,0,oui
 Novartis France,Sante & Pharma,3,https://novartis.wd3.myworkdayjobs.com/Novartis_Careers,workday,novartis,non,0,oui
 Roche France,Sante & Pharma,3,https://roche.csod.com/error.aspx,cornerstone,roche,non,0,oui
 Pfizer France,Sante & Pharma,3,https://pfizer.wd1.myworkdayjobs.com/PfizerCareers,workday,pfizer,non,0,oui
@@ -263,7 +263,7 @@ Les Mousquetaires,Retail & Grande conso,3,,inconnu,,non,0,oui
 Casino,Retail & Grande conso,3,,inconnu,,non,0,oui
 Monoprix,Retail & Grande conso,3,,inconnu,,non,0,oui
 Systeme U,Retail & Grande conso,3,https://systemeu.csod.com/error.aspx,cornerstone,systemeu,non,0,oui
-Lidl France,Retail & Grande conso,3,https://emplois.lidl.fr/,successfactors,lidlstiftup2,non,0,oui
+Lidl France,Retail & Grande conso,3,,,,non,0,oui
 Metro France,Retail & Grande conso,3,https://metro.csod.com/error.aspx,cornerstone,metro,non,0,oui
 Promocash,Retail & Grande conso,3,,inconnu,,non,0,oui
 Danone,Retail & Grande conso,3,https://danone.csod.com/error.aspx,cornerstone,danone,non,0,oui
@@ -273,11 +273,11 @@ Mondelez France,Retail & Grande conso,3,,inconnu,,non,0,oui
 PepsiCo France,Retail & Grande conso,3,,inconnu,,non,0,oui
 Coca-Cola Europacific France,Retail & Grande conso,3,,inconnu,,non,0,oui
 Mars France,Retail & Grande conso,3,https://mars.wd3.myworkdayjobs.com/External,workday,mars,non,0,oui
-Ferrero France,Retail & Grande conso,3,https://www.ferrerocareers.com/fr/fr/,successfactors,ferreroint,non,0,oui
-Lactalis,Retail & Grande conso,3,https://jobs.lactalisexperience.fr/,successfactors,groupelact,non,0,oui
-Bel,Retail & Grande conso,3,https://jobs.groupe-bel.com/,successfactors,successfactors,non,0,oui
+Ferrero France,Retail & Grande conso,3,,,,non,0,oui
+Lactalis,Retail & Grande conso,3,,,,non,0,oui
+Bel,Retail & Grande conso,3,,,,non,0,oui
 Savencia,Retail & Grande conso,3,,inconnu,,non,0,oui
-Bonduelle,Retail & Grande conso,3,https://jobs.bonduelle.com/,successfactors,successfactors,non,0,oui
+Bonduelle,Retail & Grande conso,3,,,,non,0,oui
 Heineken France,Retail & Grande conso,3,https://heineken.avature.net/,avature,heineken,non,0,oui
 Pernod Ricard,Retail & Grande conso,3,https://www.pernod-ricard.com/en,workday,pernodricard,non,0,oui
 Remy Cointreau,Retail & Grande conso,3,https://remycointreau.csod.com/ux/ats/careersite/1/home?c=remycointreau,cornerstone,remycointreau,non,0,oui
@@ -285,7 +285,7 @@ L'Oreal,Retail & Grande conso,3,,inconnu,,non,0,oui
 Beiersdorf France,Retail & Grande conso,3,,inconnu,,non,0,oui
 Henkel France,Retail & Grande conso,3,https://henkel.avature.net/,avature,henkel,non,0,oui
 Procter & Gamble France,Retail & Grande conso,3,,inconnu,,non,0,oui
-Reckitt France,Retail & Grande conso,3,https://careers.reckitt.com/,successfactors,reckittb01,non,0,oui
+Reckitt France,Retail & Grande conso,3,,,,non,0,oui
 Yves Rocher,Retail & Grande conso,3,,inconnu,,non,0,oui
 Clarins,Retail & Grande conso,3,,inconnu,,non,0,oui
 Kering,Retail & Grande conso,3,https://www.kering.com/fr/talent/offres-d-emploi/,workday,kering,non,0,oui
@@ -293,7 +293,7 @@ LVMH,Retail & Grande conso,3,https://jobs.smartrecruiters.com/lvmh,smartrecruite
 Hermes,Retail & Grande conso,3,,inconnu,,non,0,oui
 Decathlon,Retail & Grande conso,3,https://recrutement.decathlon.fr/a-linternational/,lever,decathlon,non,0,oui
 Fnac Darty,Retail & Grande conso,3,,inconnu,,non,0,oui
-Leroy Merlin,Retail & Grande conso,3,https://recrutement.leroymerlin.fr/connect,successfactors,leroymerlin,non,0,oui
+Leroy Merlin,Retail & Grande conso,3,,,,non,0,oui
 Castorama,Retail & Grande conso,3,,inconnu,,non,0,oui
 Boulanger,Retail & Grande conso,3,https://jobs.smartrecruiters.com/boulanger,smartrecruiters,boulanger,non,0,oui
 But,Retail & Grande conso,3,,inconnu,,non,0,oui
@@ -301,7 +301,7 @@ Conforama,Retail & Grande conso,3,https://jobs.smartrecruiters.com/conforama,sma
 Maisons du Monde,Retail & Grande conso,3,https://maisonsdumonde.csod.com/error.aspx,cornerstone,maisonsdumonde,non,0,oui
 Sephora,Retail & Grande conso,3,,inconnu,,non,0,oui
 Veepee,Retail & Grande conso,3,https://jobs.lever.co/veepee,lever,veepee,non,0,oui
-Cdiscount,Retail & Grande conso,3,https://emploi.cdiscount.com/,successfactors,successfactors,non,0,oui
+Cdiscount,Retail & Grande conso,3,,,,non,0,oui
 Criteo,Tech & Scale-up,3,https://careers.criteo.com/en/,workday,criteo,non,0,oui
 Doctolib,Tech & Scale-up,3,https://job-boards.greenhouse.io/doctolib,greenhouse,doctolib,non,0,oui
 BlaBlaCar,Tech & Scale-up,3,https://jobs.lever.co/blablacar,lever,blablacar,non,0,oui
@@ -326,9 +326,9 @@ Publicis Groupe,Medias & Communication,3,,inconnu,,non,0,oui
 Havas,Medias & Communication,3,,inconnu,,non,0,oui
 JCDecaux,Medias & Communication,3,https://job-boards.greenhouse.io/jcdecaux,greenhouse,jcdecaux,non,0,oui
 Lagardere,Medias & Communication,3,https://careers.lagardere.com/,teamtailor,lagardere,non,0,oui
-TF1,Medias & Communication,3,https://carrieres.groupe-tf1.fr/,successfactors,successfactors,non,0,oui
+TF1,Medias & Communication,3,,,,non,0,oui
 M6,Medias & Communication,3,,inconnu,,non,0,oui
-France Televisions,Medias & Communication,3,https://recrutement.francetelevisions.fr/,successfactors,francetele,non,0,oui
+France Televisions,Medias & Communication,3,,,,non,0,oui
 Radio France,Medias & Communication,3,https://www.radiofrance.com/nous-rejoindre,talentsoft,radiofrance-recrute,non,0,oui
 Canal+,Medias & Communication,3,,inconnu,,non,0,oui
 Prisma Media,Medias & Communication,3,https://emploi.prismamedia.com/,teamtailor,prismamedia-demo,non,0,oui
