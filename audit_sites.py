@@ -117,15 +117,94 @@ LIENS_OFFRE = re.compile(
     r'nos-offres|jobdetail|JobDetail|requisition)[^"\']*\d[^"\']*))["\']', re.I)
 
 
-def _get(url):
-    try:
-        r = requests.get(url, headers=HEADERS, timeout=TIMEOUT,
-                         allow_redirects=True)
+# En-tetes d'un vrai navigateur. Les gros sites institutionnels
+# repondent 403 a une requete qui ne ressemble pas a Chrome.
+HEADERS_COMPLETS = {
+    'User-Agent': UA,
+    'Accept': ('text/html,application/xhtml+xml,application/xml;q=0.9,'
+               'image/avif,image/webp,image/apng,*/*;q=0.8'),
+    'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'sec-ch-ua': '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1',
+    'Cache-Control': 'max-age=0',
+    'Connection': 'keep-alive',
+}
+
+_SESSION = requests.Session()
+_SESSION.headers.update(HEADERS_COMPLETS)
+
+# Journal des echecs : c'est ce qui permet de diagnostiquer au lieu de deviner
+ECHECS = Counter()
+
+
+def _get(url, garder_erreurs=True):
+    """
+    Renvoie la reponse meme en 403 ou 404 : une page d'erreur contient
+    parfois la signature de la plateforme, et surtout ca nous dit
+    POURQUOI ca echoue au lieu de renvoyer None en silence.
+    """
+    for essai in range(2):
+        try:
+            r = _SESSION.get(url, timeout=TIMEOUT, allow_redirects=True,
+                             verify=(essai == 0))
+        except requests.exceptions.SSLError:
+            ECHECS['ssl'] += 1
+            continue
+        except requests.exceptions.Timeout:
+            ECHECS['timeout'] += 1
+            return None
+        except requests.exceptions.TooManyRedirects:
+            ECHECS['redirections'] += 1
+            return None
+        except requests.exceptions.ConnectionError:
+            ECHECS['connexion'] += 1
+            return None
+        except requests.RequestException as e:
+            ECHECS[type(e).__name__] += 1
+            return None
+
         if r.status_code >= 400:
+            ECHECS[f'http_{r.status_code}'] += 1
+            # 403 et 404 gardent souvent du contenu exploitable
+            if garder_erreurs and r.status_code in (403, 404, 406, 429) \
+               and len(r.text) > 500:
+                return r
             return None
         return r
-    except requests.RequestException:
-        return None
+    return None
+
+
+def diagnostic(noms):
+    """
+    python -u audit_sites.py --diag
+    Teste plusieurs approches sur quelques entreprises et dit
+    laquelle passe. Un seul run donne la reponse.
+    """
+    approches = [
+        ('simple UA seul', {'User-Agent': UA}),
+        ('navigateur complet', HEADERS_COMPLETS),
+        ('sans en-tete', {}),
+    ]
+    for nom in noms:
+        dom = domaine(nom)
+        print(f'\n=== {nom}  ({dom}) ===')
+        for url in (f'https://www.{dom}', f'https://{dom}'):
+            for libelle, h in approches:
+                try:
+                    r = requests.get(url, headers=h, timeout=TIMEOUT,
+                                     allow_redirects=True)
+                    print(f'  {libelle:22s} {url:38s} -> {r.status_code} '
+                          f'({len(r.text)} car.)  final={r.url[:60]}')
+                except Exception as e:
+                    print(f'  {libelle:22s} {url:38s} -> {type(e).__name__}')
+    return 0
 
 
 def signatures(html, url=''):
@@ -289,6 +368,10 @@ def auditer(nom):
 def main():
     args = sys.argv[1:]
 
+    if '--diag' in args:
+        return diagnostic(['PageGroup France', 'Hays France', 'SUEZ',
+                           'Danone', 'SNCF'])
+
     if '--test' in args:
         nom = ' '.join(args[args.index('--test') + 1:])
         r = auditer(nom)
@@ -321,6 +404,10 @@ def main():
             time.sleep(0.1)
 
     ecrire(resultats)
+    if ECHECS:
+        print('\n--- Pourquoi ca a echoue ---')
+        for k, n in ECHECS.most_common(15):
+            print(f'  {n:5d}  {k}')
     return 0
 
 
