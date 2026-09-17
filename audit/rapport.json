@@ -1,0 +1,485 @@
+[
+ {
+  "nom": "PageGroup France",
+  "domaine": "pagegroup.com",
+  "url_liste": "",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": "page carrieres introuvable"
+ },
+ {
+  "nom": "Hays France",
+  "domaine": "hays.fr",
+  "url_liste": "https://www.hays.fr/home",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [
+   "https://maps.googleapis.com/maps/api/js?key=AIzaSyD1-T3o86CRvLdYfcsrkjunDS_Npw5wE2Q"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "ManpowerGroup France",
+  "domaine": "manpower.fr",
+  "url_liste": "",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": "page carrieres introuvable"
+ },
+ {
+  "nom": "Synergie",
+  "domaine": "synergie.fr",
+  "url_liste": "https://www.synergie.fr/nous-rejoindre",
+  "url_offre": "https://www.synergie.fr/trouver-un-emploi/assistant-administratif-f-h-orvault-44700/offre-673-429",
+  "plateformes": {},
+  "apis": [
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-01%2FLogo-synergie.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-02%2FLabel_egalite_AFNOR_Synergie.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-02%2Fminiature_navigation.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-03%2Flogo_handi_c_est_oui.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-03%2Fmission_insertion.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-05%2Flogo_groupe_synergie.svg\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-11%2Fhandi_accueillant.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2025-12%2Fmeilleurs_employeurs_logo_2026_synergie.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2026-01%2Fleader_in_diversity_financial_time_2026.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2026-02%2Flogo-ecovadis.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2026-06%2Ffinancial_time_meilleur_employeur_2026.png\\",
+   "/api/getFile?url=%2Fsites%2Fdefault%2Ffiles%2F2026-06%2Flabel_best_managed_compagnies.png\\"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "Gi Group France",
+  "domaine": "gigroup.fr",
+  "url_liste": "https://fr.gigroup.com",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Proman",
+  "domaine": "proman-emploi.fr",
+  "url_liste": "https://www.proman-emploi.fr/offres",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Crit Group",
+  "domaine": "groupe-crit.com",
+  "url_liste": "https://recrute.groupe-crit.com/",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Robert Half France",
+  "domaine": "roberthalf.fr",
+  "url_liste": "https://www.roberthalf.com/fr/fr/recrutement",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [
+   "/graphql/execute.json/roberthalf/headerMenuItems"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "Kelly Services France",
+  "domaine": "kellyservices.fr",
+  "url_liste": "",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": "page carrieres introuvable"
+ },
+ {
+  "nom": "Fed Group",
+  "domaine": "fedgroup.fr",
+  "url_liste": "",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": "page carrieres introuvable"
+ },
+ {
+  "nom": "Expectra",
+  "domaine": "expectra.fr",
+  "url_liste": "https://www.randstadprofessional.fr/nos-offres",
+  "url_offre": "https://www.randstadprofessional.fr/emploi/cdi/id=6/",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Adecco France",
+  "domaine": "adecco.fr",
+  "url_liste": "https://www.adecco.com/fr-fr",
+  "url_offre": "",
+  "plateformes": {
+   "nextjs": [
+    ""
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Randstad France",
+  "domaine": "randstad.fr",
+  "url_liste": "https://www.randstad.fr/toutes-nos-solutions-rh/",
+  "url_offre": "https://www.randstad.fr/emploi/qn-42111008/",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Robert Walters France",
+  "domaine": "robertwalters.fr",
+  "url_liste": "https://carrieres.robertwalters.fr/",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Michael Page France",
+  "domaine": "michaelpage.fr",
+  "url_liste": "https://www.michaelpage.fr/recrutement",
+  "url_offre": "https://www.michaelpage.fr/jobs/finance-comptabilit%C3%A9",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Cegid",
+  "domaine": "cegid.com",
+  "url_liste": "https://jobs.cegid.com/fr",
+  "url_offre": "https://jobs.cegid.com/_nuxt/jobAdsListing-K3K6i2jT.js",
+  "plateformes": {
+   "cegid": [
+    "jobs",
+    "u002Fwww",
+    "www"
+   ],
+   "digitalrecruiters": [
+    ""
+   ],
+   "nuxt": [
+    ""
+   ]
+  },
+  "apis": [
+   "https://vue-select.org/api/props.html#getoptionlabel"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "ADP France",
+  "domaine": "adp.fr",
+  "url_liste": "https://www.parisaeroport.fr/nos-offres",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Actual Group",
+  "domaine": "groupeactual.eu",
+  "url_liste": "https://www.groupeactual.eu/offre-emploi-formation",
+  "url_offre": "https://www.groupeactual.eu/offre-emploi/formation-facteur-et-agent-de-tri-fh-st-cyr-sur-mer-RE1198626A390848",
+  "plateformes": {},
+  "apis": [
+   "https://maps.googleapis.com/maps/api/js?key=AIzaSyDkp94HhnfMYLSzZLWf6pE6f_W4QMxGHyY&callback=initMap&language=fr",
+   "https://maps.googleapis.com/maps/api/js?key=AIzaSyDkp94HhnfMYLSzZLWf6pE6f_W4QMxGHyY&libraries=places&callback=initAutocomplete"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "Walters People",
+  "domaine": "walterspeople.fr",
+  "url_liste": "",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": "page carrieres introuvable"
+ },
+ {
+  "nom": "Workday France",
+  "domaine": "workday.com",
+  "url_liste": "https://www.workday.com/en-us/company/careers/overview.html",
+  "url_offre": "",
+  "plateformes": {
+   "workday": [
+    "workday"
+   ]
+  },
+  "apis": [
+   "https://www.workday.com/en-us/services/community.html",
+   "https://www.workday.com/en-us/services/deployment.html",
+   "https://www.workday.com/en-us/services/overview.html",
+   "https://www.workday.com/en-us/services/success-plans.html",
+   "https://www.workday.com/en-us/services/support.html",
+   "https://www.workday.com/en-us/services/training-certifications.html"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "Silae",
+  "domaine": "silae.fr",
+  "url_liste": "https://www.silae.fr",
+  "url_offre": "",
+  "plateformes": {
+   "teamtailor": [
+    "silae-career"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "PayFit",
+  "domaine": "payfit.com",
+  "url_liste": "https://careers.payfit.com/",
+  "url_offre": "https://careers.payfit.com/jobs/7749950-senior-sales-sdr-barcelona-english-speaker",
+  "plateformes": {
+   "teamtailor": [
+    "www"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Cornerstone OnDemand France",
+  "domaine": "cornerstoneondemand.fr",
+  "url_liste": "https://www.cornerstoneondemand.com/",
+  "url_offre": "",
+  "plateformes": {
+   "cornerstone": [
+    "marketplace"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Sopra HR Software",
+  "domaine": "soprahr.com",
+  "url_liste": "https://www.soprahr.com/nos-offres",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [
+   "/services/accompagner-au-quotidien-la-fonction-rh",
+   "/services/porter-la-transformation",
+   "/services/securiser-et-exploiter-vos-donnees",
+   "/services/sopra-hr-university",
+   "/services/tirer-parti-du-digital-hr"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "Lincoln",
+  "domaine": "lincoln.fr",
+  "url_liste": "",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": "page carrieres introuvable"
+ },
+ {
+  "nom": "Talentsoft",
+  "domaine": "talentsoft.fr",
+  "url_liste": "https://www.cegid.com/fr/produits/cegid-hr/",
+  "url_offre": "",
+  "plateformes": {
+   "cegid": [
+    "events",
+    "go",
+    "jobs",
+    "oneweb",
+    "www"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Lucca",
+  "domaine": "lucca.fr",
+  "url_liste": "https://www.lucca.fr/recrutement/",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Orsys",
+  "domaine": "orsys.fr",
+  "url_liste": "https://www.orsys.fr/erreur/page404?aspxerrorpath=/nos-offres",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "M2i Formation",
+  "domaine": "m2iformation.fr",
+  "url_liste": "https://macarriere.m2iformation.fr/",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Eurecia",
+  "domaine": "eurecia.com",
+  "url_liste": "https://www.eurecia.com/emplois",
+  "url_offre": "",
+  "plateformes": {
+   "teamtailor": [
+    "eurecia-1729845435"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Lefebvre Dalloz",
+  "domaine": "lefebvre-dalloz.fr",
+  "url_liste": "https://carrieres.lefebvre-dalloz.fr/",
+  "url_offre": "https://carrieres.lefebvre-dalloz.fr/jobs/8395784-commercial-e-sedentaire-formation-cdd-h-f",
+  "plateformes": {
+   "teamtailor": [
+    "www"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "SD Worx France",
+  "domaine": "sdworx.fr",
+  "url_liste": "https://www.sdworx.fr/fr-fr/search",
+  "url_offre": "",
+  "plateformes": {
+   "nextjs": [
+    ""
+   ],
+   "algolia": [
+    ""
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Galileo Global Education",
+  "domaine": "galileo-gge.com",
+  "url_liste": "",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": "page carrieres introuvable"
+ },
+ {
+  "nom": "Studi",
+  "domaine": "studi.com",
+  "url_liste": "https://career.studi.com/",
+  "url_offre": "",
+  "plateformes": {
+   "teamtailor": [
+    "app",
+    "www"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Demos",
+  "domaine": "demos.fr",
+  "url_liste": "https://www.demos.fr/carriere/",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Nexity Formation",
+  "domaine": "nexity.fr",
+  "url_liste": "https://recrutement.nexity.group",
+  "url_offre": "",
+  "plateformes": {
+   "nuxt": [
+    ""
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Openclassrooms",
+  "domaine": "openclassrooms.com",
+  "url_liste": "https://jobs.openclassrooms.com/",
+  "url_offre": "https://jobs.openclassrooms.com/fr/jobs/6889707-chief-sales-officer",
+  "plateformes": {
+   "teamtailor": [
+    "www"
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "Cegos",
+  "domaine": "cegos.fr",
+  "url_liste": "https://www.cegos.fr/search",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [
+   "/ajax/add-to-cart",
+   "/ajax/attempt-auth-cegos",
+   "/ajax/get-ctok",
+   "/ajax/get-new-csrf-token",
+   "/ajax/get-search-formations?",
+   "/ajax/remove-from-cart",
+   "/ajax/update-mini-cart",
+   "/chatbot",
+   "/chatbot/evaluation",
+   "/services/etablissements-publics",
+   "/services/les-engagements-rse-du-groupe-cegos",
+   "/services/services-entreprises",
+   "/services/services-entreprises/adherent-opco",
+   "/services/services-stagiaires",
+   "/services/services-stagiaires/faciliter-lacces-a-la-formation-pour-les-personnes-en-situation-de-handicap"
+  ],
+  "erreur": ""
+ },
+ {
+  "nom": "Abilways",
+  "domaine": "abilways.com",
+  "url_liste": "https://www.skolae-formation.com/",
+  "url_offre": "",
+  "plateformes": {
+   "algolia": [
+    ""
+   ]
+  },
+  "apis": [],
+  "erreur": ""
+ },
+ {
+  "nom": "CESI",
+  "domaine": "cesi.fr",
+  "url_liste": "https://www.cesi.fr/categorie/fr/",
+  "url_offre": "",
+  "plateformes": {},
+  "apis": [],
+  "erreur": ""
+ }
+]

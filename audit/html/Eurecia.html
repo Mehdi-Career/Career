@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="fr" dir="ltr" prefix="og: https://ogp.me/ns#" style="--color--primary-hue:202;--color--primary-saturation:79%;--color--primary-lightness:50" >
+<head>
+
+<!-- script a/b test -->
+
+<script type="text/javascript">
+    // Duration in milliseconds to wait while the Kameleoon application file is loaded
+    var kameleoonLoadingTimeout = 1000;
+
+    window.kameleoonQueue = window.kameleoonQueue || [];
+    window.kameleoonStartLoadTime = new Date().getTime();
+    if (! document.getElementById("kameleoonLoadingStyleSheet") && ! window.kameleoonDisplayPageTimeOut)
+    {
+        var kameleoonS = document.getElementsByTagName("script")[0];
+        var kameleoonCc = "* { visibility: hidden !important; background-image: none !important; }";
+        var kameleoonStn = document.createElement("style");
+        kameleoonStn.type = "text/css";
+        kameleoonStn.id = "kameleoonLoadingStyleSheet";
+        if (kameleoonStn.styleSheet)
+        {
+            kameleoonStn.styleSheet.cssText = kameleoonCc;
+        }
+        else
+        {
+            kameleoonStn.appendChild(document.createTextNode(kameleoonCc));
+        }
+        kameleoonS.parentNode.insertBefore(kameleoonStn, kameleoonS);
+        window.kameleoonDisplayPage = function(fromEngine)
+        {
+            if (!fromEngine)
+            {
+                window.kameleoonTimeout = true;
+            }
+            if (kameleoonStn.parentNode)
+            {
+                kameleoonStn.parentNode.removeChild(kameleoonStn);
+            }
+        };
+        window.kameleoonDisplayPageTimeOut = window.setTimeout(window.kameleoonDisplayPage, kameleoonLoadingTimeout);
+    }
+</script>
+<script type="text/javascript">
+    // Change the value of this URL to point to your own URL, where the iFrame is hosted
+    window.kameleoonIframeURL = "https://www.eurecia.com/static/kameleoon_static_file.html";
+
+    window.kameleoonLightIframe = false;
+    var kameleoonIframeOriginElement = document.createElement("a");
+    kameleoonIframeOriginElement.href = kameleoonIframeURL;
+    window.kameleoonIframeOrigin = kameleoonIframeOriginElement.origin || (kameleoonIframeOriginElement.protocol + "//" + kameleoonIframeOriginElement.hostname);
+    if (location.href.indexOf(window.kameleoonIframeOrigin) != 0)
+    {
+        window.kameleoonLightIframe = true;
+        var kameleoonProcessMessageEvent = function(event)
+        {
+            if (window.kameleoonIframeOrigin == event.origin && event.data.slice && event.data.slice(0,9) == "Kameleoon")
+            {
+                window.removeEventListener("message", kameleoonProcessMessageEvent);
+                window.kameleoonExternalIFrameLoaded = true;
+                if (window.Kameleoon)
+                {
+                    Kameleoon.Utils.runProtectedScript(event.data);
+                    Kameleoon.Analyst.load();
+                }
+                else
+                {
+                    window.kameleoonExternalIFrameLoadedData = event.data;
+                }
+            }
+        };
+        if (window.addEventListener)
+        {
+            window.addEventListener("message", kameleoonProcessMessageEvent, false);
+        }
+        var iframeNode = document.createElement("iframe");
+        iframeNode.src = kameleoonIframeURL;
+        iframeNode.id = "kameleoonExternalIframe";
+        iframeNode.style = "float: left !important; opacity: 0.0 !important; width: 0px !important; height: 0px !important;";
+        document.head.appendChild(iframeNode);
+    }
+</script>
+<script type="text/javascript" src="//vrcxfme24f.kameleoon.eu/engine.js" async="true" fetchpriority="high"></script>
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+            <title>Rejoignez-nous ! Découvrez nos offres d’emplois | Eurécia</title>
+    
+    <meta charset="utf-8" />
+<meta name="description" content="Eurécia, c&#039;est une grande famille ! De l&#039;enthousiasme, un esprit d&#039;équipe, de la confiance, l&#039;envie d&#039;avancer ensemble et une bonne dose de bienveillance, ça vous branche ? Alors, rejoignez-nous !" />
+<link rel="canonical" href="https://www.eurecia.com/emplois" />
+<meta property="og:image" content="https://www.eurecia.com/sites/default/files/2026-03/eurecia_og.jpg" />
+<meta name="Generator" content="Drupal 11 (https://www.drupal.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="/themes/eurecia_front/favicon.ico" type="image/png" />
+
+
+        <!-- TrustBox script -->
+        <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+        <!-- End TrustBox script -->
+
+        
+        <!-- Google Tag Manager -->
+        <script>
+
+                function getCookie(cname) {
+                    var name = cname + "=";
+                    var decodedCookie = decodeURIComponent(document.cookie);
+                    var ca = decodedCookie.split(';');
+                    for(var i = 0; i <ca.length; i++) {
+                        var c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                                return c.substring(name.length, c.length);
+                        }
+                    }
+                    return "";
+            };
+
+
+
+            var valueCookie = getCookie("cookie-agreed");
+            // if (valueCookie == "2") {
+                console.log('ok cookies');
+                  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                  'https://metrics.eurecia.com/fwni89q4oc5o0ae.js?aw='+i.replace(/^GTM-/, '')+dl;f.parentNode.insertBefore(j,f);
+                  })(window,document,'script','dataLayer','GTM-5R5CZCL');
+            // }
+
+        </script>
+        <!-- End Google Tag Manager -->
+
+
+        
+    <link rel="stylesheet" media="all" href="/core/modules/system/css/components/align.module.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/modules/system/css/components/container-inline.module.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/modules/system/css/components/clearfix.module.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/modules/system/css/components/hidden.module.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/modules/system/css/components/js.module.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/modules/custom/eurecia_obfuscation/dist/eurecia.obfuscation.style.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/modules/views/css/views.module.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/base/fonts.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/base/variables.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/base/base.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/layout.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/grid.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/layout-content-narrow.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/layout-content-medium.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/layout-footer.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/region.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/region-content.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/region-hero.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/region-secondary-menu.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/social-bar.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/layout/views.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/themes/eurecia_front/dist/eurecia.front.style.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/themes/eurecia_front/dist/eurecia.front.ckeditor.css?tl5cvq" />
+<link rel="stylesheet" media="print" href="/themes/eurecia_front/dist/eurecia.front.print.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/block.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/breadcrumb.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/embedded-media.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/footer.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/button.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/container-inline.module.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/fieldset.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/field.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/form.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/form-boolean.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/form-text.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/form-textarea.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/form-select.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/header-buttons-mobile.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/header-navigation.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/header-site-branding.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/header-sticky-toggle.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/hero.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/links.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/layout-field.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/navigation/nav-button-mobile.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/node.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/node-teaser.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/page-title.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/site-header.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/skip-link.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/pager.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/text-content.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/core/themes/olivero/css/components/wide-content.css?tl5cvq" />
+<link rel="stylesheet" media="all" href="/themes/eurecia/dist/app.style.css?tl5cvq" />
+
+    
+
+</head>
+
+
+                    <body class="path-emplois corpo">
+        
+
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://metrics.eurecia.com/ns.html?id=GTM-5R5CZCL" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+            
+
+            
+              <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+    
+
+
+			    
+    <a class="skip-link" href="#main-content">
+  Aller au contenu principal
+</a>
+
+<div class="isolation old-css" style="z-index: 1200;">
+        <header class="main-header">
+    <div class="bg-mobile">
+      <nav class="wrapper">
+        <a href="/" class="logo">
+          <img src="/themes/supercolor_corpo/dist/images/eurecia_logo_horizontal.svg" alt="Eurécia">
+          <div class="sr-only">Eurécia</div>
+        </a>
+
+        <div class="main-menu-container">
+          <ul class="nav-container">
+                                                      <li class="nav-item has-submenu">
+                <button type="button" class="link-lvl1 toggle"
+                        aria-expanded="false"
+                        aria-controls="submenu-Produit"
+                >
+                  Produit <i class="icon icon-chevron-bottom" aria-hidden="true"></i>
+                </button>
+                <div id="submenu-Produit" class="submenu" hidden>
+                  <button type="button" class="close-menu"><i class="icon icon-close" aria-hidden="true"></i><span class="sr-only">Fermer le menu</span></button>
+                  <p class="submenu-title">La solution RH pour structurer votre entreprise et faire progresser vos équipes</p>
+
+                  <ul class="wrapper submenu-container">
+                                          <li class="nested">
+                                                  <button class="cta return" type="button">
+                            <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                          </button>
+                                                                          <button class="cta coll-3 coll-md-12 submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-SIRH">
+                            SIRH
+                            <i class="icon icon-arrow-style-right" aria-hidden="true"></i>
+                            <i class="icon icon-chevron-right" aria-hidden="true"></i>
+                          </button>
+                          <div id="submenu-SIRH" class="submenu-lvl2 nested-9" hidden>
+                            <button class="cta return" type="button">
+                              <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                            </button>
+                            <p class="title-submenu-lvl2-mobile">SIRH</p>
+                                                                                      <div class="coll-3">
+                                                                                                                    <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Administration RH
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <span data-oblada="=L2xvZ2ljaWVsLXBvcnRhaWwtcmgjbWVnYW1lbnU" href="/logiciel-portail-rh#megamenu" class="obladi link">
+                                          Annuaire &amp; organigramme
+                                                                                  </span>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-onboarding#megamenu" class="link">
+                                          On/offboarding
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <span data-oblada="=L2xvZ2ljaWVsLXBvcnRhaWwtcmgjbWVnYW1lbnU" href="/logiciel-portail-rh#megamenu" class="obladi link">
+                                          DPAE automatique
+                                                                                  </span>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <span data-oblada="=L2xvZ2ljaWVsLXBvcnRhaWwtcmgjbWVnYW1lbnU" href="/logiciel-portail-rh#megamenu" class="obladi link">
+                                          Documents et contrats
+                                                                                  </span>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/signature-electronique-rh#megamenu" class="link">
+                                          Signature électronique 
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/coffre-fort-numerique-rh#megamenu" class="link">
+                                          Coffre fort numérique
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                      <li class="nav-item">
+                                                                              <a href="/logiciel-portail-rh#megamenu" class="link-hub"><i class="icon icon-arrow-link-follow"></i><span>Voir tout</span></a>
+                                                                          </li>
+                                                                  </ul>
+                                                                                                                                                        </div><div class="coll-3"  data-collone="2">
+                                                            <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Gestion des temps
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-conges-et-absences#megamenu" class="link">
+                                          Congés &amp; absences
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-temps-et-activites#megamenu" class="link">
+                                          Temps &amp; activités
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-planning#megamenu" class="link">
+                                          Planning
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                      <li class="nav-item">
+                                                                              <a href="/organiser-les-temps#megamenu" class="link-hub"><i class="icon icon-arrow-link-follow"></i><span>Voir tout</span></a>
+                                                                          </li>
+                                                                  </ul>
+                                                                                                                                                        </div><div class="coll-3"  data-collone="3">
+                                                            <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Dépenses &amp; avantages 
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-notes-de-frais#megamenu" class="link">
+                                          Notes de frais
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                  </ul>
+                                                                                                                      <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Paie &amp; rémunération
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-paie#megamenu" class="link">
+                                          Préparation &amp; vérification paie
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-transparence-salariale#megamenu" class="link">
+                                          Transparence salariale
+                                                                                      <span class="tag">Nouveau</span>
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                  </ul>
+                                                          
+                                                          </div>
+                                                      </div>
+                                              </li>
+                                          <li class="nested">
+                                                                          <button class="cta coll-3 coll-md-12 submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-Management &amp; talents">
+                            Management &amp; talents
+                            <i class="icon icon-arrow-style-right" aria-hidden="true"></i>
+                            <i class="icon icon-chevron-right" aria-hidden="true"></i>
+                          </button>
+                          <div id="submenu-Management &amp; talents" class="submenu-lvl2 nested-9" hidden>
+                            <button class="cta return" type="button">
+                              <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                            </button>
+                            <p class="title-submenu-lvl2-mobile">SIRH</p>
+                                                                                      <div class="coll-3">
+                                                                                                                    <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Développement des talents
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-recrutement#megamenu" class="link">
+                                          Recrutement
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-formations#megamenu" class="link">
+                                          Formation
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-competences#megamenu" class="link">
+                                          Compétences
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-entretien-individuel#megamenu" class="link">
+                                          Entretiens
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                      <li class="nav-item">
+                                                                              <a href="/manager-et-accompagner#megamenu" class="link-hub"><i class="icon icon-arrow-link-follow"></i><span>Voir tout</span></a>
+                                                                          </li>
+                                                                  </ul>
+                                                                                                                                                        </div><div class="coll-3"  data-collone="2">
+                                                            <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Management
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/zelkia-coaching-manager-ia#megamenu" class="link">
+                                          Zelkia coaching manager
+                                                                                      <span class="tag">Nouveau</span>
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                  </ul>
+                                                          
+                                                          </div>
+                                                      </div>
+                                              </li>
+                                          <li class="nested">
+                                                                          <button class="cta coll-3 coll-md-12 submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-Pilotage &amp; stratégie RH">
+                            Pilotage &amp; stratégie RH
+                            <i class="icon icon-arrow-style-right" aria-hidden="true"></i>
+                            <i class="icon icon-chevron-right" aria-hidden="true"></i>
+                          </button>
+                          <div id="submenu-Pilotage &amp; stratégie RH" class="submenu-lvl2 nested-9" hidden>
+                            <button class="cta return" type="button">
+                              <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                            </button>
+                            <p class="title-submenu-lvl2-mobile">SIRH</p>
+                                                                                      <div class="coll-3">
+                                                                                                                    <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Pilotage RH
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/fonctionnalites/diagnostic-rh#megamenu" class="link">
+                                          Diagnostic RH
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/copilote-strategique#megamenu" class="link">
+                                          Engagement collaborateurs
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                  </ul>
+                                                          
+                                                          </div>
+                                                      </div>
+                                              </li>
+                                          <li class="nested">
+                                                                          <button class="cta coll-3 coll-md-12 submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-Expérience collaborateur">
+                            Expérience collaborateur
+                            <i class="icon icon-arrow-style-right" aria-hidden="true"></i>
+                            <i class="icon icon-chevron-right" aria-hidden="true"></i>
+                          </button>
+                          <div id="submenu-Expérience collaborateur" class="submenu-lvl2 nested-9" hidden>
+                            <button class="cta return" type="button">
+                              <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                            </button>
+                            <p class="title-submenu-lvl2-mobile">SIRH</p>
+                                                                                      <div class="coll-3">
+                                                                                                                    <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>Vie au travail
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-feedback#megamenu" class="link">
+                                          Feedbacks
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-boite-idees#megamenu" class="link">
+                                          Boite à idées
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/bons-plans-et-evenements#megamenu" class="link">
+                                          Bons plans &amp; événements
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-bien-etre#megamenu" class="link">
+                                          Bien-être
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/vie-de-bureau#megamenu" class="link">
+                                          Vie de bureau
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                      <li class="nav-item">
+                                                                              <a href="/mieux-vivre-ensemble#megamenu" class="link-hub"><i class="icon icon-arrow-link-follow"></i><span>Voir tout</span></a>
+                                                                          </li>
+                                                                  </ul>
+                                                          
+                                                          </div>
+                                                      </div>
+                                              </li>
+                                      </ul>
+                </div>
+                                                        <li class="nav-item">
+                                      <a href="/tarifs#megamenu" class="link-lvl1">Tarifs</a>
+                                  </li>
+                                                        <li class="nav-item has-submenu">
+                <button type="button" class="link-lvl1 toggle"
+                        aria-expanded="false"
+                        aria-controls="submenu-Ressources"
+                >
+                  Ressources <i class="icon icon-chevron-bottom" aria-hidden="true"></i>
+                </button>
+                <div id="submenu-Ressources" class="submenu" hidden>
+                  <button type="button" class="close-menu"><i class="icon icon-close" aria-hidden="true"></i><span class="sr-only">Fermer le menu</span></button>
+                  <p class="submenu-title">La solution RH pour structurer votre entreprise et faire progresser vos équipes</p>
+
+                  <ul class="wrapper submenu-container">
+                                          <li class="nested">
+                                                  <button class="cta return" type="button">
+                            <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                          </button>
+                                                                                                      <a href="/blog#megamenu" target="_blank" class="cta coll-3 coll-md-12 submenu-toggle">
+                              Eurécia • Média
+                                                              <i class="icon icon-link-out" aria-hidden="true"></i>
+                                                          </a>
+                                                                        </li>
+                                          <li class="nested">
+                                                                                                      <a href="/outils-rh#megamenu"  class="cta coll-3 coll-md-12 submenu-toggle">
+                              Outils gratuits
+                                                          </a>
+                                                                        </li>
+                                          <li class="nested">
+                                                                                                      <span data-oblada="=L2NsaWVudHMjbWVnYW1lbnU" href="/clients#megamenu"  class="obladi cta coll-3 coll-md-12 submenu-toggle">
+                              Cas clients
+                                                          </span>
+                                                                        </li>
+                                          <li class="nested">
+                                                                                                      <a href="/evenement#megamenu"  class="cta coll-3 coll-md-12 submenu-toggle">
+                              Événements &amp; Webinars
+                                                          </a>
+                                                                        </li>
+                                          <li class="nested">
+                                                                          <button class="cta coll-3 coll-md-12 submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-Zoom sur">
+                            Zoom sur
+                            <i class="icon icon-arrow-style-right" aria-hidden="true"></i>
+                            <i class="icon icon-chevron-right" aria-hidden="true"></i>
+                          </button>
+                          <div id="submenu-Zoom sur" class="submenu-lvl2 nested-9" hidden>
+                            <button class="cta return" type="button">
+                              <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                            </button>
+                            <p class="title-submenu-lvl2-mobile">SIRH</p>
+                                                                                      <div class="coll-3">
+                                                                                                                    <button type="button" class="submenu-column-title">
+                                <i class="icon icon-chevron-right" aria-hidden="true"></i>En savoir plus
+                              </button>
+
+                                                              <ul class="submenu-lvl3">
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/toolbox#megamenu" class="link">
+                                          Guide RH
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/sirh-tout-savoir#megamenu" class="link">
+                                          Tout savoir sur le SIRH
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/fonctionnalites#megamenu" class="link">
+                                          Fonctionnalités Eurécia
+                                                                                  </a>
+                                      
+                                    </li>
+                                                                      <li class="nav-item">
+
+                                                                              <a href="/logiciel-pointage#megamenu" class="link">
+                                          Logiciel Pointage
+                                                                                  </a>
+                                      
+                                    </li>
+                                  
+                                                                  </ul>
+                                                          
+                                                          </div>
+                                                      </div>
+                                              </li>
+                                      </ul>
+                </div>
+                                                        <li class="nav-item has-submenu">
+                <button type="button" class="link-lvl1 toggle"
+                        aria-expanded="false"
+                        aria-controls="submenu-Découvrir Eurécia"
+                >
+                  Découvrir Eurécia <i class="icon icon-chevron-bottom" aria-hidden="true"></i>
+                </button>
+                <div id="submenu-Découvrir Eurécia" class="submenu" hidden>
+                  <button type="button" class="close-menu"><i class="icon icon-close" aria-hidden="true"></i><span class="sr-only">Fermer le menu</span></button>
+                  <p class="submenu-title">La solution RH pour structurer votre entreprise et faire progresser vos équipes</p>
+
+                  <ul class="wrapper submenu-container">
+                                          <li class="nested">
+                                                  <button class="cta return" type="button">
+                            <i class="icon icon-arrow-left" aria-hidden="true"></i> Retour
+                          </button>
+                                                                                                      <span data-oblada="=L3NvY2lldGUjbWVnYW1lbnU" href="/societe#megamenu"  class="obladi cta coll-3 coll-md-12 submenu-toggle">
+                              À propos
+                                                          </span>
+                                                                        </li>
+                                          <li class="nested">
+                                                                                                      <a href="/emplois#megamenu"  class="cta coll-3 coll-md-12 submenu-toggle">
+                              Rejoignez-nous
+                                                          </a>
+                                                                        </li>
+                                          <li class="nested">
+                                                                                                      <span data-oblada="1L2RldmVuZXotcGFydGVuYWlyZS1ldXJlY2lhI21lZ2FtZW5" href="/devenez-partenaire-eurecia#megamenu"  class="obladi cta coll-3 coll-md-12 submenu-toggle">
+                              Devenir partenaire
+                                                          </span>
+                                                                        </li>
+                                      </ul>
+                </div>
+                                    </ul>
+          <div class="btn-container">
+            <a href="https://infos.eurecia.com/demande-demo-logiciel-rh" class="cta  "
+            >Demander une démo</a>
+            <a href="https://www.eurecia.com/login" class="cta yellow "
+            >Se connecter</a>
+          </div>
+        </div>
+
+        <button type="button" class="resetstyle burger">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span class="sr-only">Ouvrir le menu</span>
+        </button>
+      </nav>
+    </div>
+    <div class="mobile-overlay"></div>
+  </header>
+</div>
+    <script defer="" src="/themes/supercolor_corpo/dist/js/common.js"></script>
+	
+
+
+		
+
+    
+
+
+
+<div id="block-eurecia-front-page-title" class="block block-core block-page-title-block">
+                                    
+</div>
+  
+    
+      
+          <div class="display-edit-link" data-uuid="6bf4eabb-4909-4f33-81cb-a044cb224651"><div class="views-field views-field-body"><div class="field-content"><section class="section-intro intro-alt" id="section-intro"><div class="wrapper"><div class="text-container"><h1 class="h1">Oser grandir ensemble en&nbsp;<br>confiance. Être simple et&nbsp;<br>efficace.</h1><p class="soustitre">Ça te branche ? Rejoins l’équipe !</p></div></div><div class="image-container"><img class="intro-img" src="/themes/eurecia/dist/images/corpo/illus-grand-besoin.webp" data-entity-uuid data-entity-type alt="image de deux personnes en train de discuter" width="2000" height="1227" loading="lazy"></div><div class="arrow-scroll">&nbsp;</div></section><section class="section section-intro-candidat"><div class="wrapper"><h2 class="h2">La vie chez Eurécia</h2><div class="video-thumb-container"><div class="embed-responsive"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" loading="lazy" src="https://www.youtube-nocookie.com/embed/5MqSkhs5oAU?feature=oembed" title></iframe></div></div><div class="numbers-container"><div class="item-number"><div class="num"><span data-number="200">200</span></div><p class="label">collaborateurs</p></div><div class="item-number"><div class="num"><span data-number="98">98</span> pts</div><p class="label">index égalité<br>femme-homme</p></div><div class="item-number"><div class="num"><span data-number="34">34</span></div><p class="label">ans d’âge moyen</p></div><div class="item-number"><div class="num"><span data-number="85.5">85.5</span>%</div><p class="label">de collaborateurs engagés*<span>*enquête happy at work 2023</span></p></div><div class="item-number"><div class="num"><span data-number="50">&nbsp;50</span>%</div><p class="label">de femmes et 50% d’hommes</p></div></div></div><div class="dechirure-bottom white">&nbsp;</div></section><div>&nbsp;</div><div><section class="section section-candidature-spontanee"><div class="wrapper"><div class="container"><div class="gauche"><img src="https://www.eurecia.com/sites/default/files/inline-images/recrutement_1.png" data-entity-uuid="7ab3644f-1014-410d-8316-0e9fe37875d6" data-entity-type="file" alt="homme qui dit bonjour" width="1080" height="1080" aria-hidden="true" loading="lazy"></div><div class="droite"><h2 class="h5">Candidature spontanée ?</h2><p>On étudie tous les CV et on répond à tout le monde.</p><p>"Pour traiter vos candidatures, Eurécia doit traiter vos données à caractère personnel. Pour plus d'informations à ce sujet, veuillez consulter notre Politique de confidentialité des candidats accessible <a href="https://www.eurecia.com/politique-confidentialite-candidats" target="_blank" title="Politique de confidentialité des candidats">ici</a>."</p><div><a class="btn bleu" href="https://eurecia-1729845435.teamtailor.com/connect" target="_blank" rel="noopener" data-hover="Je rejoins l'aventure"><span>Je rejoins l'aventure</span></a></div><p class="h5">Et si ça matche, ça se passe comme ça :</p><ul><li>Un premier échange avec <a href="https://www.linkedin.com/in/sandieauzanne/" target="_blank" title="Profil linkedIn de Sandie">Sandie</a></li><li>Un entretien avec le manager</li><li>Une rencontre avec l’équipe (selon le process de recrutement)</li><li>Une réponse assurée avant la fin du recrutement</li></ul><div><a class="btn has-icon" href="#" id="modal-header-opener" data-hover="Processus de recrutement" data-youtube="v6din83RM-U"><span>Processus de recrutement</span></a></div></div></div></div><div class="video-modal-header" id="modal-header"><div class="overlay">&nbsp;</div><div class="wrapper"><div class="container"><div class="embed-responsive"><iframe allow frameborder="0" src></iframe></div></div></div></div></section></div><div class="section section-offre-emplois" id="section-offre-emplois"><div class="wrapper"><div class="container"><div class="titre-container"><p class="surtitre" style="opacity:1;transform:translate(0px, 0px);">On recrute</p><div>Bonus : découvre <a href="https://www.youtube.com/watch?v=cFoKmVYY7vA" rel="nofollow" target="_blank">le quotidien des équipes Sales en vidéo</a> !</div></div><p></p><div class="job-list"></div>   <div class="more-container">
+          <div class="arrow-link rotate" style="left:0;transform: none;">
+            <i class="icon icon-c-chevron-bottom"></i>
+            Voir plus d’offres
+          </div>
+        </div></div></div></div><div><section class="section section-frise-chronos" id="section-frise-chronos"><div class="wrapper"><div class="title-container"><p class="surtitre">nos équipes</p><h2 class="h2">La team sourire</h2></div><div class="controllers"><div class="prev-controller controller">&nbsp;</div><div class="next-controller controller">&nbsp;</div></div></div><div class="swiper carousel-container"><div class="swiper-wrapper"><article class="swiper-slide card-year"><figure class="figure"><img class="thumb" src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-emploi-sourire1.png" data-entity-uuid data-entity-type alt width="822" height="615" loading="lazy"><p class="desc"><span style="font-family:Figtree;font-size:11.0pt;">&nbsp;La team qui veille sur la santé financière et la conformité de l’entreprise, pour que tout roule sans accroc&nbsp;</span><span style="font-family:&quot;Segoe UI Emoji&quot;,sans-serif;font-size:11.0pt;">🔍</span>&nbsp;</p></figure><p class="h1">Admin &amp; Finance</p></article><article class="swiper-slide card-year"><figure class="figure"><img class="thumb" src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-emploi-sourire5.png" data-entity-uuid data-entity-type alt width="822" height="615" loading="lazy"><p class="desc"><span style="font-family:Figtree;font-size:11.0pt;">La team qui conçoit, améliore et gère notre solution RH tout-en-un tout en chouchoutant nos clients au quotidien&nbsp;</span><span style="font-family:&quot;Segoe UI Emoji&quot;,sans-serif;font-size:11.0pt;">✨</span></p></figure><p class="h1">Operations</p></article><article class="swiper-slide card-year"><figure class="figure"><img class="thumb" src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-emploi-sourire3.png" data-entity-uuid data-entity-type alt width="822" height="615" loading="lazy"><p class="desc"><span style="font-family:Figtree;font-size:11.0pt;">La team qui attire, développe et fidélise les meilleurs talents, pour allier performance, expérience et impact&nbsp;</span><span style="font-family:&quot;Segoe UI Emoji&quot;,sans-serif;font-size:11.0pt;">🤝</span></p></figure><p class="h1">People</p></article><article class="swiper-slide card-year"><figure class="figure"><img class="thumb" src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-emploi-sourire4.png" data-entity-uuid data-entity-type alt width="822" height="615" loading="lazy"><p class="desc"><span style="font-family:Figtree;font-size:11.0pt;">La team qui donne vie à notre marque en trouvant les bons mots et les belles images pour inspirer et engager&nbsp;</span><span style="font-family:&quot;Segoe UI Emoji&quot;,sans-serif;font-size:11.0pt;">🎨</span></p></figure><p class="h1">Com'</p></article><article class="swiper-slide card-year"><figure class="figure"><img class="thumb" src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-emploi-sourire2.png" data-entity-uuid data-entity-type alt width="822" height="615" loading="lazy"><p class="desc">La team qui relève chaque jour le défi d'attirer, convaincre et transformer nos prospects en clients fidèles ! 🚀</p></figure><p class="h1">Business</p></article></div></div></section></div><div><section class="section section-dark-grid"><div class="dechirure-top rotate white">&nbsp;</div><div class="wrapper"><p class="surtitre">benefits package</p><h2 class="h2">Travailler chez Eurécia, c'est...</h2><div class="grid-container"><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/suivi_du_teletravail_0.png" data-entity-uuid="2a493e31-8ff8-4821-be3c-84575a7f1995" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Flexibilité</h5><p>Horaires flexibles de 7h à 21h<br>avec plages communes et 2 jours de télétravail fractionnables</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/planning_previsionnel_0.png" data-entity-uuid="f2074626-a491-4a77-96b3-5b260f5aecba" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Congés</h5><p>7 semaines par an + congés supplémentaires (famille, mécénat, ancienneté)</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/reprise_d_activite_0.png" data-entity-uuid="463acfe4-f12c-4d71-abf7-290dcead6f60" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Petits + bien-être</h5><p>Massages, cours de yoga et fitness sur site, accès terrain de foot,&nbsp;fruits, café et thé à volonté</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/cartographie_0.png" data-entity-uuid="9c96bd0e-7d79-47bf-9462-96e583a2528e" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Mobilité</h5><p>Forfait mobilité douce, prime transport, congé déménagement</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/Alim%20atuto_0.png" data-entity-uuid="117316d4-4408-4378-ba8d-201bfc9bee28" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Conciergerie</h5><p>Services sur site : ramassage des colis, coiffure, ostéopathie, entretien voiture, livraison pain et primeur</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/self_service_0.png" data-entity-uuid="8255abe9-4271-4913-bb7d-73358838087f" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Restauration</h5><p>Tickets restaurant d'une valeur de 9,50€, livraisons de repas, frigo connecté</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/catalogue_1.png" data-entity-uuid="ccb2905c-df7b-4138-bcc3-93307ffec478" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Entreprise apprenante</h5><p>DejTech, english lunch, plateforme de formation</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/vivier_des_candidats_0.png" data-entity-uuid="f8c1f8f9-a6ee-460e-b1f0-4c0eca43ce8e" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Vie d'équipe</h5><p>Stand-Up, Euréciades, Family Days, team buildings, ateliers d'apprentissage, conférences inspirantes</p></div><div class="grid-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/autres_0.png" data-entity-uuid="6fe8c80e-9317-4d55-b425-e9d52a9e47af" data-entity-type="file" alt width="300" height="300" aria-hidden="true" loading="lazy"><h5 class="h5">Et aussi</h5><p>Chèques cadeaux Noël, plateforme avantages CSE, primes cooptations, accord de participation...</p></div></div></div><div class="dechirure-bottom white">&nbsp;</div></section></div><div><section class="section-push-contact" id="section-push-contact"><div class="wrapper"><div class="titre-container"><p class="surtitre" style="opacity:1;transform:translate(0px, 0px);">On s’engage</p><div>Notre politique sociale</div></div><div class="push-wrapper"><div class="push-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/illu_cible_0.png" data-entity-uuid="28ebfe14-9c51-4739-a96a-d1b7d72bea9d" data-entity-type="file" alt="cible de tir" width="1200" height="1200" aria-hidden="true" loading="lazy"><h3 class="h4">Impact</h3><p>Depuis 2006, nous multiplions et valorisons les actions menées en matière de RSE. Nous embarquons les Euréciens et toute notre communauté dans une aventure humaine qui permet le développement personnel et collectif.</p><p><a class="arrow-link center" href="https://www.eurecia.com/impact"><span>En savoir plus</span></a></p></div><div class="push-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/illu_gradcap_7.png" data-entity-uuid="29849046-9b28-4641-9fa3-ad13bf66dd04" data-entity-type="file" alt="chapeau de diplômé" width="1200" height="1200" aria-hidden="true" loading="lazy"><h3 class="h4">Apprentissage</h3><p>Le partage et la transmission font partie de notre vision de l'entreprise. Stagiaires, alternants, mentoring RH, 100 000 entrepreneurs, accueil de scolaires, journée du patrimoine : autant d'actions et initiatives que nous avons à cœur d'accueillir.</p></div><div class="push-item"><img src="https://www.eurecia.com/sites/default/files/inline-images/illu_lovemark_2.png" data-entity-uuid="f961d736-07e8-4118-9c46-fae08167464a" data-entity-type="file" alt="logo eurécia " width="1200" height="1200" aria-hidden="true" loading="lazy"><h3 class="h4">Inclusion</h3><p>Formations, audits, sensibilisations...<br>Nous bousculons notre quotidien pour relever les défis de l'inclusion : politique handicap, égalité professionnelle et diversité. Des référentes (discrimination, inclusion) ont été nommées.</p></div></div></div></section></div><div><section class="section section-its-us"><div class="wrapper"><p class="surtitre">nos coulisses</p><h2 class="h2">Et ça... c’est nous !</h2><div class="grid-wrapper"><div class="gauche"><div class="gauche-top"><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-01.jpg" data-entity-uuid data-entity-type alt width="604" height="604" loading="lazy" target="_blank"></div><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-02.jpg" data-entity-uuid data-entity-type alt width="604" height="604" loading="lazy" target="_blank"></div></div><div class="gauche-bottom"><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-06.jpg" data-entity-uuid data-entity-type alt width="386" height="386" loading="lazy" target="_blank"></div><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-07.jpg" data-entity-uuid data-entity-type alt width="386" height="386" loading="lazy" target="_blank"></div><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-08.jpg" data-entity-uuid data-entity-type alt width="386" height="386" loading="lazy" target="_blank"></div></div></div><div class="droite"><div class="droite-top"><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-03.jpg" data-entity-uuid data-entity-type alt width="386" height="386" loading="lazy" target="_blank"></div><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-04.jpg" data-entity-uuid data-entity-type alt width="386" height="386" loading="lazy" target="_blank"></div><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-05.jpg" data-entity-uuid data-entity-type alt width="386" height="386" loading="lazy" target="_blank"></div></div><div class="droite-bottom"><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-09.jpg" data-entity-uuid data-entity-type alt width="604" height="604" loading="lazy" target="_blank"></div><div class="insta-link"><img src="https://www.eurecia.com/sites/default/files/2023-10/eurecia-coulisses-10.jpg" data-entity-uuid data-entity-type alt width="604" height="604" loading="lazy" target="_blank"></div></div></div></div></div></section></div></div></div></div>
+  
+          
+
+
+<div class="wrapper">
+  <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li class="breadcrumb-item underline-none">
+      <a href="https://www.eurecia.com/#fa" class="link" title="SIRH Eurécia">
+        <span>Logiciel SIRH</span>
+        <i class="icon icon-c-home"></i>
+      </a>
+    </li>
+          <i class="icon icon-c-chevron-bottom"></i>
+      <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">
+                        emplois
+                  </span>
+        <meta itemprop="position" content="1"/>
+      </li>
+      </ol>
+</div>
+
+
+
+
+			      <link rel="stylesheet" type="text/css" href="/themes/supercolor_corpo/dist/css/_isolation-header-footer.css?d=202605071627"/>
+      
+<div class="isolation old-css">
+  <div class="pre-footer">
+    <div class="ligne">
+      <div class="img">
+        <img src="/themes/supercolor_corpo/dist/images/footer/rse.svg" alt="Engagé RSE ISO 26000" loading="lazy" decoding="async">
+      </div>
+      <div class="img">
+        <img src="/themes/supercolor_corpo/dist/images/footer/rgpd.svg" alt="RGPD Conforme" loading="lazy" decoding="async">
+      </div>
+    </div>
+
+    <div class="ligne">
+      <div class="img">
+        <img src="/themes/supercolor_corpo/dist/images/footer/hosting_fr.svg" alt="Données stockées en France" loading="lazy" decoding="async">
+      </div>
+      <div class="img">
+        <img src="/themes/supercolor_corpo/dist/images/footer/qualiopi.svg" alt="Qualiopi processus certifié" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </div>
+
+  <footer class="main-footer">
+    <div class="wrapper grid">
+
+      <div class="coll-xxl-2 coll-md-12 social">
+        <p class="coll-title">
+          Suivez-nous</span>
+        </p>
+        <nav class="links-socials">
+          <a href="https://www.linkedin.com/company/eur-cia/" class="link" target="_blank">
+            <i class="icon icon-linkedin"></i>
+            <span class="sr-only">Linkedin</span>
+          </a>
+          <a href="https://www.instagram.com/eurecia_rh/" class="link" target="_blank">
+            <i class="icon icon-instagram"></i>
+            <span class="sr-only">Instagram</span>
+          </a>
+          <a href="https://www.youtube.com/channel/UCjJSE9XPfDiN8t1cF4dEVxQ" class="link" target="_blank">
+            <i class="icon icon-youtube"></i>
+            <span class="sr-only">Youtube</span>
+          </a>
+        </nav>
+         <div class="app_link" style="margin-top:20px;">
+                <a
+                  href="https://apps.apple.com/us/app/eur%C3%A9cia/id6782093539"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src="/themes/eurecia_corpo/dist/images/Download_on_the_App_Store.svg"
+                    alt="Télécharger dans l’App Store"
+                    style="height:40px;"
+                  >
+                </a>
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.eurecia.sirh.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src="/themes/eurecia_corpo/dist/images/GetItOnGooglePlay_Badge_Web_color_English.png"
+                    alt="Disponible sur Google Play"
+                    style="height:40px;margin-top:3px;"
+                  >
+                </a>
+              </div>
+      </div>
+
+                    <div class="coll-xxl-2 coll-md-4 coll-xs-6">
+          <p class="coll-title">Solution</p>
+                      <nav class="navlinks">
+                                                <a href="https://help.eurecia.com/hc/fr#footer" class="link">Centre d&#039;aide</a>
+                                                                <a href="/fonctionnalites#footer" class="link">Fonctionnalités</a>
+                                                                <a href="/interoperabilite#footer" class="link">Interoperabilité</a>
+                                                                <a href="/nouveautes-produit#footer" class="link">Nouveautés produit </a>
+                                                        </nav>
+                  </div>
+              <div class="coll-xxl-2 coll-md-4 coll-xs-6">
+          <p class="coll-title">Ressources</p>
+                      <nav class="navlinks">
+                                                <span class="obladi link" data-oblada="=L291dGlscy1yaCNmb290ZXI" >Outils RH</span>
+                                                                <span class="obladi link" data-oblada="yL2Jsb2cjZm9vdGV" >Eurécia Média</span>
+                                                                <a href="/societe/mooc-sirh#footer" class="link">Mooc RH</a>
+                                                        </nav>
+                  </div>
+              <div class="coll-xxl-2 coll-md-4 coll-xs-6">
+          <p class="coll-title">À propos</p>
+                      <nav class="navlinks">
+                                                <span class="obladi link" data-oblada="yL3NvY2lldGUjZm9vdGV" >Pourquoi Eurécia</span>
+                                                                <a href="/formations-eurecia#footer" class="link">Certification QUALIOPI</a>
+                                                                <a href="/impact#footer" class="link">Impact RSE</a>
+                                                                <a href="/ecosysteme#footer" class="link">Ecosystème</a>
+                                                                <a href="/presse#footer" class="link">Presse</a>
+                                                                <a href="/innovations-rh" class="link">Innovations RH</a>
+                                                                <a href="/login#footer" class="link">Connexion</a>
+                                                        </nav>
+                  </div>
+              <div class="coll-xxl-2 coll-md-4 coll-xs-6">
+          <p class="coll-title">Légal</p>
+                      <nav class="navlinks">
+                                                <a href="/mentions-legales#footer" class="link">Mentions légales</a>
+                                                                <a href="/securite-confidentialite#footer" class="link">Nos garanties</a>
+                                                                <a href="/politique-confidentialite#footer" class="link">Politique de confidentialité</a>
+                                                                <a href="/politique-cookies#footer" class="link">Politique de cookies</a>
+                                                            <a class="link" href="javascript:openAxeptioCookies()">Configurer vos cookies</a>
+                          </nav>
+                  </div>
+      
+      <div class="coll-xxl-2 coll-md-4 coll-xs-6 contact">
+        <p class="coll-title">Contact</p>
+        <nav class="navlinks">
+          <a href="https://www.eurecia.com/contacts" class="btn-small">Contactez-nous</a>
+          <a href="tel:+33562200369" class="link">05 62 20 03 69</a>
+        </nav>
+      </div>
+
+    </div>
+    <div class="wrapper copyr">
+      <small>© Eurécia 2026 | tous droits réservés </small>
+    </div>
+    <img src="/themes/supercolor_corpo/dist/images/footer/eurecia_logotype_footer.svg" alt="" class="logo_footer" aria-hidden="true" loading="lazy" decoding="async">
+  </footer>
+</div>
+<script id="dynamicJSONLD" type="application/ld+json"></script>
+	
+
+  </div>
+
+            <script>window.dataLayer = window.dataLayer || []; window.dataLayer.push({"drupalLanguage":"fr","drupalCountry":null,"siteName":"Eurécia","userUid":0});</script>
+
+
+
+            
+
+<script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","pathPrefix":"fr\/","currentPath":"emplois","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"fr"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"dataLayer":{"defaultLang":"fr","languages":{"en":{"id":"en","name":"English","direction":"ltr","weight":0},"fr":{"id":"fr","name":"French","direction":"ltr","weight":1}}},"user":{"uid":0,"permissionsHash":"34d98bdc3260bb8e6a73fa8ef4092b8e524bcda93080b4661a188a87e68cba00"}}</script>
+<script src="/core/assets/vendor/jquery/jquery.min.js?v=4.0.0"></script>
+<script src="/core/assets/vendor/once/once.min.js?v=1.0.1"></script>
+<script src="/sites/default/files/languages/fr_YYDv2iK6zQeckzrT07w_QQsoH3njG82mozCgivJQNWQ.js?tl5cvq"></script>
+<script src="/core/misc/drupalSettingsLoader.js?v=11.3.16"></script>
+<script src="/core/misc/drupal.js?v=11.3.16"></script>
+<script src="/core/misc/drupal.init.js?v=11.3.16"></script>
+<script src="/core/assets/vendor/tabbable/index.umd.min.js?v=6.3.0"></script>
+<script src="/modules/contrib/datalayer/js/datalayer.js?v=1.x"></script>
+<script src="/themes/eurecia/dist/app.bundle.js?tl5cvq"></script>
+<script src="/themes/eurecia_front/dist/eurecia.front.main.js?tl5cvq"></script>
+<script src="/modules/custom/eurecia_obfuscation/dist/eurecia.obfuscation.bundle.js?tl5cvq"></script>
+<script src="/core/themes/olivero/js/navigation-utils.js?v=11.3.16"></script>
+<script src="/core/themes/olivero/js/checkbox.js?v=11.3.16"></script>
+
+
+</body>
+</html>

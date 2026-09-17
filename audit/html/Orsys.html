@@ -1,0 +1,278 @@
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/ContentV11/general.css">
+
+
+<div id="page404" class="container">
+    <br style="clear:both;" />
+    
+
+
+ 
+<script type="text/javascript">page = "error404";</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="header" class="relativLeft b_blanc large100" style="z-index:1000; ">
+
+    
+    
+    
+    <div class="relativ" style="display: inline-block;top: 5px;">
+        
+        <img src="/ContentV11/images/logo/orsys.png" style="display:none;" />
+
+        
+        <a style="margin-left: 0px;" href="/">
+            <img id="header_logo" src="/ContentV11/images/logo/LOGO_ORSYS_FRA_2025.png" style="width: 191px; height: 67px;" />
+        </a>
+    </div>
+
+    
+    
+<div class="relativRight onlyLarge" style="margin-top: 20px;top: 5px;">
+
+    
+    <div id="search" class="inlineBlockLarge" style="padding: 0px; margin-left: 10px;">
+        <form action="//Recherche/Search" enctype="multipart/form-data" method="get" onsubmit="return checkForm('headerSearchField')">
+            
+            <input id="headerSearchField" class="sansCroixIe size12 onlyLarge" name="s" style="height: 32px; border-radius: 6px; border: 1px solid #999; padding-left: 20px; padding-right: 60px; width: 258px; " placeholder="Recherche par mot-clé ou formation" />
+
+            
+            <div id="headerSearchLoupe" class="relativLeft onlyLarge" style="left:320px;top:3px;z-index:10">
+                <div style="width: 22px; padding-top: 5px; left: -2px;" onmouseover="colorLoupeYellow('header_search');" onmouseout="    colorloupeBlack('header_search');">
+                    <input id="header_search" class="onlyLarge" type="image" name="submit" style="width: 22px; cursor: pointer; display: block;" src="/ContentV11/images/pictoNoir/search.png" onmouseover="colorLoupeYellow('header_search');" onmouseout="colorloupeBlack('header_search');" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    
+    <a class="relativ c_noir gras inlineBlockLarge" style="margin-left: 30px; width: auto;" href="tel:0149077373">
+        <img class="onlyLarge" style="vertical-align: middle;" src="/ContentV11/images/pictoNoir/tel.png" />
+        <span class="onlyLarge" style="margin-left:7px;">01 49 07 73 73</span>
+    </a>
+
+
+    
+    <a id="header_contact" class="relativ c_noir gras onlyLarge" href="/contact" style="margin-left: 20px;">Contact</a>
+
+
+    
+    <a id="header_user" class="relativ c_noir gras inlineBlockLarge" style="margin-left: 20px;" href="https://client.orsys.fr" target="_blank">
+        <span class="onlyLarge c_noir" style="">Espace client</span>
+    </a>
+
+    <div class="relativ c_noir gras inlineBlockLarge modesombre hide" style="margin-left: 30px;margin-right: 100px; cursor: pointer;" onclick="dark(1);">
+        <img src="/ContentV11/images/pictoCouleur/sombre.svg" style="vertical-align: bottom;" />
+        Mode sombre
+    </div>
+
+    <div class="relativ c_noir gras inlineBlockLarge modeclair hide" style="margin-left: 30px;margin-right: 100px; cursor: pointer;" onclick="dark(0);">
+        <img src="/ContentV11/images/pictoCouleur/clair.svg" style="vertical-align: bottom;" />
+        Mode clair
+    </div>
+
+</div>
+
+
+
+    
+    <div class="relativRight onlySmall" style="margin-top: 2px;">
+      
+        
+        <div id="header_contactR" class="relativ c_noir gras inlineBlockSmall size10" style="margin-right: 10px; padding-top: 10px; vertical-align: top; cursor:pointer;" onclick="clic('contactList')">Contact</div>
+
+         
+            
+            <div id="contactList" class="relativ b_jaune" style=" position: absolute; padding: 2px 20px; margin-top: -2px; width: auto; display: none; background-color: #EFEFEF; border: 1px solid #A4A4A4; z-index:100">
+                <div><a class="c_bleuVert size10"  href="tel:0149077373">01 49 07 73 73</a></div>
+                <div><a class="c_bleuVert size10" href="/contact">Demande de contact</a></div>
+            </div>
+    
+        
+        <a id="header_inscriptionR" class="relativ c_noir gras inlineBlockSmall size10" style="margin-right: 10px; padding-top: 10px; vertical-align: top;" href="/session">S'inscrire</a>
+
+    
+        
+        <div id="headerSearchBlocR" class="inlineBlockSmall" style="margin-right: 10px;  height: 26px; ">
+            <div id="header_loupeR" class="relativ" onclick="hide('header_loupeR'); hide('header_contactR'); hide('header_inscriptionR'); hide('header_menuR'); hide('contactList') ;document.getElementById('headerSearchFieldR').focus(); showInline('searchR'); document.getElementById('headerSearchFieldR').focus();" onmouseover="" onmouseout="" style="display: inline-block; cursor: pointer; top:-4px;">
+                <img style="width: 22px; height: 22px;" src="/ContentV11/images/pictoNoir/search.png" />
+            </div>
+
+            <div id="searchR" class="relativ" style="margin: 0px; padding: 0px; width: 218px; height: 26px;  display: none; top: 10px; ">
+                <form action="/Recherche/Search" enctype="multipart/form-data" method="get" onsubmit="return checkForm('headerSearchFieldR')">
+                    
+                    <input id="headerSearchFieldR" class="sansCroixIe size08" name="s" type="text" style="height: 26px; border-radius: 6px; border: 1px solid #999; padding-left: 8px; padding-right: 30px; width: 175px;" placeholder="Recherche par mot-clé ou formation" />
+
+                    
+                    <div class="relativRight" style="left:-7px;top:-25px;z-index:10">
+                        <div style="width: 22px; " onmouseover="colorLoupeYellow('header_searchR');" onmouseout="    colorloupeBlack('header_searchR');">
+                            <input id="header_searchR" type="image" name="submit" style="width: 22px; cursor: pointer; display: block;" src="/ContentV11/images/pictoNoir/search.png" onmouseover="colorLoupeYellow('header_search');" onmouseout="colorloupeBlack('header_search');" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+          
+        <div id="header_menuR" class="relativ inlineBlockSmall" style="margin-top: 5px; margin-right: 6px; ">
+            <img style="width: 40px; height: 28px; cursor: pointer;" src="/ContentV11/images/pictoNoir/menu_Responsive.png" onclick="showMenuResponsive(); hide('contactList');" />
+        </div>
+    </div>
+
+</div>
+
+ <br style="clear:both;" />
+
+
+<script type="text/javascript">
+
+    // Supression des % pour les pages de résultats pré-filtrés pour un id
+    function EraseSearchField(id) {
+        // Efface le %
+        if (document.getElementById(id)) {
+            if (document.getElementById(id).value == "%") {
+                document.getElementById(id).value = "";
+            }
+        }
+    }
+
+
+    // Evènement pour détecter les clics en dehors du champ de recherche du header
+    window.addEventListener('click', function (e) {
+
+
+    /* ******************************************************** */
+    /* si le champs de recherche existe dans le DOM - 1200px    */
+    /* ******************************************************** */
+
+        var largeur = window.innerWidth;
+
+        // ------------ //
+        //     1200px   //
+        // ------------ //
+        if (document.getElementById('headerSearchBloc') && largeur > 750) {
+            if (!document.getElementById('headerSearchBloc').contains(e.target)) {
+                //    document.getElementById("header_contact").style.display = "block";
+                //    document.getElementById("header_loupe").style.display = "block";
+                //    document.getElementById("search").style.display = "none";
+                document.getElementById("headerSearchBlocR").style.display = "none";
+                //alert("Desktop - " + largeur);
+            }
+            
+        }
+
+
+        // ------------ //
+        // Responsive   //
+        // ------------ //
+        if (document.getElementById('headerSearchBlocR') && largeur < 750 ) {
+            if (!document.getElementById('headerSearchBlocR').contains(e.target)) {
+                document.getElementById("header_loupeR").style.display = "inline-block";
+                document.getElementById("header_contactR").style.display = "inline-block";
+                document.getElementById("header_inscriptionR").style.display = "inline-block";
+                document.getElementById("header_menuR").style.display = "inline-block";
+                document.getElementById("searchR").style.display = "none";
+                //alert("Responsive - " + largeur);
+            }
+        }
+    });
+
+
+    function AjustHeader() {
+
+        var header = document.getElementById("header");
+        var largeurEcran = document.body.scrollWidth;
+
+        if (header && largeurEcran < 750) {
+            //alert("header - page = " + page);
+            if (page == 'Home') { header.style.position = "relative"; }
+            else { header.style.position = "fixed"; }
+        }
+        else { header.style.position = "relative"; }
+    }
+
+    //  Fonction anonyme exécuté au chargement de la page pour effacer le %
+    (function () {
+        EraseSearchField('headerSearchField');
+        EraseSearchField('headerSearchFieldR');
+        AjustHeader();
+        var largeurEcran = document.body.scrollWidth;
+        
+        //alert("page = " + page);
+        //if (page == 'Home' &&  largeurEcran < 750) {
+        //    document.getElementById("banniere_CoronaVirus").style.position = "relative";
+        //    document.getElementById("banniere_CoronaVirus").style.marginTop = "-20px;";
+        //}
+
+    }());
+
+</script>
+
+
+
+
+
+
+
+    
+    <div class="relativ">
+        <img src="/ContentV11/images/erreur/404.png" />
+    </div>
+
+
+    
+    <div class="relativ">
+        <div class="size24 c_bleuVert">OUPS !</div>
+        <div class="size16">La page que vous cherchez semble introuvable.</div>
+    </div>
+    <br style="clear:both;" />
+
+
+    
+    <div class="relativ large100 size14" style="margin: 20px 0px; text-align: center;">
+            <a class="bouton_Jaune size16 ctr inlineBlockLarge" href="/recherche/inter" target="_self" onclick="" style="margin: 20px 20px 0px 40px; padding: 10px 30px; vertical-align: middle; line-height: 36px;; border-radius: 8px; ">
+ <div style="text-decoration:none;"> UTILISER LE MOTEUR DE RECHERCHE </div>     </a>
+    <a class="bouton_Jaune size16 ctr inlineBlockSmall" href="/recherche/inter" target="_self" onclick="" style="margin: 20px 10px 0px 10px; padding-top: 15px; padding-bottom: 15px; width:90% ;vertical-align: middle; line-height: 36px;; border-radius: 8px; ">
+ <div style="text-decoration:none;"> UTILISER LE MOTEUR DE RECHERCHE </div>     </a>
+
+            <a class="bouton_Jaune size16 ctr inlineBlockLarge" href="/" target="_self" onclick="" style="margin: 20px 20px 0px 40px; padding: 10px 30px; vertical-align: middle; line-height: 36px;; border-radius: 8px; ">
+ <div style="text-decoration:none;"> REVENIR SUR LA PAGE D'ACCUEIL </div>     </a>
+    <a class="bouton_Jaune size16 ctr inlineBlockSmall" href="/" target="_self" onclick="" style="margin: 20px 10px 0px 10px; padding-top: 15px; padding-bottom: 15px; width:90% ;vertical-align: middle; line-height: 36px;; border-radius: 8px; ">
+ <div style="text-decoration:none;"> REVENIR SUR LA PAGE D'ACCUEIL </div>     </a>
+
+    </div>
+    <br style="clear:both;" /><br style="clear:both;" />
+
+</div>
+   
+
+<style>
+
+    #headerSearchField {
+        width: 340px !important ;
+    }
+
+</style>
+
