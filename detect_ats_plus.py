@@ -60,7 +60,8 @@ SIGNATURES = [
     ('successfactors', r'(?:([a-z0-9\-]+)\.)?jobs\.sap\.com'),
     # NE JAMAIS capturer le nom de domaine comme tenant : c'est ce qui a
     # produit des tenants litteralement nommes "successfactors".
-    ('successfactors', r'successfactors\.(?:eu|com)'),
+    ('successfactors', r'(?:sapsf|successfactors)\.(?:eu|com)'),
+    ('successfactors', r'/services/recruiting/v1/jobs'),
     ('taleo',          r'([a-z0-9\-]+)\.taleo\.net'),
     ('taleo',          r'(taleo)\.net'),
     ('avature',        r'([a-z0-9\-]+)\.avature\.net'),
@@ -276,12 +277,13 @@ def sonde_workday(nom, sl):
 # 2. SuccessFactors
 # ==================================================================
 
-SF_HOTES = ('career5.successfactors.eu', 'career4.successfactors.eu',
-            'career2.successfactors.eu', 'career10.successfactors.eu',
+# Le domaine reel est sapsf.eu / sapsf.com, PAS successfactors.eu.
+# C'est ce qui expliquait 0 detection sur toutes les passes precedentes.
+SF_HOTES = ('career55.sapsf.eu', 'career5.sapsf.eu', 'career4.sapsf.eu',
+            'career2.sapsf.eu', 'career10.sapsf.eu', 'career20.sapsf.eu',
+            'career55.sapsf.com', 'career5.sapsf.com', 'career4.sapsf.com',
             'performancemanager5.successfactors.eu',
-            'performancemanager4.successfactors.eu',
-            'career5.successfactors.com', 'career4.successfactors.com',
-            'jobs.sap.com')
+            'career5.successfactors.eu', 'jobs.sap.com')
 
 
 # Messages d'erreur servis avec un code HTTP 200. C'est ce qui a fait
@@ -328,6 +330,65 @@ def sonde_successfactors(nom, sl):
     return None
 
 
+
+# ==================================================================
+# LE POINT D'ENTREE UNIVERSEL SUCCESSFACTORS
+#
+# Tout site carrieres SuccessFactors (plateforme RMK) expose sa propre
+# API de recherche, sur SON PROPRE domaine :
+#
+#     POST https://jobs.engie.com/services/recruiting/v1/jobs
+#
+# Trouve dans le code source de jobs.engie.com. Plus besoin de deviner
+# ni le tenant ni le centre de donnees : il suffit du domaine du site
+# carrieres, et on a deja les 355 domaines dans domaines.py.
+# ==================================================================
+
+SOUS_DOMAINES_SF = ('jobs', 'careers', 'carrieres', 'emploi', 'emplois',
+                    'recrutement', 'talent', 'career', 'rejoignez-nous',
+                    'jobs.fr', 'work')
+
+
+def _sonder_api_rmk(base):
+    """POST sur l'API RMK. Renvoie (nb_offres, html_accueil) ou None."""
+    d = _post(f'{base}/services/recruiting/v1/jobs',
+              {'locale': 'fr_FR', 'pageNumber': 0, 'sortBy': '',
+               'keywords': '', 'location': '', 'facetFilters': {},
+               'brand': '', 'skills': [], 'categoryId': 0,
+               'alertId': '', 'rcmCandidateId': ''})
+    if not isinstance(d, dict):
+        return None
+    total = d.get('totalJobs')
+    if total is None and not d.get('jobs'):
+        return None
+    return int(total or len(d.get('jobs') or []))
+
+
+def sonde_sf_rmk(nom, sl):
+    dom = domaine(nom)
+    if not dom:
+        return None
+
+    bases = [f'https://{s}.{dom}' for s in SOUS_DOMAINES_SF]
+    bases += [f'https://{dom}', f'https://www.{dom}']
+
+    for base in bases:
+        try:
+            total = _sonder_api_rmk(base)
+        except Exception:
+            continue
+        if total is None or total < 1:
+            continue
+
+        # Le site repond : on recupere le vrai tenant dans le code source
+        tenant = ''
+        r = _get(base)
+        if r:
+            tenant = extraire_tenant('successfactors', r.url, r.text[:400000])
+        return 'successfactors', (tenant or sl), base
+    return None
+
+
 # ==================================================================
 # 3. Taleo, tous prefixes
 # ==================================================================
@@ -371,6 +432,11 @@ LIENS_CARRIERE = re.compile(
 
 
 EXTRACTEURS_TENANT = [
+    # Le bloc j2w.init() present sur TOUT site carrieres SuccessFactors
+    # porte le vrai identifiant. C'est la source la plus fiable :
+    #   "ssoCompanyId" : 'engieinforP3',
+    ('successfactors', r'ssoCompanyId["\s:]+[\'"]([A-Za-z0-9_\-]{3,})'),
+    ('successfactors', r'bplte_company=([A-Za-z0-9_\-]{3,})'),
     ('successfactors', r'[?&]company=([A-Za-z0-9_\-]{3,})'),
     ('workday',        r'([a-z0-9\-]{3,})\.wd\d+\.myworkdayjobs\.com'),
     ('taleo',          r'https?://([a-z0-9\-]{3,})\.taleo\.net'),
@@ -466,6 +532,7 @@ def sonde_portail_maison(nom, sl):
 # ==================================================================
 
 SONDES = [
+    ('SF api carrieres', sonde_sf_rmk),      # la plus rentable
     ('workday', sonde_workday),
     ('successfactors', sonde_successfactors),
     ('taleo', sonde_taleo),
