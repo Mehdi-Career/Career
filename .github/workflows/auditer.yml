@@ -29,11 +29,11 @@ jobs:
 
       - name: Audit
         run: |
-          if [ "${{ inputs.perimetre }}" = "inconnues" ]; then
-            python -u audit_sites.py --inconnues
-          else
-            python -u audit_sites.py
-          fi
+          ARGS=""
+          [ "${{ inputs.perimetre }}" = "inconnues" ] && ARGS="$ARGS --inconnues"
+          [ -n "${{ inputs.limite }}" ] && ARGS="$ARGS --n ${{ inputs.limite }}"
+          echo "python -u audit_sites.py $ARGS"
+          python -u audit_sites.py $ARGS
 
       - name: Commit du rapport
         if: always()
