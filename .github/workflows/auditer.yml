@@ -29,6 +29,10 @@ jobs:
 
       - name: Audit
         run: |
+          if [ "${{ inputs.mode }}" = "diag" ]; then
+            python -u audit_sites.py --diag
+            exit 0
+          fi
           ARGS=""
           [ "${{ inputs.perimetre }}" = "inconnues" ] && ARGS="$ARGS --inconnues"
           [ -n "${{ inputs.limite }}" ] && ARGS="$ARGS --n ${{ inputs.limite }}"
