@@ -85,7 +85,16 @@ CHEMINS = ('/carrieres', '/fr/carrieres', '/carriere', '/nos-offres',
            '/recrutement', '/fr/recrutement', '/emploi', '/emplois',
            '/careers', '/fr/careers', '/en/careers', '/jobs', '/fr/jobs',
            '/group/careers', '/about/careers', '/talent', '/candidature',
-           '/travailler-chez-nous', '/rh/offres', '')
+           '/travailler-chez-nous', '/rh/offres',
+           # Ajouts d'apres les sites reellement trouves a la 1re passe
+           '/accueil.aspx?LCID=1036',        # signature Talentsoft/Cegid
+           '/nous-rejoindre/nos-offres', '/carrieres/nos-offres',
+           '/carrieres/offres', '/recrutement/offres', '/emploi/offres',
+           '/rejoindre', '/rejoindre-nous', '/talents', '/nos-metiers',
+           '/postuler', '/jobs/search', '/search-jobs', '/job-search',
+           '/fr/nos-offres', '/fr/offres', '/fr/emploi', '/fr/recrutement',
+           '/fr-fr/carrieres', '/fr-fr/careers', '/en/jobs', '/fr',
+           '/recherche-offres', '/toutes-nos-offres', '/offres/recherche', '')
 
 # Domaines dedies au recrutement : convention tres francaise
 #   laposterecrute.fr, enedis-recrute.fr, groupeXrecrute.com...
@@ -98,8 +107,11 @@ def _domaines_recrutement(nom, dom):
         if not base or len(base) < 3:
             continue
         for forme in (f'{base}recrute', f'{base}-recrute', f'{base}recrutement',
-                      f'{base}-emploi', f'{base}emploi', f'{base}-carrieres',
-                      f'{base}carrieres', f'groupe{base}recrute'):
+                      f'{base}-recrutement', f'{base}-emploi', f'{base}emploi',
+                      f'{base}-carrieres', f'{base}carrieres', f'{base}-jobs',
+                      f'{base}jobs', f'{base}-careers', f'{base}careers',
+                      f'groupe{base}recrute', f'groupe{base}', f'{base}-talents',
+                      f'recrutement-{base}', f'emploi-{base}', f'jobs-{base}'):
             for e in {ext, '.fr', '.com'}:
                 out.append(forme + e)
     return out
@@ -251,6 +263,115 @@ def api_repond(base):
     return ''
 
 
+
+# ------------------------------------------------------------------
+# Navigation depuis la page d'accueil
+#
+# LA lacune de la premiere passe : elle ne faisait que DEVINER des URL.
+# Un humain, lui, ouvre le site et clique sur "Carrieres". Beaucoup de
+# grands groupes ont une adresse qui ne suit aucune convention
+# (edf.fr/edf-recrute, carrefour.fr/nous-rejoindre...) : seul le lien
+# depuis l'accueil y mene.
+#
+# Deux niveaux : accueil -> page carrieres -> page qui LISTE les offres.
+# La page carrieres d'un grand groupe est souvent une vitrine ; la liste
+# est un cran plus loin.
+# ------------------------------------------------------------------
+
+LIEN_CARRIERE = re.compile(
+    r'carri[eè]res?|recrutement|recrute|nous[\s\-]*rejoindre|rejoign|'
+    r'offres?[\s\-]*d.emploi|\bemplois?\b|\bjobs?\b|career|talent|'
+    r'postuler|candidat|work[\s\-]*with|travailler', re.I)
+
+LIEN_LISTE = re.compile(
+    r'nos[\s\-]*offres|toutes[\s\-]*(?:nos[\s\-]*)?offres|voir[\s\-]*les[\s\-]*offres|'
+    r'rechercher?[\s\-]*(?:une[\s\-]*)?offre|offres?[\s\-]*d.emploi|'
+    r'search[\s\-]*jobs?|all[\s\-]*jobs?|view[\s\-]*(?:all[\s\-]*)?jobs?|'
+    r'consulter[\s\-]*(?:nos[\s\-]*)?offres|postes?[\s\-]*(?:a[\s\-]*pourvoir|ouverts)',
+    re.I)
+
+
+def _liens(html, url_base, motif, maxi=14):
+    """Liens dont le texte OU l'adresse matche le motif."""
+    out, vus = [], set()
+    for m in re.finditer(
+            r'<a[^>]+href=["\']([^"\']{2,400})["\'][^>]*>(.{0,200}?)</a>',
+            html or '', re.I | re.S):
+        href = m.group(1)
+        texte = re.sub(r'<[^>]+>|\s+', ' ', m.group(2)).strip()
+        if not (motif.search(texte) or motif.search(href)):
+            continue
+        if href.startswith(('mailto:', 'tel:', 'javascript:', '#')):
+            continue
+        lien = requests.compat.urljoin(url_base, href)
+        if not lien.startswith('http') or lien in vus:
+            continue
+        vus.add(lien)
+        out.append(lien)
+        if len(out) >= maxi:
+            break
+    return out
+
+
+def depuis_accueil(nom, verbeux=False):
+    """
+    Ouvre le site principal, suit le lien "Carrieres", puis depuis cette
+    page suit le lien vers la LISTE des offres. Renvoie le meilleur
+    (url, ats, tenant, note) trouve.
+    """
+    meilleur = ('', '', '', 0)
+
+    for dom in domaines_possibles(nom)[:3]:
+        for racine in (f'https://www.{dom}', f'https://{dom}'):
+            acc = _get(racine)
+            if not acc:
+                continue
+            html_acc = acc.text[:1200000]
+
+            for lien in _liens(html_acc, acc.url, LIEN_CARRIERE):
+                r = _get(lien)
+                if not r:
+                    continue
+                html = r.text[:1500000]
+                n = note_page(html)
+                base = '/'.join(r.url.rstrip('/').split('/')[:3])
+                ats, tenant = signature(r.url + '\n' + html)
+
+                if n < 3:
+                    if api_repond(base):
+                        n = max(n, 6)
+
+                if verbeux and (n or ats):
+                    print(f'    accueil-> {n:2d} offre(s)  {ats or "-":15s} {r.url[:64]}')
+
+                if n > meilleur[3]:
+                    meilleur = (r.url, ats or 'generique', tenant, n)
+                if n >= 6:
+                    return meilleur
+
+                # Niveau 2 : cette page est une vitrine, la liste est plus loin
+                for l2 in _liens(html, r.url, LIEN_LISTE, maxi=6):
+                    if l2 == r.url:
+                        continue
+                    r2 = _get(l2)
+                    if not r2:
+                        continue
+                    h2 = r2.text[:1500000]
+                    n2 = note_page(h2)
+                    a2, t2 = signature(r2.url + '\n' + h2)
+                    if n2 < 3 and api_repond('/'.join(r2.url.rstrip('/').split('/')[:3])):
+                        n2 = max(n2, 6)
+                    if verbeux and n2:
+                        print(f'      liste-> {n2:2d} offre(s)  {a2 or "-":15s} {r2.url[:62]}')
+                    if n2 > meilleur[3]:
+                        meilleur = (r2.url, a2 or 'generique', t2, n2)
+                    if n2 >= 6:
+                        return meilleur
+            if meilleur[3]:
+                return meilleur
+    return meilleur
+
+
 def chercher(nom, verbeux=False):
     """(url, ats, tenant, note) de la meilleure page trouvee."""
     meilleur = ('', '', '', 0)
@@ -280,9 +401,18 @@ def chercher(nom, verbeux=False):
         if n > meilleur[3]:
             meilleur = (r.url, ats or 'generique', tenant, n)
         if n >= 6:          # franchement une page d'offres : on s'arrete
+            return meilleur
+        if testes > 110:
             break
-        if testes > 90:
-            break
+
+    # Les URL devinees n'ont rien donne de franc : on navigue depuis
+    # l'accueil, comme le ferait un humain.
+    if meilleur[3] < 3:
+        if verbeux:
+            print('    -- devinette insuffisante, navigation depuis l accueil --')
+        nav = depuis_accueil(nom, verbeux)
+        if nav[3] > meilleur[3]:
+            meilleur = nav
     return meilleur
 
 
@@ -312,9 +442,26 @@ def main():
         r for r in rows if r.get('ats') in ('', 'inconnu')]
     cibles = [r for r in cibles if r.get('actif', 'oui') == 'oui']
 
+    # Diagnostic : curl_cffi est ce qui debloque les sites qui repondent
+    # 403 aux clients Python (SUEZ, BNP...). Sans lui, ils resteront perdus.
+    print('=' * 60)
+    if _CFFI:
+        ok = 0
+        for u in ('https://www.suez.com', 'https://www.carrefour.fr'):
+            try:
+                if creq.get(u, impersonate='chrome124', timeout=10).status_code < 400:
+                    ok += 1
+            except Exception:
+                pass
+        print(f'curl_cffi actif - {ok}/2 sites normalement bloques repondent')
+    else:
+        print('ATTENTION : curl_cffi absent. Les sites qui repondent 403')
+        print('aux clients Python resteront introuvables (SUEZ, BNP...).')
+    print('=' * 60 + '\n', flush=True)
+
     print(f'{len(cibles)} entreprises a traiter, {PARALLELISME} en parallele')
-    print('Objectif : trouver l URL du site carrieres. '
-          'L ATS est un bonus.\n', flush=True)
+    print('Deux strategies : URL devinees, puis navigation depuis '
+          'la page d accueil.\n', flush=True)
 
     trouve = 0
     with ThreadPoolExecutor(max_workers=PARALLELISME) as pool:
