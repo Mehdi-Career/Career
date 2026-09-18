@@ -6,7 +6,7 @@ Hays France,RH & Staffing,1,,workable,hays,non,0,oui
 PageGroup France,RH & Staffing,1,,workable,pagegroup,non,0,oui
 Michael Page France,RH & Staffing,1,,workable,michaelpage,non,0,oui
 Robert Half France,RH & Staffing,1,,workday,roberthalf,non,0,oui
-Gi Group France,RH & Staffing,1,,inconnu,,non,0,oui
+Gi Group France,RH & Staffing,1,https://fr.gigroup.com/offres-emploi/,generique,,non,0,oui
 Synergie,RH & Staffing,1,https://www.synergie.fr/nous-rejoindre,digitalrecruiters,synergie,non,0,oui
 Proman,RH & Staffing,1,,inconnu,,non,0,oui
 Crit Group,RH & Staffing,1,,inconnu,,non,0,oui
@@ -19,14 +19,14 @@ Walters People,RH & Staffing,1,,inconnu,,non,0,oui
 Robert Walters France,RH & Staffing,1,,inconnu,,non,0,oui
 ADP France,HR Tech & Paie,1,https://jobs.adp.com/fr/,generique,,non,0,oui
 Cegid,HR Tech & Paie,1,https://jobs.cegid.com/fr,digitalrecruiters,cegid,non,0,oui
-SD Worx France,HR Tech & Paie,1,,inconnu,,non,0,oui
+SD Worx France,HR Tech & Paie,1,https://careers.sdworx.com/fr/jobs?query=,teamtailor,,non,0,oui
 Workday France,HR Tech & Paie,1,,inconnu,,non,0,oui
 Cornerstone OnDemand France,HR Tech & Paie,1,,inconnu,,non,0,oui
 Silae,HR Tech & Paie,1,https://silae-career.teamtailor.com,teamtailor,silae-career,non,0,oui
 Lucca,HR Tech & Paie,1,,inconnu,,non,0,oui
 PayFit,HR Tech & Paie,1,https://careers.payfit.com,teamtailor,payfit,non,0,oui
 Sopra HR Software,HR Tech & Paie,1,,smartrecruiters,SopraSteria1,non,0,oui
-Talentsoft,HR Tech & Paie,1,,inconnu,,non,0,oui
+Talentsoft,HR Tech & Paie,1,https://jobs.cegid.com/fr/,generique,,non,0,oui
 Eurecia,HR Tech & Paie,1,https://eurecia-1729845435.teamtailor.com,teamtailor,eurecia-1729845435,non,0,oui
 Cegos,Formation & EdTech,1,,inconnu,,non,0,oui
 Demos,Formation & EdTech,1,,inconnu,,non,0,oui
@@ -44,14 +44,14 @@ Openclassrooms,Formation & EdTech,1,https://jobs.openclassrooms.com,teamtailor,o
 Docebo France,Formation & EdTech,1,,ashby,docebo,non,0,oui
 SUEZ,Energie & Environnement,1,,inconnu,,non,0,oui
 Veolia,Energie & Environnement,1,,inconnu,,non,0,oui
-Saur,Energie & Environnement,1,,inconnu,,non,0,oui
+Saur,Energie & Environnement,1,https://eu.jobs.saur.com/,teamtailor,,non,0,oui
 Derichebourg,Energie & Environnement,1,,inconnu,,non,0,oui
 Paprec,Energie & Environnement,1,,digitalrecruiters,paprec,non,0,oui
 Seche Environnement,Energie & Environnement,1,,icims,candidaturespontanees-groupe-seche,non,0,oui
-EDF,Energie & Environnement,1,,inconnu,,non,0,oui
+EDF,Energie & Environnement,1,https://www.edf.fr/edf-recrute/rejoignez-nous/voir-les-offres/nos-offres,talentsoft,edf-recrute,non,0,oui
 ENGIE,Energie & Environnement,1,https://jobs.engie.com,successfactors,engieinforP3,non,0,oui
 ENGIE Solutions,Energie & Environnement,1,https://jobs.engie.com,successfactors,engieinforP3,non,0,oui
-Dalkia,Energie & Environnement,1,,inconnu,,non,0,oui
+Dalkia,Energie & Environnement,1,https://www.dalkia.fr/rh/recrutement-energie/,generique,,non,0,oui
 TotalEnergies,Energie & Environnement,1,,avature,totalenergies,non,0,oui
 Enedis,Energie & Environnement,1,https://enedis-recrute.talent-soft.com,talentsoft,enedis-recrute,non,0,oui
 GRDF,Energie & Environnement,1,,inconnu,,non,0,oui
@@ -77,7 +77,7 @@ Geodis,Transport & Logistique,1,,recruitee,geodis,non,0,oui
 DHL France,Transport & Logistique,1,,inconnu,,non,0,oui
 FedEx France,Transport & Logistique,1,,inconnu,,non,0,oui
 UPS France,Transport & Logistique,1,,inconnu,,non,0,oui
-DB Schenker France,Transport & Logistique,1,,inconnu,,non,0,oui
+DB Schenker France,Transport & Logistique,1,https://www.dsv.com/en/careers/meet-our-people,generique,,non,0,oui
 Kuehne+Nagel France,Transport & Logistique,1,,inconnu,,non,0,oui
 DSV France,Transport & Logistique,1,,successfactors,dsvas,non,0,oui
 Bollore Logistics,Transport & Logistique,1,,inconnu,,non,0,oui
@@ -90,16 +90,16 @@ Getlink,Transport & Logistique,1,,recruitee,careers-analytics,non,0,oui
 CMA CGM,Transport & Logistique,1,,successfactors,C0002716868P,non,0,oui
 BNP Paribas,Banque,2,,avature,bnpparibas,non,0,oui
 Societe Generale,Banque,2,https://socgen.taleo.net/careersection/2/moresearch.ftl,taleo,socgen,non,0,oui
-Credit Agricole,Banque,2,,inconnu,,non,0,oui
+Credit Agricole,Banque,2,https://groupecreditagricole.jobs//,talentsoft,casa-recrute,non,0,oui
 BPCE,Banque,2,,inconnu,,non,0,oui
 Banque Populaire,Banque,2,,inconnu,,non,0,oui
 Caisse d'Epargne,Banque,2,,inconnu,,non,0,oui
 Credit Mutuel,Banque,2,,inconnu,,non,0,oui
 CIC,Banque,2,,lever,cic,non,0,oui
 LCL,Banque,2,,talentsoft,casa-recrute,non,0,oui
-La Banque Postale,Banque,2,,inconnu,,non,0,oui
+La Banque Postale,Banque,2,https://www.labanquepostale.com/candidats.html,generique,,non,0,oui
 HSBC France,Banque,2,,avature,hsbc,non,0,oui
-Boursorama,Banque,2,,inconnu,,non,0,oui
+Boursorama,Banque,2,https://www.boursobank-group.com/fr/carrieres-emplois/consulter-nos-offres,generique,,non,0,oui
 Natixis,Banque,2,,inconnu,,non,0,oui
 Amundi,Banque,2,https://jobs.amundi.com/accueil.aspx?LCID=1036,generique,,non,0,oui
 Caisse des Depots,Banque,2,,inconnu,,non,0,oui
@@ -116,8 +116,8 @@ MAIF,Assurance & Protection sociale,2,https://recrutement.maif.fr/accueil.aspx?L
 MACIF,Assurance & Protection sociale,2,,inconnu,,non,0,oui
 Matmut,Assurance & Protection sociale,2,,talentsoft,matmut-recrute,non,0,oui
 MAAF,Assurance & Protection sociale,2,,inconnu,,non,0,oui
-Coveea,Assurance & Protection sociale,2,,inconnu,,non,0,oui
-Malakoff Humanis,Assurance & Protection sociale,2,,inconnu,,non,0,oui
+Coveea,Assurance & Protection sociale,2,https://recrutement.covea.com/jobs,smartrecruiters,my-applications,non,0,oui
+Malakoff Humanis,Assurance & Protection sociale,2,https://carrieres.malakoffhumanis.com/offre-de-emploi/liste-toutes-offres.aspx?all=1&amp;mode=layer#ancrecontenu,generique,,non,0,oui
 AG2R La Mondiale,Assurance & Protection sociale,2,,workday,ag2rlamondiale,non,0,oui
 Klesia,Assurance & Protection sociale,2,https://recrutement.klesia.fr/fr,generique,,non,0,oui
 Pro BTP,Assurance & Protection sociale,2,https://recrute.probtp.com/home.html,talentsoft,recrute-probtp,non,0,oui
@@ -132,9 +132,9 @@ Harmonie Mutuelle,Assurance & Protection sociale,2,https://recrutement.harmonie-
 Mutuelle Generale,Assurance & Protection sociale,2,,workday,lmg,non,0,oui
 Orange,Telecom & IT,2,,cornerstone,orange,non,0,oui
 Orange Business,Telecom & IT,2,https://career.orange-business.com/Join/talentcommunity/form,icims,fondationorange,non,0,oui
-Bouygues Telecom,Telecom & IT,2,,inconnu,,non,0,oui
-SFR,Telecom & IT,2,,inconnu,,non,0,oui
-Altice France,Telecom & IT,2,,inconnu,,non,0,oui
+Bouygues Telecom,Telecom & IT,2,https://www.corporate.bouyguestelecom.fr/travailler-ensemble/nos-offres/,generique,,non,0,oui
+SFR,Telecom & IT,2,https://recrutement.sfr.com/offer,generique,,non,0,oui
+Altice France,Telecom & IT,2,https://recrutement.sfr.com/offer,generique,,non,0,oui
 Iliad,Telecom & IT,2,https://iliad.teamtailor.com,teamtailor,iliad,non,0,oui
 Free Pro,Telecom & IT,2,,inconnu,,non,0,oui
 Worldline,Telecom & IT,2,,successfactors,worldline,non,0,oui
@@ -142,7 +142,7 @@ Ingenico,Telecom & IT,2,,successfactors,ingenicobu,non,0,oui
 Edenred,Telecom & IT,2,,cornerstone,edenred,non,0,oui
 Sage France,Telecom & IT,2,,cornerstone,sage,non,0,oui
 Cegedim,Telecom & IT,2,https://careers.cegedim.com/fr,generique,,non,0,oui
-Dassault Systemes,Telecom & IT,2,,inconnu,,non,0,oui
+Dassault Systemes,Telecom & IT,2,https://www.3ds.com/careers/jobs,generique,,non,0,oui
 Murex,Telecom & IT,2,,workday,murex,non,0,oui
 Amadeus France,Telecom & IT,2,,workday,amadeus,non,0,oui
 OVHcloud,Telecom & IT,2,,successfactors,ovh,non,0,oui
@@ -182,7 +182,7 @@ RAJA,Services aux entreprises,2,,inconnu,,non,0,oui
 Bruneau,Services aux entreprises,2,,inconnu,,non,0,oui
 Vinci,Immobilier & Construction,2,,ashby,vinci,non,0,oui
 Bouygues Construction,Immobilier & Construction,2,,successfactors,bouyguescop,non,0,oui
-Bouygues Immobilier,Immobilier & Construction,2,,inconnu,,non,0,oui
+Bouygues Immobilier,Immobilier & Construction,2,https://recrutement.bouygues-immobilier-corporate.com/go/Toutes-nos-offres/8692802/,successfactors,bouyguesim,non,0,oui
 Eiffage,Immobilier & Construction,2,,workday,eiffage,non,0,oui
 Colas,Immobilier & Construction,2,,inconnu,,non,0,oui
 Spie Batignolles,Immobilier & Construction,2,,smartrecruiters,spie-batignolles,non,0,oui
@@ -193,7 +193,7 @@ Icade,Immobilier & Construction,2,,talentsoft,icade-career,non,0,oui
 Gecina,Immobilier & Construction,2,,workday,gecina,non,0,oui
 Klepierre,Immobilier & Construction,2,,inconnu,,non,0,oui
 Unibail-Rodamco-Westfield,Immobilier & Construction,2,,workday,urw,non,0,oui
-Covivio,Immobilier & Construction,2,,inconnu,,non,0,oui
+Covivio,Immobilier & Construction,2,https://covivio.softgarden.io/de/vacancies,generique,,non,0,oui
 Foncia,Immobilier & Construction,2,https://recrutement.foncia.com/fr,generique,,non,0,oui
 BNP Paribas Real Estate,Immobilier & Construction,2,,avature,bnpparibas,non,0,non
 JLL France,Immobilier & Construction,2,,workday,jll,non,0,oui
@@ -209,7 +209,7 @@ Airbus,Industrie,3,,cornerstone,airbus,non,0,oui
 Safran,Industrie,3,https://careers.safran-group.com/accueil.aspx?LCID=1036,generique,,non,0,oui
 Thales,Industrie,3,,smartrecruiters,thales,non,0,oui
 Dassault Aviation,Industrie,3,,talentsoft,dassault-aviation-cand,non,0,oui
-Naval Group,Industrie,3,,inconnu,,non,0,oui
+Naval Group,Industrie,3,https://www.naval-group.com/fr/nous-rejoindre,generique,,non,0,oui
 ArcelorMittal France,Industrie,3,,inconnu,,non,0,oui
 Renault,Industrie,3,,inconnu,,non,0,oui
 Stellantis,Industrie,3,,inconnu,,non,0,oui
@@ -251,7 +251,7 @@ GE HealthCare France,Sante & Pharma,3,,cornerstone,gehealthcare,non,0,oui
 Siemens Healthineers France,Sante & Pharma,3,,avature,0907955455,non,0,oui
 Clariane,Sante & Pharma,3,,inconnu,,non,0,oui
 Ramsay Sante,Sante & Pharma,3,,inconnu,,non,0,oui
-Elsan,Sante & Pharma,3,,inconnu,,non,0,oui
+Elsan,Sante & Pharma,3,https://talents.groupe-elsan.com/fr/annonces?q=cadre%2520de%2520bloc,generique,,non,0,oui
 Vivalto Sante,Sante & Pharma,3,,inconnu,,non,0,oui
 Eurofins,Sante & Pharma,3,,smartrecruiters,eurofins,non,0,oui
 Cerba HealthCare,Sante & Pharma,3,,inconnu,,non,0,oui
@@ -260,29 +260,29 @@ Carrefour,Retail & Grande conso,3,,inconnu,,non,0,oui
 Auchan,Retail & Grande conso,3,,inconnu,,non,0,oui
 E.Leclerc,Retail & Grande conso,3,https://eleclerc.teamtailor.com,teamtailor,eleclerc,non,0,oui
 Les Mousquetaires,Retail & Grande conso,3,,inconnu,,non,0,oui
-Casino,Retail & Grande conso,3,,inconnu,,non,0,oui
+Casino,Retail & Grande conso,3,https://www.casinocareers.com/,generique,,non,0,oui
 Monoprix,Retail & Grande conso,3,https://recrutement.monoprix.fr/fr,generique,,non,0,oui
 Systeme U,Retail & Grande conso,3,,cornerstone,systemeu,non,0,oui
 Lidl France,Retail & Grande conso,3,,successfactors,lidlstiftup2,non,0,oui
 Metro France,Retail & Grande conso,3,,cornerstone,metro,non,0,oui
 Promocash,Retail & Grande conso,3,,inconnu,,non,0,oui
 Danone,Retail & Grande conso,3,,cornerstone,danone,non,0,oui
-Nestle France,Retail & Grande conso,3,,inconnu,,non,0,oui
+Nestle France,Retail & Grande conso,3,https://www.nestlejobs.com/nestle-usa,successfactors,nestlehrprdbx,non,0,oui
 Unilever France,Retail & Grande conso,3,https://careers.unilever.com/fr,workday,unilever,non,0,oui
 Mondelez France,Retail & Grande conso,3,,inconnu,,non,0,oui
-PepsiCo France,Retail & Grande conso,3,,inconnu,,non,0,oui
+PepsiCo France,Retail & Grande conso,3,https://www.pepsicojobs.com/main/,avature,sandboxpepsi,non,0,oui
 Coca-Cola Europacific France,Retail & Grande conso,3,,inconnu,,non,0,oui
 Mars France,Retail & Grande conso,3,,workday,mars,non,0,oui
 Ferrero France,Retail & Grande conso,3,,successfactors,ferreroint,non,0,oui
 Lactalis,Retail & Grande conso,3,,successfactors,groupelact,non,0,oui
 Bel,Retail & Grande conso,3,,inconnu,,non,0,oui
 Savencia,Retail & Grande conso,3,,inconnu,,non,0,oui
-Bonduelle,Retail & Grande conso,3,,inconnu,,non,0,oui
+Bonduelle,Retail & Grande conso,3,https://jobs.bonduelle.com/search/,successfactors,bonduellep,non,0,oui
 Heineken France,Retail & Grande conso,3,,avature,heineken,non,0,oui
 Pernod Ricard,Retail & Grande conso,3,,workday,pernodricard,non,0,oui
 Remy Cointreau,Retail & Grande conso,3,,cornerstone,remycointreau,non,0,oui
 L'Oreal,Retail & Grande conso,3,https://careers.loreal.com/en_US/content,generique,,non,0,oui
-Beiersdorf France,Retail & Grande conso,3,,inconnu,,non,0,oui
+Beiersdorf France,Retail & Grande conso,3,https://www.beiersdorf.fr/carrieres/our-care-culture/benefits,generique,,non,0,oui
 Henkel France,Retail & Grande conso,3,,avature,henkel,non,0,oui
 Procter & Gamble France,Retail & Grande conso,3,,inconnu,,non,0,oui
 Reckitt France,Retail & Grande conso,3,,successfactors,reckittb01,non,0,oui
@@ -330,7 +330,7 @@ TF1,Medias & Communication,3,,inconnu,,non,0,oui
 M6,Medias & Communication,3,https://recrutement.groupem6.fr/accueil.aspx?LCID=1036,generique,,non,0,oui
 France Televisions,Medias & Communication,3,,successfactors,francetele,non,0,oui
 Radio France,Medias & Communication,3,,talentsoft,radiofrance-recrute,non,0,oui
-Canal+,Medias & Communication,3,,inconnu,,non,0,oui
+Canal+,Medias & Communication,3,https://joinus.canalplus.com/go/Nos-offres/8554202/,successfactors,groupecana,non,0,oui
 Prisma Media,Medias & Communication,3,https://prismamedia-demo.teamtailor.com,teamtailor,prismamedia-demo,non,0,oui
 Le Monde,Medias & Communication,3,,inconnu,,non,0,oui
 Les Echos-Le Parisien,Medias & Communication,3,,inconnu,,non,0,oui
@@ -350,7 +350,7 @@ ONERA,Secteur public & Parapublic,3,,inconnu,,non,0,oui
 IFP Energies Nouvelles,Secteur public & Parapublic,3,,inconnu,,non,0,oui
 ADEME,Secteur public & Parapublic,3,,inconnu,,non,0,oui
 Business France,Secteur public & Parapublic,3,,talentsoft,businessfrance-recrute,non,0,oui
-Francaise des Jeux,Secteur public & Parapublic,3,,inconnu,,non,0,oui
+Francaise des Jeux,Secteur public & Parapublic,3,https://careers.fdjunited.com/FR/search-jobs,generique,,non,0,oui
 PMU,Secteur public & Parapublic,3,https://pmu.teamtailor.com,teamtailor,pmu,non,0,oui
 Voies Navigables de France,Secteur public & Parapublic,3,,inconnu,,non,0,oui
 Aeroports de Paris,Secteur public & Parapublic,3,,inconnu,,non,0,oui
