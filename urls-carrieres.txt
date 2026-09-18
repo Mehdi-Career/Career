@@ -1,0 +1,224 @@
+# URL des sites carrieres a ajouter a la main
+#
+# A NE FAIRE QUE SI le workflow 'Trouver les URL carrieres' n'a pas
+# trouve l'entreprise. Il devrait en trouver la grande majorite tout seul.
+#
+# Format :   Nom exact du CSV ; URL de la page qui LISTE les offres
+#
+# L'ATS n'a pas besoin d'etre identifie : le connecteur universel
+# travaille a partir de l'URL seule. Colle la page qui affiche la LISTE
+# des offres, pas la page 'Nous rejoindre' institutionnelle.
+#
+# Exemples de bonnes URL :
+#   SNCF ; https://emploi.sncf.com/nos-offres
+#   La Poste ; https://www.laposterecrute.fr/recherche-offres
+#
+# Puis lance le workflow 'Importer des URL'.
+
+
+# --- Energie & Environnement (priorite 1) ---
+CEA ; 
+Dalkia ; 
+Derichebourg ; 
+EDF ; 
+GRDF ; 
+Legrand ; 
+RTE ; 
+Rexel ; 
+Rubis ; 
+SUEZ ; 
+Saur ; 
+Veolia ; 
+Vinci Energies ; 
+
+# --- Formation & EdTech (priorite 1) ---
+AFPA ; 
+Abilways ; 
+Cegos ; 
+Demos ; 
+Galileo Global Education ; 
+M2i Formation ; 
+Nexity Formation ; 
+
+# --- HR Tech & Paie (priorite 1) ---
+ADP France ; 
+Cornerstone OnDemand France ; 
+Lucca ; 
+SD Worx France ; 
+Talentsoft ; 
+Workday France ; 
+
+# --- RH & Staffing (priorite 1) ---
+Crit Group ; 
+Fed Group ; 
+Gi Group France ; 
+Proman ; 
+Robert Walters France ; 
+Walters People ; 
+
+# --- Transport & Logistique (priorite 1) ---
+Air France-KLM ; 
+Bollore Logistics ; 
+DB Schenker France ; 
+DHL France ; 
+FedEx France ; 
+Groupe ADP ; 
+Kuehne+Nagel France ; 
+RATP ; 
+STEF ; 
+UPS France ; 
+
+# --- Assurance & Protection sociale (priorite 2) ---
+Allianz France ; 
+Coveea ; 
+Generali France ; 
+Groupama ; 
+Harmonie Mutuelle ; 
+Klesia ; 
+MAAF ; 
+MACIF ; 
+MAIF ; 
+Malakoff Humanis ; 
+Marsh France ; 
+Pro BTP ; 
+Swiss Life France ; 
+Verspieren ; 
+
+# --- Banque (priorite 2) ---
+Amundi ; 
+BPCE ; 
+Banque Populaire ; 
+Banque des Territoires ; 
+Boursorama ; 
+Bpifrance ; 
+Caisse d'Epargne ; 
+Caisse des Depots ; 
+Credit Agricole ; 
+Credit Mutuel ; 
+Edmond de Rothschild France ; 
+La Banque Postale ; 
+Natixis ; 
+Oddo BHF ; 
+
+# --- Immobilier & Construction (priorite 2) ---
+Bouygues Immobilier ; 
+CBRE France ; 
+Cedeo ; 
+Colas ; 
+Covivio ; 
+Cushman & Wakefield France ; 
+Fayat ; 
+Foncia ; 
+Holcim France ; 
+Klepierre ; 
+Point P ; 
+SPIE ; 
+Vicat ; 
+
+# --- Services aux entreprises (priorite 2) ---
+API Restauration ; 
+Apave ; 
+Atalian ; 
+Bruneau ; 
+Bureau Veritas ; 
+Compass Group France ; 
+Dekra France ; 
+Manutan ; 
+Onet ; 
+RAJA ; 
+Samsic ; 
+
+# --- Telecom & IT (priorite 2) ---
+Altice France ; 
+Bouygues Telecom ; 
+Canon France ; 
+Cegedim ; 
+Dassault Systemes ; 
+Dell Technologies France ; 
+Free Pro ; 
+HP France ; 
+Microsoft France ; 
+Orange Business ; 
+Ricoh France ; 
+SFR ; 
+
+# --- Industrie (priorite 3) ---
+Alstom ; 
+ArcelorMittal France ; 
+Eramet ; 
+Forvia ; 
+Michelin ; 
+Naval Group ; 
+Plastic Omnium ; 
+Renault ; 
+STMicroelectronics ; 
+Safran ; 
+Somfy ; 
+Stellantis ; 
+
+# --- Medias & Communication (priorite 3) ---
+Canal+ ; 
+Havas ; 
+Ipsos ; 
+Le Monde ; 
+Les Echos-Le Parisien ; 
+M6 ; 
+Publicis Groupe ; 
+TF1 ; 
+Teads ; 
+Webedia ; 
+
+# --- Retail & Grande conso (priorite 3) ---
+Auchan ; 
+Beiersdorf France ; 
+Bel ; 
+Bonduelle ; 
+But ; 
+Carrefour ; 
+Casino ; 
+Castorama ; 
+Cdiscount ; 
+Clarins ; 
+Coca-Cola Europacific France ; 
+Fnac Darty ; 
+Hermes ; 
+L'Oreal ; 
+Les Mousquetaires ; 
+Mondelez France ; 
+Monoprix ; 
+Nestle France ; 
+PepsiCo France ; 
+Procter & Gamble France ; 
+Promocash ; 
+Savencia ; 
+Sephora ; 
+Unilever France ; 
+Yves Rocher ; 
+
+# --- Sante & Pharma (priorite 3) ---
+Bayer France ; 
+Boehringer Ingelheim France ; 
+Cerba HealthCare ; 
+Clariane ; 
+Elsan ; 
+Johnson & Johnson France ; 
+Ramsay Sante ; 
+Vivalto Sante ; 
+
+# --- Secteur public & Parapublic (priorite 3) ---
+ADEME ; 
+Aeroports de Paris ; 
+CNAF ; 
+Docaposte ; 
+Francaise des Jeux ; 
+IFP Energies Nouvelles ; 
+La Poste ; 
+ONERA ; 
+Urssaf Caisse Nationale ; 
+Voies Navigables de France ; 
+
+# --- Tech & Scale-up (priorite 3) ---
+Leboncoin ; 
+Lydia ; 
+ManoMano ; 
+Ubisoft ; 

@@ -173,6 +173,9 @@ def charger_entreprises(priorite=None, nom=None):
         rows = list(csv.DictReader(f))
     rows = [r for r in rows if r.get('actif', 'oui') == 'oui']
     rows = [r for r in rows if r.get('ats') and r['ats'] != 'inconnu']
+    # Sans identifiant ni URL, le connecteur n'a aucun point d'entree
+    rows = [r for r in rows
+            if r.get('ats_tenant') or r.get('url_carrieres')]
     if priorite:
         rows = [r for r in rows if r.get('priorite') == str(priorite)]
     if nom:
@@ -242,6 +245,20 @@ def main():
     if not entreprises:
         print('Aucune entreprise a crawler. As-tu lance detect_ats.py ?')
         return 1
+
+    # Une entreprise dont l'ATS n'a pas de connecteur est ignoree SANS
+    # bruit par le reste du code. C'est exactement ce qui a fait perdre
+    # 35 entreprises (teamtailor, workable, recruitee, flatchr).
+    from collections import Counter
+    orphelins = Counter(r['ats'] for r in entreprises
+                        if r['ats'] not in CONNECTEURS)
+    if orphelins:
+        print('!' * 62)
+        print('ATS SANS CONNECTEUR - ces entreprises seront ignorees :')
+        for ats, n in orphelins.most_common():
+            print(f'  {n:4d}  {ats}')
+        print(f'  Total perdu : {sum(orphelins.values())} entreprises')
+        print('!' * 62 + '\n')
 
     cx = None if args.test else ouvrir_base(cfg['base_de_donnees'])
     print(f'{len(entreprises)} entreprises\n')

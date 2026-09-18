@@ -38,7 +38,7 @@ DOMAINES = {
     'Robert Walters France': 'robertwalters.fr',
 
     # --- HR Tech & Paie ---
-    'ADP France': 'adp.fr',
+    'ADP France': 'fr.adp.com',
     'Cegid': 'cegid.com',
     'SD Worx France': 'sdworx.fr',
     'Workday France': 'workday.com',
@@ -409,3 +409,49 @@ DOMAINES = {
 def domaine(nom):
     """Domaine connu, sinon None."""
     return DOMAINES.get(nom.strip())
+
+
+# ------------------------------------------------------------------
+# Domaines de secours
+#
+# L'audit a renvoye "site injoignable" sur une douzaine d'entreprises.
+# Deux causes tres differentes :
+#   - le domaine n'existe pas (ConnectionError)  -> il faut une alternative
+#   - le site bloque les robots (403)            -> le domaine est bon
+# On essaie donc plusieurs domaines avant de conclure.
+# ------------------------------------------------------------------
+
+ALTERNATIFS = {
+    'PageGroup France': ['michaelpage.fr', 'pagepersonnel.fr', 'page.com'],
+    'ManpowerGroup France': ['manpowergroup.fr', 'manpower.fr', 'manpowergroup.com'],
+    'Fed Group': ['fedgroup.fr', 'fed-group.fr', 'groupefed.fr'],
+    'Lincoln': ['lincoln-group.com', 'lincoln.fr', 'lincolnassociates.fr'],
+    'Walters People': ['walterspeople.fr', 'robertwalters.fr'],
+    'Galileo Global Education': ['ggeedu.com', 'galileo-gge.com'],
+    'Bollore Logistics': ['cevalogistics.com', 'bollore-logistics.com'],
+    'ADP France': ['fr.adp.com', 'adp.com'],
+    'Aeroports de Paris': ['parisaeroport.fr', 'groupeadp.fr'],
+    'Groupe ADP': ['parisaeroport.fr', 'groupeadp.fr'],
+    'BNP Paribas': ['group.bnpparibas', 'bnpparibas.com'],
+    'Air France-KLM': ['airfranceklm.com', 'airfrance.fr'],
+    'RATP': ['ratp.fr', 'groupe-ratp.fr'],
+    'GRDF': ['grdf.fr', 'grdf-recrute.fr'],
+    'SUEZ': ['suez.com', 'suez.fr'],
+    'Les Mousquetaires': ['mousquetaires.com', 'intermarche.com'],
+    'Systeme U': ['magasins-u.com', 'systeme-u.fr'],
+    'Credit Agricole': ['credit-agricole.com', 'groupecreditagricole.jobs'],
+    'La Poste': ['legroupe.laposte.fr', 'laposte.fr'],
+    'Francaise des Jeux': ['groupefdj.com', 'fdj.fr'],
+}
+
+
+def domaines_possibles(nom):
+    """Tous les domaines a essayer pour cette entreprise, sans doublon."""
+    out = []
+    for d in ALTERNATIFS.get(nom.strip(), []):
+        if d not in out:
+            out.append(d)
+    principal = DOMAINES.get(nom.strip())
+    if principal and principal not in out:
+        out.append(principal)
+    return out
