@@ -1,0 +1,60 @@
+name: Trouver les URL carrieres
+
+# Cherche l'URL du site carrieres de chaque entreprise sans ATS.
+#
+# C'est CE workflow qui doit debloquer les 175 restantes. Il ne cherche
+# plus a deviner l'identifiant de l'entreprise chez sa plateforme
+# (indevinable) : il cherche juste l'URL, parce que le connecteur
+# universel de connecteurs.py sait travailler a partir de l'URL seule.
+#
+# Relancable sans risque : il ne traite que les entreprises encore
+# marquees "inconnu" et sauvegarde toutes les 5.
+
+on:
+  workflow_dispatch:
+    inputs:
+      perimetre:
+        description: "manquantes | toutes"
+        required: false
+        default: 'manquantes'
+
+permissions:
+  contents: write
+
+jobs:
+  trouver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      # curl_cffi imite l'empreinte TLS de Chrome : indispensable pour
+      # les sites qui repondent 403 aux clients Python (cas SUEZ).
+      - run: pip install requests curl_cffi
+
+      - name: Recherche des URL
+        run: |
+          if [ "${{ inputs.perimetre }}" = "toutes" ]; then
+            python -u trouver_urls.py --toutes
+          else
+            python -u trouver_urls.py
+          fi
+
+      - name: Commit du CSV
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet entreprises-cibles.csv; then
+            echo "Aucun changement."
+          else
+            git add entreprises-cibles.csv
+            git commit -m "URL carrieres trouvees $(date +%d/%m/%Y\ %H:%M)"
+            git pull --rebase --autostash || true
+            git push
+          fi
