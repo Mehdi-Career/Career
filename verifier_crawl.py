@@ -44,6 +44,43 @@ PARALLELISME = 6
 RAPPORT = 'audit/verification-crawl.md'
 
 
+# Plateformes dont l'adresse NE se deduit PAS du tenant : sans URL, leur
+# connecteur ne peut rien faire et rend une liste vide sans meme appeler
+# le reseau. C'est la cause numero un des zeros du 19/09.
+BESOIN_URL = {'successfactors', 'workday', 'cornerstone', 'avature',
+              'icims', 'talentsoft', 'taleo', 'nextdata', 'generique'}
+
+
+def raison_du_vide(row):
+    """
+    Un connecteur qui rend zero offre ne dit pas pourquoi. Cette sonde
+    tranche entre les trois causes possibles, pour eviter un aller-retour
+    de diagnostic a chaque fois.
+    """
+    url = (row.get('url_carrieres') or '').strip()
+    if not url:
+        if row['ats'] in BESOIN_URL:
+            return 'SANS URL', ("tenant seul, et cette plateforme a besoin "
+                                "de l'adresse du site")
+        return 'SANS URL', 'aucune URL enregistree'
+
+    try:
+        import requests
+        r = requests.get(url, timeout=20, allow_redirects=True, headers={
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/124.0 Safari/537.36'})
+    except Exception as e:
+        return 'INJOIGNABLE', f'{type(e).__name__}'
+
+    if r.status_code >= 400:
+        return f'HTTP {r.status_code}', f'la page repond {r.status_code}'
+    if len(r.text) < 1000:
+        return 'PAGE VIDE', f'{len(r.text)} octets seulement'
+    return 'A PARSER', ('la page repond mais le connecteur n en tire rien : '
+                        'offres chargees en JavaScript ou selecteur a revoir')
+
+
 def verifier(row, filtres, max_offres=200):
     """(statut, nb_brutes, nb_retenues, exemples, erreur)"""
     fn = CONNECTEURS.get(row['ats'])
@@ -65,9 +102,14 @@ def verifier(row, filtres, max_offres=200):
         if garde:
             retenues.append(o)
 
-    exemples = [o.titre[:70] for o in (retenues or brutes)[:3]]
-    statut = 'OK' if brutes else 'VIDE'
-    return statut, len(brutes), len(retenues), exemples, f'{duree:.0f}s'
+    if brutes:
+        exemples = [o.titre[:70] for o in (retenues or brutes)[:3]]
+        return 'OK', len(brutes), len(retenues), exemples, f'{duree:.0f}s'
+
+    # Zero offre : on va chercher pourquoi plutot que de rendre un "VIDE"
+    # muet qui coute un aller-retour de diagnostic.
+    cause, detail = raison_du_vide(row)
+    return f'VIDE / {cause}', 0, 0, [], detail
 
 
 def main():
@@ -120,17 +162,25 @@ def main():
             total_retenues += ret
             lignes.append((row['nom'], row['ats'], st, nb, ret, ex, info))
 
-            marque = {'OK': 'OK  ', 'VIDE': '-- ', 'ERREUR': '!! ',
-                      'SANS CONNECTEUR': '?? '}.get(st, '   ')
-            print(f'  [{i:3d}/{len(entreprises)}] {marque} '
+            marque = ('OK  ' if st == 'OK' else
+                      '!!  ' if st == 'ERREUR' else
+                      '??  ' if st == 'SANS CONNECTEUR' else '--  ')
+            print(f'  [{i:3d}/{len(entreprises)}] {marque}'
                   f'{row["nom"][:28]:30s} {row["ats"]:16s} '
-                  f'{nb:4d} brutes -> {ret:3d} retenues', flush=True)
-            if ex and st == 'OK':
+                  f'{nb:4d} brutes -> {ret:3d} retenues   {st}', flush=True)
+            if st == 'OK' and ex:
                 print(f'            . {ex[0]}', flush=True)
+            elif st != 'OK' and info:
+                print(f'            -> {info[:76]}', flush=True)
 
     print(f'\n{"=" * 62}')
     for st, n in stats.most_common():
         print(f'  {n:4d}  {st}')
+    sans_url = sum(n for s, n in stats.items() if 'SANS URL' in s)
+    if sans_url:
+        print(f'\n  -> {sans_url} entreprises ont un tenant mais pas d URL.')
+        print('     Relance "Trouver les URL carrieres" : il les traite '
+              'maintenant.')
     print(f'\n  {total_brutes} offres brutes au total')
     print(f'  {total_retenues} retenues apres filtres '
           f'(intitule, IDF, CDI, moins de 30 jours)')
