@@ -123,7 +123,54 @@ def _sans_accents(s):
     return ''.join(c for c in s if unicodedata.category(c) != 'Mn')
 
 
-def candidats(nom):
+def urls_depuis_tenant(ats, tenant):
+    """
+    URL deduites d'un tenant deja connu.
+
+    POURQUOI. La verification du 19/09 a montre que les lignes ayant un
+    tenant mais pas d'URL rendent zero offre : le connecteur SuccessFactors
+    attaque l'API sur le domaine du site, Workday a besoin du numero de
+    centre de donnees (wd1, wd3, wd5...), Cornerstone du bon sous-domaine
+    csod. Le tenant seul ne suffit pas - sauf sur les plateformes dont
+    l'adresse se deduit mecaniquement du tenant. Ce sont celles-la.
+
+    SuccessFactors est absent volontairement : son tenant est un
+    identifiant client, pas un domaine. Ces lignes passent par la
+    recherche d'URL normale.
+    """
+    t = (tenant or '').strip().lower()
+    if not t or len(t) < 3:
+        return []
+    out = []
+    if ats == 'workday':
+        # Le centre de donnees est indevinable : on teste les six courants.
+        for n in (1, 2, 3, 3, 5, 10, 12):
+            out.append(f'https://{t}.wd{n}.myworkdayjobs.com')
+    elif ats == 'cornerstone':
+        out += [f'https://{t}.csod.com/ux/ats/careersite/1/home?c={t}',
+                f'https://{t}.csod.com']
+    elif ats == 'avature':
+        out += [f'https://{t}.avature.net/careers', f'https://{t}.avature.net']
+    elif ats == 'icims':
+        out.append(f'https://{t}.icims.com/jobs/search?ss=1')
+        if not t.startswith('careers'):     # evite careers-careers-xxx
+            out.append(f'https://careers-{t}.icims.com/jobs/search?ss=1')
+    elif ats == 'talentsoft':
+        out += [f'https://{t}.talent-soft.com/offre-de-emploi/liste-offres.aspx',
+                f'https://{t}.talent-soft.com', f'https://{t}.talentsoft.com']
+    elif ats == 'taleo':
+        out += [f'https://{t}.taleo.net/careersection/2/moresearch.ftl',
+                f'https://{t}.taleo.net/careersection/ex/moresearch.ftl']
+    elif ats == 'teamtailor':
+        out.append(f'https://{t}.teamtailor.com/jobs')
+    elif ats == 'recruitee':
+        out.append(f'https://{t}.recruitee.com')
+    elif ats == 'flatchr':
+        out.append(f'https://{t}.flatchr.io')
+    return list(dict.fromkeys(out))
+
+
+def candidats(nom, ats='', tenant=''):
     """Toutes les URL a tester, des plus probables aux moins probables."""
     urls, vus = [], set()
 
@@ -131,6 +178,10 @@ def candidats(nom):
         if u not in vus:
             vus.add(u)
             urls.append(u)
+
+    # Le tenant, quand on l'a deja, est l'indice le plus fort : en tete.
+    for u in urls_depuis_tenant(ats, tenant):
+        ajoute(u)
 
     doms = domaines_possibles(nom)
     for dom in doms:
@@ -434,11 +485,11 @@ def depuis_accueil(nom, verbeux=False):
     return meilleur
 
 
-def chercher(nom, verbeux=False):
+def chercher(nom, verbeux=False, ats_connu='', tenant_connu=''):
     """(url, ats, tenant, note) de la meilleure page trouvee."""
     meilleur = ('', '', '', 0)
     testes = 0
-    for url in candidats(nom):
+    for url in candidats(nom, ats_connu, tenant_connu):
         r = _get(url)
         testes += 1
         if not r:
@@ -493,9 +544,15 @@ def main():
 
     if '--test' in args:
         nom = ' '.join(args[args.index('--test') + 1:])
+        connu = next((r for r in csv.DictReader(open(CSV, encoding='utf-8'))
+                      if r['nom'].strip().lower() == nom.strip().lower()), {})
+        a0, t0 = connu.get('ats', ''), connu.get('ats_tenant', '')
         print(f'Test : {nom}')
-        print(f'{len(candidats(nom))} URL candidates\n')
-        url, ats, tenant, n = chercher(nom, verbeux=True)
+        if a0 not in ('', 'inconnu'):
+            print(f'  deja connu : ats={a0} tenant={t0 or "(aucun)"} '
+                  f'url={connu.get("url_carrieres") or "(VIDE)"}')
+        print(f'{len(candidats(nom, a0, t0))} URL candidates\n')
+        url, ats, tenant, n = chercher(nom, True, a0, t0)
         print(f'\nRetenu : {url or "rien trouve"}')
         if n > 0:
             print(f'  ats={ats}  tenant={tenant}  {n} offre(s) vue(s)')
@@ -505,8 +562,14 @@ def main():
         return 0 if url else 1
 
     rows = list(csv.DictReader(open(CSV, encoding='utf-8')))
+    # Deux populations, pas une seule.
+    #   - les lignes sans ATS du tout : on cherche tout
+    #   - les lignes AVEC un tenant mais SANS URL : elles rendaient zero
+    #     offre au crawl et n'etaient jamais retraitees, parce que le
+    #     filtre ne regardait que l'ATS. C'etait le trou principal.
     cibles = rows if '--toutes' in args else [
-        r for r in rows if r.get('ats') in ('', 'inconnu')]
+        r for r in rows
+        if r.get('ats') in ('', 'inconnu') or not r.get('url_carrieres')]
     cibles = [r for r in cibles if r.get('actif', 'oui') == 'oui']
 
     # Diagnostic : curl_cffi est ce qui debloque les sites qui repondent
@@ -532,7 +595,9 @@ def main():
 
     trouve = repeche = 0
     with ThreadPoolExecutor(max_workers=PARALLELISME) as pool:
-        futurs = {pool.submit(chercher, r['nom']): r for r in cibles}
+        futurs = {pool.submit(chercher, r['nom'], False,
+                              r.get('ats', ''), r.get('ats_tenant', '')): r
+                  for r in cibles}
         for i, fut in enumerate(as_completed(futurs), 1):
             row = futurs[fut]
             try:
@@ -541,6 +606,15 @@ def main():
                 print(f'  [{i:3d}/{len(cibles)}] ERREUR {row["nom"]} : {e}',
                       flush=True)
                 continue
+
+            # Une detection "generique" ne doit pas ecraser un ATS deja
+            # identifie : le connecteur specialise pagine mieux et lit des
+            # champs structures. On ne remplace que si la page a revele une
+            # plateforme concrete, differente.
+            ancien = row.get('ats', '')
+            if ancien not in ('', 'inconnu') and ats in ('', 'generique'):
+                ats = ancien
+                tenant = tenant or row.get('ats_tenant', '')
 
             if url and n >= 3:
                 row['url_carrieres'] = url
