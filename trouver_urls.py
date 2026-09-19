@@ -238,6 +238,61 @@ def note_page(html):
     return len(liens)
 
 
+_MOTS_RECRUT = ('job', 'career', 'carriere', 'emploi', 'recrut',
+                'recruitment', 'talent', 'rejoindre', 'candidat', 'apply',
+                'offres', 'vacature', 'stellen')
+
+
+def plausible(url, html):
+    """
+    Note FAIBLE (1 a 5) pour une page qui ressemble a un site d'offres
+    sans le prouver.
+
+    POURQUOI. note_page() exige des liens d'offres dans le HTML. Or
+    jobs.veolia.com, careers.legrand.com ou jobs.suez.com chargent leurs
+    offres en JavaScript : le HTML livre est une coquille vide. Elles
+    tombaient a 0 et l'URL etait JETEE, alors que c'est exactement la
+    bonne page et que le connecteur universel sait interroger leurs API.
+
+    Ces pages sont donc repechees avec une note negative : enregistrees,
+    mais signalees comme non prouvees. verifier_crawl.py tranche ensuite,
+    en mesurant les offres reellement recuperees.
+    """
+    if not url or not html or len(html) < 500:
+        return 0
+    u = url.lower()
+    morceaux = u.split('/')
+    hote = morceaux[2] if len(morceaux) > 2 else ''
+    chemin = '/'.join(morceaux[3:])
+
+    if any(m in hote for m in _MOTS_RECRUT):
+        score = 3              # jobs.veolia.com, careers.legrand.com
+    elif any(m in chemin for m in _MOTS_RECRUT):
+        score = 2              # groupe.fr/nos-offres-emploi
+    else:
+        return 0
+
+    if len(set(m.group(0).lower() for m in MOTS_OFFRE.finditer(html))) >= 2:
+        score += 1             # CDI, postuler, alternance... le vocabulaire y est
+    if re.search(r'id="__NEXT_DATA__"|window\.__NUXT__|data-reactroot|'
+                 r'ng-version=|<div id="root"|<div id="app"', html, re.I):
+        score += 1             # application JS : les offres arrivent en XHR
+
+    # Sous 3, c'est une page institutionnelle "Nous rejoindre" : ni
+    # vocabulaire d'offre, ni application JS. Inutile de l'enregistrer.
+    return min(score, 5) if score >= 3 else 0
+
+
+def _mieux(a, b):
+    """
+    Garde la meilleure de deux pistes (url, ats, tenant, note).
+    Une note positive (offres vues) bat toujours une note negative
+    (page seulement plausible), quelle que soit l'amplitude.
+    """
+    cle = lambda c: (c[3] > 0, abs(c[3])) if c[0] else (False, -1)
+    return a if cle(a) >= cle(b) else b
+
+
 def api_repond(base):
     """Une API JSON d'offres repond-elle sur ce domaine ?"""
     for chemin in API_JSON:
@@ -341,11 +396,14 @@ def depuis_accueil(nom, verbeux=False):
                     if api_repond(base):
                         n = max(n, 6)
 
-                if verbeux and (n or ats):
-                    print(f'    accueil-> {n:2d} offre(s)  {ats or "-":15s} {r.url[:64]}')
+                cote = n if n > 0 else -plausible(r.url, html)
+                if verbeux and (cote or ats):
+                    etat = f'{n:2d} offre(s)' if n > 0 else f'plausible {-cote}/5'
+                    print(f'    accueil-> {etat:15s} {ats or "-":15s} {r.url[:64]}')
 
-                if n > meilleur[3]:
-                    meilleur = (r.url, ats or 'generique', tenant, n)
+                if cote:
+                    meilleur = _mieux(meilleur,
+                                      (r.url, ats or 'generique', tenant, cote))
                 if n >= 6:
                     return meilleur
 
@@ -361,13 +419,17 @@ def depuis_accueil(nom, verbeux=False):
                     a2, t2 = signature(r2.url + '\n' + h2)
                     if n2 < 3 and api_repond('/'.join(r2.url.rstrip('/').split('/')[:3])):
                         n2 = max(n2, 6)
-                    if verbeux and n2:
-                        print(f'      liste-> {n2:2d} offre(s)  {a2 or "-":15s} {r2.url[:62]}')
-                    if n2 > meilleur[3]:
-                        meilleur = (r2.url, a2 or 'generique', t2, n2)
+                    cote2 = n2 if n2 > 0 else -plausible(r2.url, h2)
+                    if verbeux and cote2:
+                        etat = (f'{n2:2d} offre(s)' if n2 > 0
+                                else f'plausible {-cote2}/5')
+                        print(f'      liste-> {etat:15s} {a2 or "-":15s} {r2.url[:62]}')
+                    if cote2:
+                        meilleur = _mieux(meilleur,
+                                          (r2.url, a2 or 'generique', t2, cote2))
                     if n2 >= 6:
                         return meilleur
-            if meilleur[3]:
+            if meilleur[3] > 0:
                 return meilleur
     return meilleur
 
@@ -395,11 +457,14 @@ def chercher(nom, verbeux=False):
                 if verbeux:
                     print(f'    API {ch} repond sur {base}')
 
-        if verbeux and (n or ats):
-            print(f'    {n:2d} offre(s)  {ats or "-":16s} {r.url[:70]}')
+        cote = n if n > 0 else -plausible(r.url, html)
 
-        if n > meilleur[3]:
-            meilleur = (r.url, ats or 'generique', tenant, n)
+        if verbeux and (cote or ats):
+            etat = f'{n:2d} offre(s)' if n > 0 else f'plausible {-cote}/5'
+            print(f'    {etat:16s} {ats or "-":16s} {r.url[:70]}')
+
+        if cote:
+            meilleur = _mieux(meilleur, (r.url, ats or 'generique', tenant, cote))
         if n >= 6:          # franchement une page d'offres : on s'arrete
             return meilleur
         if testes > 110:
@@ -410,9 +475,7 @@ def chercher(nom, verbeux=False):
     if meilleur[3] < 3:
         if verbeux:
             print('    -- devinette insuffisante, navigation depuis l accueil --')
-        nav = depuis_accueil(nom, verbeux)
-        if nav[3] > meilleur[3]:
-            meilleur = nav
+        meilleur = _mieux(meilleur, depuis_accueil(nom, verbeux))
     return meilleur
 
 
@@ -434,7 +497,11 @@ def main():
         print(f'{len(candidats(nom))} URL candidates\n')
         url, ats, tenant, n = chercher(nom, verbeux=True)
         print(f'\nRetenu : {url or "rien trouve"}')
-        print(f'  ats={ats}  tenant={tenant}  offres={n}')
+        if n > 0:
+            print(f'  ats={ats}  tenant={tenant}  {n} offre(s) vue(s)')
+        elif n < 0:
+            print(f'  ats={ats}  tenant={tenant}  page plausible {-n}/5, '
+                  f'offres NON confirmees (verifier_crawl.py tranchera)')
         return 0 if url else 1
 
     rows = list(csv.DictReader(open(CSV, encoding='utf-8')))
@@ -463,7 +530,7 @@ def main():
     print('Deux strategies : URL devinees, puis navigation depuis '
           'la page d accueil.\n', flush=True)
 
-    trouve = 0
+    trouve = repeche = 0
     with ThreadPoolExecutor(max_workers=PARALLELISME) as pool:
         futurs = {pool.submit(chercher, r['nom']): r for r in cibles}
         for i, fut in enumerate(as_completed(futurs), 1):
@@ -482,6 +549,18 @@ def main():
                 trouve += 1
                 print(f'  [{i:3d}/{len(cibles)}] OK  {row["nom"][:30]:32s} '
                       f'{ats:16s} {n:3d} offres  {url[:58]}', flush=True)
+            elif url and n != 0:
+                # Page credible mais non prouvee : offres chargees en
+                # JavaScript, ou un ou deux liens seulement. On l'enregistre
+                # quand meme - le connecteur universel sait interroger les
+                # API - et verifier_crawl.py tranchera en mesurant.
+                row['url_carrieres'] = url
+                row['ats'] = ats or 'generique'
+                row['ats_tenant'] = tenant
+                repeche += 1
+                print(f'  [{i:3d}/{len(cibles)}] ?   {row["nom"][:30]:32s} '
+                      f'{(ats or "generique"):16s} a verifier   {url[:58]}',
+                      flush=True)
             else:
                 print(f'  [{i:3d}/{len(cibles)}] --  {row["nom"][:30]:32s} '
                       f'aucune page d offres trouvee', flush=True)
@@ -491,7 +570,10 @@ def main():
 
     sauver(rows)
 
-    print(f'\n+{trouve} entreprises debloquees cette passe')
+    print(f'\n+{trouve} entreprises debloquees cette passe (offres vues)')
+    print(f'+{repeche} repechees : page credible, offres a confirmer')
+    if repeche:
+        print('  -> lance "Verifier le crawl" pour savoir lesquelles tiennent')
     print('\n--- Repartition ---')
     for a, n in Counter(r['ats'] for r in rows).most_common():
         print(f'  {n:4d}  {a}')
