@@ -1,0 +1,60 @@
+name: Verifier le crawl
+
+# Repond a la question "est-ce qu'on recupere vraiment les annonces ?"
+#
+# Passe chaque entreprise configuree dans son connecteur et compte les
+# offres reellement obtenues. Ne modifie PAS le CSV : c'est un diagnostic.
+#
+# A lancer apres "Trouver les URL carrieres", avant de reactiver le
+# pipeline. Le rapport atterrit dans audit/verification-crawl.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      priorite:
+        description: "Limiter a une priorite (1, 2, 3) ou vide pour tout"
+        required: false
+        default: '1'
+      limite:
+        description: "Nombre max d'entreprises (vide = tout)"
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - run: pip install requests beautifulsoup4 pyyaml curl_cffi
+
+      - name: Verification
+        run: |
+          ARGS=""
+          [ -n "${{ inputs.priorite }}" ] && ARGS="$ARGS --priorite ${{ inputs.priorite }}"
+          [ -n "${{ inputs.limite }}" ] && ARGS="$ARGS --limite ${{ inputs.limite }}"
+          echo "python -u verifier_crawl.py $ARGS"
+          python -u verifier_crawl.py $ARGS
+
+      - name: Commit du rapport
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f audit/
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "Verification du crawl $(date +%d/%m/%Y\ %H:%M)"
+            git pull --rebase --autostash || true
+            git push
+          fi
