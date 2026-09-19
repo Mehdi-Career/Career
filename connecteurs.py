@@ -831,10 +831,11 @@ _API_CANDIDATES = (
 # Un lien d'offre porte presque toujours un identifiant numerique
 # apres un segment qui dit "offre".
 _LIEN_OFFRE = re.compile(
-    r'href=["\']([^"\']*?/(?:jobs?|offres?|offer|emplois?|poste|vacancy|'
-    r'vacature|stelle|careers?|recrutement|job-detail|jobdetail|'
-    r'nos-offres|offre-emploi)[/\-][^"\']*?(\d{3,})[^"\']*)["\']',
-    re.I)
+    r'<a[^>]+href=["\']([^"\']*?/(?:jobs?|offres?|offer|emplois?|poste|'
+    r'vacancy|vacature|stelle|careers?|recrutement|job-detail|jobdetail|'
+    r'nos-offres|offre-emploi)[/\-][^"\']*?(\d{3,})[^"\']*)["\'][^>]*>'
+    r'(.{0,300}?)</a>',
+    re.I | re.S)
 
 # Titre lisible dans le texte du lien, ou a defaut dans son URL
 _TEXTE_LIEN = re.compile(r'>([^<>]{8,140})<')
@@ -874,6 +875,63 @@ def _lieu_jsonld(j):
                     ('addressLocality', 'addressRegion')).strip()
 
 
+
+
+def _page_suivante(url, page, deja):
+    """
+    Demande la page suivante d'une API d'offres.
+    Chaque plateforme a sa propre convention : on les essaie toutes.
+    """
+    essais = []
+    if 'recruiting/v1/jobs' in url:          # SuccessFactors RMK
+        essais.append(('post', url, {
+            'locale': 'fr_FR', 'pageNumber': page, 'sortBy': '',
+            'keywords': '', 'location': '', 'facetFilters': {},
+            'brand': '', 'skills': [], 'categoryId': 0,
+            'alertId': '', 'rcmCandidateId': ''}))
+    sep = '&' if '?' in url else '?'
+    for param in (f'page={page}', f'page={page + 1}', f'offset={deja}',
+                  f'start={deja}', f'from={deja}', f'skip={deja}',
+                  f'p={page + 1}', f'pageNumber={page}'):
+        essais.append(('get', f'{url}{sep}{param}', None))
+
+    for methode, u, corps in essais:
+        d = _post(u, corps) if methode == 'post' else None
+        if methode == 'get':
+            r = _get(u)
+            if not r:
+                continue
+            try:
+                d = r.json()
+            except ValueError:
+                continue
+        if not d:
+            continue
+        lot = d if isinstance(d, list) else (
+            d.get('jobs') or d.get('offers') or d.get('data')
+            or d.get('list') or d.get('results') or d.get('content') or [])
+        lot = [j for j in lot if isinstance(j, dict)]
+        if lot:
+            return lot
+    return []
+
+
+def _liens_pages(html, url_base, maxi=20):
+    """URL de pagination reperees dans le HTML (page 2, 3, suivant...)."""
+    out, vus = [], set()
+    for m in re.finditer(
+            r'href=["\']([^"\']*?(?:[?&](?:page|p|start|offset|from)=\d+'
+            r'|/page/\d+)[^"\']*)["\']', html or '', re.I):
+        lien = requests.compat.urljoin(url_base, m.group(1))
+        if lien in vus or lien == url_base:
+            continue
+        vus.add(lien)
+        out.append(lien)
+        if len(out) >= maxi:
+            break
+    return out
+
+
 def generique(tenant, url_carrieres, max_offres=200):
     base = _base(url_carrieres)
     if not base:
@@ -903,6 +961,32 @@ def generique(tenant, url_carrieres, max_offres=200):
         lot = [j for j in lot if isinstance(j, dict)]
         if len(lot) < 2:
             continue
+
+        # PAGINATION : une premiere page ne donne que 10 a 20 offres.
+        # Sans ca on ne verrait qu'une fraction du board d'un grand groupe.
+        total = None
+        if isinstance(d, dict):
+            for k in ('total', 'totalJobs', 'totalCount', 'count', 'totalFound'):
+                if isinstance(d.get(k), int):
+                    total = d[k]
+                    break
+        page = 1
+        while len(lot) < max_offres and page < 25:
+            if total is not None and len(lot) >= total:
+                break
+            suite = _page_suivante(base + chemin, page, len(lot))
+            if not suite:
+                break
+            avant = len(lot)
+            connus = {json.dumps(x, sort_keys=True)[:200] for x in lot}
+            for j in suite:
+                if json.dumps(j, sort_keys=True)[:200] not in connus:
+                    lot.append(j)
+            if len(lot) == avant:
+                break
+            page += 1
+            time.sleep(0.3)
+
         out = []
         for j in lot[:max_offres]:
             titre = _valeur(j, _CLES_TITRE) or str(j.get('label') or '')
@@ -973,27 +1057,68 @@ def generique(tenant, url_carrieres, max_offres=200):
                           id_externe=str(j.get('identifier', '') or ''))
                     for j in jsonld[:max_offres]]
 
-        # 4. Liens d'offres dans le HTML
+        # 4. Liens d'offres dans le HTML, page par page
         out, vus = [], set()
-        for m in _LIEN_OFFRE.finditer(html):
-            lien, jid = m.group(1), m.group(2)
-            if jid in vus:
-                continue
-            vus.add(jid)
-            # Titre : le texte du lien, sinon le slug de l'URL
-            fin = html[m.end():m.end() + 400]
-            t = _TEXTE_LIEN.search(fin)
-            titre = re.sub(r'<[^>]+>|\s+', ' ', t.group(1)).strip() if t else ''
-            if not titre or len(titre) < 6:
-                slug = re.sub(r'[/\-_]+', ' ', lien.split('/')[-1])
-                titre = re.sub(r'\d{3,}|\.html?$', ' ', slug).strip().capitalize()
-            if not titre or len(titre) < 6:
-                continue
-            out.append(Offre(titre=titre[:180],
-                             url=requests.compat.urljoin(r.url, lien),
-                             ats='generique', id_externe=jid))
-            if len(out) >= max_offres:
-                break
+
+        def _extraire(page_html, page_url):
+            """Ajoute les offres de cette page. Renvoie le nombre de nouvelles."""
+            n = 0
+            for m in _LIEN_OFFRE.finditer(page_html):
+                lien, jid = m.group(1), m.group(2)
+                if jid in vus:
+                    continue
+                vus.add(jid)
+                # Titre : le texte DE CE lien (groupe 3), jamais celui
+                # d'un lien voisin.
+                titre = re.sub(r'<[^>]+>|\s+', ' ', m.group(3) or '').strip()
+                if not titre or len(titre) < 6:
+                    # Tout le chemin, pas seulement le dernier segment :
+                    # sur /offres/commercial-grands-comptes/448210 le
+                    # dernier segment n'est qu'un numero.
+                    chemin = lien.split('?')[0].rstrip('/')
+                    morceaux = [p for p in chemin.split('/')[-3:] if p]
+                    slug = ' '.join(morceaux)
+                    slug = re.sub(r'\b(?:jobs?|offres?|emplois?|poste|fr|en|'
+                                  r'careers?|detail)\b', ' ', slug, flags=re.I)
+                    slug = re.sub(r'[\-_]+', ' ', slug)
+                    titre = re.sub(r'\d{3,}|\.html?$', ' ', slug)
+                    titre = re.sub(r'\s+', ' ', titre).strip().capitalize()
+                if not titre or len(titre) < 6:
+                    continue
+                out.append(Offre(titre=titre[:180],
+                                 url=requests.compat.urljoin(page_url, lien),
+                                 ats='generique', id_externe=jid))
+                n += 1
+                if len(out) >= max_offres:
+                    break
+            return n
+
+        _extraire(html, r.url)
+
+        # PAGINATION : la page 1 ne montre que 10 a 20 offres. Un grand
+        # groupe en publie des centaines. On suit d'abord les liens de
+        # pagination du HTML, puis on tente les parametres classiques.
+        if out:
+            for lien_page in _liens_pages(html, r.url):
+                if len(out) >= max_offres:
+                    break
+                rp = _get(lien_page)
+                if not rp:
+                    continue
+                if _extraire(rp.text[:1500000], rp.url) == 0:
+                    break
+                time.sleep(0.3)
+
+            if len(out) < max_offres:
+                sep = '&' if '?' in r.url else '?'
+                for p in range(2, 26):
+                    if len(out) >= max_offres:
+                        break
+                    rp = _get(f'{r.url}{sep}page={p}')
+                    if not rp or _extraire(rp.text[:1500000], rp.url) == 0:
+                        break
+                    time.sleep(0.3)
+
         if len(out) >= 2:
             return out
     return []
